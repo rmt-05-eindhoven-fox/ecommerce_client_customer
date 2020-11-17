@@ -11,10 +11,11 @@
             <p class="card-title mt-3">Quantity: {{ cart.quantity }}</p>
             <p class="card-text">Category: {{ cart.Product.category}}</p>
             <p class="card-text">Price: Rp.{{cart.Product.price}}</p>
-            <p class="card-text">Status: </p>
+            <p class="card-text">Stock: {{cart.Product.stock}}</p>
+            <p class="card-text">Status: {{cart.Product.status}} </p>
             <a href="" class="btn btn-danger">-</a>
             <a href="" class="btn btn-primary mr-3 ml-3">Checkout</a>
-            <a href="" class="btn btn-success">+</a><br>
+            <a @click.prevent="addQuantity(cart.Product.id)" href="" class="btn btn-success">+</a><br>
             <a @click.prevent="deleteCart(cart.id)" href="" class="btn btn-warning mt-2">Delete</a>
         </div>
         </div>
@@ -38,6 +39,9 @@ export default {
         },
         deleteCart(id){
             this.$store.dispatch('deleteCart', id)
+        },
+        addQuantity(id){
+            this.$store.dispatch('addToCart', id)
         }
     },
     computed: {

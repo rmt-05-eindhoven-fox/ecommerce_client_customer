@@ -109,7 +109,21 @@ export default new Vuex.Store({
         console.log(cart, id, 'ini cart delete')
         context.dispatch('fetchCart')
       }).catch(err => {
-        console.log(err)
+        console.log(err.response)
+      })
+    },
+    addToCart(context, id){
+      axios({
+        url: `/cart/${id}`,
+        method: 'post',
+        headers: {
+          token: localStorage.token
+        }
+      }).then(data => {
+        console.log(data, 'sukses menambahkan')
+        context.dispatch('fetchCart')
+      }).catch(err => {
+        console.log(err, id, 'err addcart')
       })
     }
   },
