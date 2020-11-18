@@ -2,14 +2,14 @@
   <div class="container-fluid">
       <!-- NAVBAR -->
       <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-        <a class="navbar-brand" href="#"><img :src="logo" width="60" class="d-inline-block align-top"></a>
+        <router-link to="/" class="navbar-brand" href="#"><img :src="logo" width="60" class="d-inline-block align-top"></router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
           <ul class="navbar-nav" v-if="userLoggedIn">
             <li class="nav-item">
-              <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+              <router-link to="/your-cart" class="nav-link"><i class="fas fa-shopping-cart"></i> Cart</router-link>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="fas fa-history"></i> Recent Transaction</a>

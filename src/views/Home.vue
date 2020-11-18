@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="product-header">
-          <h3>Available Product</h3>
+          <h3>Our Product</h3>
         </div>
       </div>
 

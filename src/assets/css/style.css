@@ -84,9 +84,8 @@ body {
 }
 .homepage .container .card-product {
   font-family: "Rubik", sans-serif;
-  width: 200px;
-  height: 280px;
   border: 1px #b5b5b5 solid;
+  width: 220px;
   border-radius: 10px;
   margin-bottom: 30px;
   box-shadow: 8px 8px 2px #d1d1d1;

@@ -1,7 +1,7 @@
 <template>
-  <div class="col-3 d-flex justify-content-center">
+  <div class="col-3">
     <div class="card card-product">
-      <div class="card-body p-2">
+      <div class="card-body">
         <img :src="product.image_url" style="max-width: 180px;" alt="">
         <div class="product-name">
           <p>{{product.name}}</p>
@@ -10,9 +10,9 @@
           <p>Stock: {{product.stock}}</p>
         </div>
         <div class="product-price">
-          <p class="text-center">{{currencyMoney}}</p>
+          <p>{{currencyMoney}}</p>
         </div>
-        <button class="btn btn-cart btn-sm"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+        <button @click="getItemToCart(product.id)" class="btn btn-cart btn-sm"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
       </div>
     </div>
   </div>
@@ -20,12 +20,34 @@
 
 <script>
 import bgCard from '@/assets/bg-login.jpg'
+import axios from '@/axios/axios.js'
 export default {
   name: 'ProductCard',
   props: ['product'],
   data () {
     return {
       bgCard
+    }
+  },
+  methods: {
+    getItemToCart (id) {
+      const token = localStorage.getItem('token')
+      axios({
+        url: `/cart/${id}`,
+        method: 'post',
+        data: {
+          ProductId: id
+        },
+        headers: {
+          token
+        }
+      })
+        .then(({ data }) => {
+          console.log(data)
+        })
+        .catch(err => {
+          console.log(err.response)
+        })
     }
   },
   computed: {

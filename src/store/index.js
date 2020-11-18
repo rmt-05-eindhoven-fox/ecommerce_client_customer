@@ -20,8 +20,27 @@ export default new Vuex.Store({
         method: 'get'
       })
         .then(({ data }) => {
-          console.log(data)
+          // console.log(data)
           context.commit('SET_PRODUCT', data)
+        })
+        .catch(err => {
+          console.log(err.response.message)
+        })
+    },
+    getItemToCart (id) {
+      const token = localStorage.getItem('token')
+      axios({
+        url: `/cart/${id}`,
+        method: 'post',
+        data: {
+          ProductId: id
+        },
+        headers: {
+          token
+        }
+      })
+        .then(({ data }) => {
+          console.log(data)
         })
         .catch(err => {
           console.log(err.response)
