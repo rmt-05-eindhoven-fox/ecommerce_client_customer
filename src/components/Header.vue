@@ -3,25 +3,22 @@
      <div class="row">
        <div class="col-4 col-sm-12 col-md-4">
           <div class="btn-group">
-            <button class="btn border dropdown-toggle my-md-4 my-2"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >USD</button>
-            <div class="dropdown-menu">
-              <a href="#" class="dropdown-item">
-                EUR - EURO
-              </a>
-            </div>
           </div>
        </div>
        <div class="col-md-4 col-12 text-center my-2">
           <h2 class="my-md-3 site-title text-center">E-Commerce Customer</h2>
        </div>
-       <div class="col-md-4 col-12 my-2">
+       <div class="account col-md-4 col-12 my-2">
          <p class="my-md-4 header-links">
-          <a href="#" class="px-2">Sign In</a>
-          <a href="#" class="px-1">Create An Account</a>
+          <a v-if="loggedIn === false" href="#" class="px-2"><router-link to="/landingPage/signIn"> Sign In </router-link></a>
+          <a v-if="loggedIn === false" href="#" class="px-1"><router-link to="/landingPage/signUp"> Create An Account </router-link></a>
+          <a v-if='loggedIn' class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+            User
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation"><a @click="logout" class="text-dark pl-2" role="menuitem" tabindex="-1" href="#">Logout</a></li>
+          </ul>
          </p>
        </div>
      </div>
@@ -46,10 +43,9 @@
             </li>
           </ul>
         </div>
-        <div class="navbar-nav">
-          <li class="nav-item border rounded-circle mx-2 p-1 basket-icon">
-            <a href="#"><i class="fas fa-shopping-basket fa-lg"></i></a>
-          </li>
+        <div v-if="loggedIn" class="navbar-nav px-2">
+            <a href="#" class="mx-3"> <router-link to="/cart"> Cart <i class="fas fa-shopping-basket fa-md"></i></router-link></a>
+            <a href="#">Transaction</a>
         </div>
       </nav>
      </div>
@@ -59,11 +55,27 @@
 <script>
 export default {
   name: 'Header',
-  methods: {
-    logout () {
-      localStorage.clear()
-      this.$router.push('/login')
+  data () {
+    return {
+      loggedIn: false
     }
+  },
+  methods: {
+    checkCredentials () {
+      const accessToken = localStorage.getItem('access_token')
+      if (!accessToken) {
+        this.loggedIn = false
+      } else {
+        this.loggedIn = true
+      }
+    },
+    logout () {
+      localStorage.removeItem('access_token')
+      this.$router.push('/landingPage/signIn')
+    }
+  },
+  created () {
+    this.checkCredentials()
   }
 }
 </script>
@@ -83,8 +95,10 @@ export default {
     background-color: #FFB001;
   }
   .site-title {
-    font-family: "Gugi", cursive;
     color: white;
+  }
+  * {
+    font-family: "Gugi", cursive;
   }
   .container .dropdown-toggle,
   .container .dropdown-item {
@@ -113,5 +127,8 @@ export default {
   }
   .navbar-nav .basket-icon {
     margin-right: 6.5rem !important;
+  }
+  .account p a:hover {
+    color: #007BFF;
   }
 </style>

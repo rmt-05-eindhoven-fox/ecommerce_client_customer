@@ -1,4 +1,6 @@
 <template>
+<div>
+  <h2> Display By Category</h2>
   <div class="products d-flex flex-row flex-wrap justify-content-center">
     <div v-for="(product) in products" :key="product.id" class="card" style="width: 23rem;">
       <img class="card-img-top img-thumbnail" :src="product.image_url" alt="Card image cap">
@@ -27,11 +29,12 @@
       </div>
     </div> -->
   </div>
+</div>
 </template>
 
 <script>
 export default {
-  name: 'Products',
+  name: 'ProductsByCategory',
   computed: {
     products () {
       return this.$store.state.products
@@ -54,6 +57,10 @@ export default {
 </script>
 
 <style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Gugi&family=Lato&family=Roboto&display=swap');
+  * {
+    font-family: 'Gugi', cursive;
+  }
   .products-header p {
   }
   .card-body button {

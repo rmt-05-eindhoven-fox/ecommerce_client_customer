@@ -8,6 +8,16 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 export default {
+  computed: {
+    bgColor () {
+      return this.$store.state.bgColor
+    }
+  },
+  watch: {
+    bgColor () {
+      document.body.style.backgroundColor = this.bgColor
+    }
+  }
 }
 </script>
 

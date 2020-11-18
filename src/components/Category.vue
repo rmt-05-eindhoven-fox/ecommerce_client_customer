@@ -14,11 +14,11 @@
         <p class="site-btn btn-span text-center my-2">DECORATIONS</p>
       </div>
       <div class="categories">
-        <img src="../assets/106725307-1601554921056-surface-laptop-go.jpg" class="img-thumbnail" alt="product-1" />
+        <img src="../assets/alexa.png" class="img-thumbnail" alt="product-1" />
         <p class="site-btn btn-span text-center my-2">HOME ELECTRONICS</p>
       </div>
       <div class="categories">
-        <img src="../assets/kursi.png" class="img-thumbnail" alt="product-1" />
+        <img src="../assets/microwave.png" class="img-thumbnail" alt="product-1" />
         <p class="site-btn btn-span text-center my-2">APPLIANCES</p>
       </div>
     </VueSlickCarousel>
@@ -41,7 +41,9 @@ export default {
         infinite: false,
         speed: 500,
         slidesToShow: 4,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000
       }
     }
   },

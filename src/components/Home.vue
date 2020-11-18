@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header />
     <!--<div class="row mt-2 no-gutters">
       <div class="col-md-2 bg-light">
         <b-list-group class=" list-group-flush pt-2 p-2" style="text-align: left;">
@@ -87,7 +86,6 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
 import VueSlickCarousel from 'vue-slick-carousel'
 import Products from '@/components/Products.vue'
 import Category from '@/components/Category.vue'
@@ -112,7 +110,6 @@ export default {
     }
   },
   components: {
-    Header,
     VueSlickCarousel,
     Products,
     Category
