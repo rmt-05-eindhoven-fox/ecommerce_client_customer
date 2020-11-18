@@ -14,7 +14,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="" @click.prevent="showCategory('')">All</a>
           <a class="dropdown-item" href="" @click.prevent="showCategory('SmartWatch')">SmartWatch</a>
-          <a @click.prevent="showCategory(Laptop)" class="dropdown-item" href="">Laptop</a>
+          <a @click.prevent="showCategory('Laptop')" class="dropdown-item" href="">Laptop</a>
           <a @click.prevent="showCategory('SmartPhone')" class="dropdown-item" href="">SmartPhone</a>
           <a @click.prevent="showCategory('Tablet')" class="dropdown-item" href="">Tablet</a>
           <a @click.prevent="showCategory('PowerBank')" class="dropdown-item" href="">PowerBank</a>
