@@ -30,21 +30,21 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav" style="font-size: 1em; font-weight: bold">
             <li class="nav-item">
-              <a class="nav-link" href="#">HOME<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="#"><router-link to="/"> HOME </router-link></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">CATEGORY</a>
+              <a @click.prevent="scrollTo(700)" class="nav-link" href="#">CATEGORY</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">PRODUCTS</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">ABOUT ME</a>
+              <a @click.prevent="scrollTo(10000)" class="nav-link" href="#">PRODUCTS</a>
             </li>
           </ul>
         </div>
-        <div v-if="loggedIn" class="navbar-nav px-2">
-            <a href="#" class="mx-3"> <router-link to="/cart"> Cart <i class="fas fa-shopping-basket fa-md"></i></router-link></a>
+        <div v-if="loggedIn" class="navbar-nav px-2 user-nav">
+            <a href="#" class="notification mx-3">
+              <span><router-link to="/cart"> Cart <i class="fas fa-shopping-basket fa-md"></i></router-link></span>
+              <span v-if="cartLength > 0" class="badge">{{cartLength}}</span>
+            </a>
             <a href="#">Transaction</a>
         </div>
       </nav>
@@ -72,10 +72,27 @@ export default {
     logout () {
       localStorage.removeItem('access_token')
       this.$router.push('/landingPage/signIn')
+    },
+    showCartProducts () {
+      const accessToken = localStorage.getItem('access_token')
+      this.$store.dispatch('fetchCartProducts', accessToken)
+    },
+    scrollTo (val) {
+      window.scrollTo(0, val)
     }
   },
   created () {
     this.checkCredentials()
+  },
+  computed: {
+    cartLength () {
+      return this.$store.state.cartProducts.length
+    }
+  },
+  watch: {
+    cartLength () {
+      this.showCartProducts(0)
+    }
   }
 }
 </script>
@@ -130,5 +147,29 @@ export default {
   }
   .account p a:hover {
     color: #007BFF;
+  }
+  .user-nav a{
+    color: black !important;
+  }
+  .notification {
+  color: white;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  border-radius: 2px;
+  }
+
+  .notification .badge {
+    position: absolute;
+    top: -15px;
+    left: -26px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+  }
+
+  li a {
+    color: #2b3032a1 !important;
   }
 </style>

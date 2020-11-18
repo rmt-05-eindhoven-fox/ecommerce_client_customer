@@ -1,5 +1,5 @@
 <template>
-  <div class="products d-flex flex-row flex-wrap justify-content-center">
+  <div id="products" class="products d-flex flex-row flex-wrap justify-content-center">
     <div v-for="(product) in products" :key="product.id" class="card" style="width: 23rem;">
       <img class="card-img-top img-thumbnail" :src="product.image_url" alt="Card image cap">
       <div class="card-body">
@@ -46,6 +46,7 @@ export default {
         quantity: 1
       }
       this.$store.dispatch('addToCart', payload)
+      window.scrollTo(0, 0)
     }
   },
   mounted () {

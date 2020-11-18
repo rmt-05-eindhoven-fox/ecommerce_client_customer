@@ -81,7 +81,7 @@
         <p class="text-center mt-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor libero tempore id dolores iusto repellat <br> dignissimos corrupti vitae debitis aspernatur!</p>
       </div>
       <hr>
-      <Products />
+      <Products ref="products" />
   </div>
 </template>
 

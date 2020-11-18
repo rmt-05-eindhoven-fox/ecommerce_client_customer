@@ -2,7 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '../axios/axiosInstance.js'
 import router from '../router'
-
+import VueSweetalert2 from 'vue-sweetalert2'
+// If you don't need the styles, do not connect
+import 'sweetalert2/dist/sweetalert2.min.css'
+Vue.use(VueSweetalert2)
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -10,7 +13,8 @@ export default new Vuex.Store({
     bgColor: '#FFFFFF',
     products: [],
     cartProducts: [],
-    cartWatch: ''
+    cartWatch: '',
+    notifyMessage: ''
   },
   mutations: {
     SET_BACKGROUND_COLOR (state, val) {
@@ -87,6 +91,7 @@ export default new Vuex.Store({
         })
     },
     addToCart ({ commit }, payload) {
+      Vue.swal.showLoading()
       axios({
         method: 'POST',
         url: `/addToCart/${payload.id}`,
@@ -96,9 +101,14 @@ export default new Vuex.Store({
         .then(response => {
           console.log(response.data)
           commit('UPDATE_CART_WATCH', response.data)
+          Vue.swal.close()
         })
         .catch(err => {
           console.log(err.response.data.message)
+          Vue.swal.fire({
+            title: err.response.data.message,
+            icon: 'error'
+          })
         })
     },
     deleteFromCart ({ commit }, payload) {
@@ -111,6 +121,18 @@ export default new Vuex.Store({
         .then(response => {
           commit('UPDATE_CART_WATCH', response.data)
           console.log(response.data)
+        })
+        .catch(err => {
+          console.log(err.response.data.message)
+        })
+    },
+    fetchByCategory ({ commit }, category) {
+      axios({
+        method: 'GET',
+        url: `/products/${category}`
+      })
+        .then(response => {
+          commit('SET_PRODUCTS', response.data)
         })
         .catch(err => {
           console.log(err.response.data.message)

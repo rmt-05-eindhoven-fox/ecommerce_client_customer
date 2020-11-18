@@ -82,7 +82,7 @@ export default {
           quantity: 0
         }
         this.$store.dispatch('addToCart', payload)
-      } else if (quantity > 0) {
+      } else if (quantity > 1) {
         this.$store.dispatch('addToCart', payload)
       } else {
         this.deleteProduct(id, stock)
@@ -98,6 +98,7 @@ export default {
       this.$store.dispatch('deleteFromCart', payload)
     },
     checkoutProduct () {
+      this.$noty.success('Thanks for buying our products!')
       for (let i = 0; i < this.cartProducts.length; i++) {
         console.log(i)
         const cart = this.cartProducts[i]

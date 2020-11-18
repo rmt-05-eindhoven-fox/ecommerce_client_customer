@@ -7,6 +7,7 @@
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vuejs-noty/dist/vuejs-noty.css'
 export default {
   computed: {
     bgColor () {
