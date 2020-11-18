@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '../axios'
 import router from '../router/index'
+import Swal from 'sweetalert2'
 
 Vue.use(Vuex)
 
@@ -23,22 +24,58 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login(context, dataCust){
-      // if(dataCust.email === 'admin@mail.com') throw { msg: 'customer only'}
-      axios({
-        url: '/login',
-        method: 'post',
-        data: {
-          email: dataCust.email,
-          password: dataCust.password
+    logout(context){
+      Swal.fire({
+        title: 'Are you sure?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, logout!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'See you <3!'
+          )
+          localStorage.clear()
+          router.push('/login')
         }
-      }).then(data => {
-        const token = data.data.token
-        localStorage.setItem('token', token)
-        router.push('/')
-      }).catch(err => {
-        console.log(err.response)
       })
+    },
+    login(context, dataCust){
+      if(dataCust.email === 'admin@mail.com') {
+        Swal.fire({
+          icon: "error",
+          text: 'Customer only'
+        })
+      }
+      else {
+        axios({
+          url: '/login',
+          method: 'post',
+          data: {
+            email: dataCust.email,
+            password: dataCust.password
+          }
+        }).then(data => {
+          if(data){
+            const token = data.data.token
+            localStorage.setItem('token', token)
+            Swal.fire({
+              icon: "success",
+              title: "Welcome to Apple Store",
+              timer: 3000
+            })
+            router.push('/')
+          }
+        }).catch(err => {
+          Swal.fire({
+            icon: "error",
+            title: 'Oops...',
+            text: err.response.data.errors
+          })
+        })
+      }
     },
     register(context, dataCust){
       axios({
@@ -49,11 +86,17 @@ export default new Vuex.Store({
           password: dataCust.password
         }
       }).then(data => {
-        console.log(data, 'sukses register data')
-        // router.push('/login')
+        Swal.fire({
+          icon: "success",
+          title: "Register successfully",
+          timer: 3000
+        })
       }).catch(err => {
-        console.log(dataCust)
-        console.log(err.response)
+        Swal.fire({
+          icon: "error",
+          title: 'Oops...',
+          text: err.response.data.errors
+        })
       })
     },
     fetchBanner(context){
@@ -64,21 +107,25 @@ export default new Vuex.Store({
           token: localStorage.token
         }
       }).then(banner => {
-        console.log(banner.data, 'ini banner')
         context.commit('SET_BANNER', banner.data.data)
       }).catch(err => {
         console.log(err.response)
       })
     },
-    fetchProduct(context){
+    fetchProduct(context, category){
+      let url;
+      if(!category){
+        url = '/product'
+      }else {
+        url = `/product?category=${category.category}`
+      }
       axios({
-        url: '/product',
+        url: url,
         method: 'get',
         headers: {
           token: localStorage.token
         }
       }).then(product => {
-        console.log(product, 'ini product')
         context.commit('SET_PRODUCT', product.data.dataProduct)
       }).catch(err => {
         console.log(err.response)
@@ -92,7 +139,6 @@ export default new Vuex.Store({
           token: localStorage.token
         }
       }).then(cart => {
-        // console.log(cart.data, 'ini cart')
         context.commit('SET_CART', cart.data.data)
       }).catch(err => {
         console.log(err.response)
@@ -106,24 +152,94 @@ export default new Vuex.Store({
           token: localStorage.token
         }
       }).then(cart => {
-        console.log(cart, id, 'ini cart delete')
+        Swal.fire({
+          icon: "success",
+          title: "Cart deleted",
+          timer: 3000
+        })
         context.dispatch('fetchCart')
       }).catch(err => {
-        console.log(err.response)
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.errors,
+          timer: 3000
+        })
       })
     },
-    addToCart(context, id){
+    addToCart(context, obj){
+      if(obj.stock <= 0) throw {msg: 'stock habis'}
+      else{
+        axios({
+          url: `/cart/${obj.id}`,
+          method: 'post',
+          headers: {
+            token: localStorage.token
+          }
+        }).then(data => {
+          Swal.fire({
+            icon: "success",
+            title: "Success add to cart!",
+            timer: 3000
+          })
+          context.dispatch('fetchCart')
+        }).catch(err => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: err.response.data.errors,
+            timer: 3000
+          })
+        })
+      }
+    },
+    minus(context, obj){
       axios({
-        url: `/cart/${id}`,
-        method: 'post',
+        url: `/cart/${obj.id}`,
+        method: 'patch',
         headers: {
           token: localStorage.token
+        },
+        data: {
+          quantity: obj.quantity
         }
       }).then(data => {
-        console.log(data, 'sukses menambahkan')
         context.dispatch('fetchCart')
       }).catch(err => {
-        console.log(err, id, 'err addcart')
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Quantity cannot minus",
+          timer: 3000
+        })
+      })
+    },
+    checkout(context, obj){
+      axios({
+        url: `/cart/${obj.id}`,
+        method: 'put',
+        headers: {
+          token: localStorage.token
+        },
+        data: {
+          status: obj.status,
+          ProductId: obj.ProductId,
+          quantity: obj.quantity
+        }
+      }).then(data => {
+        Swal.fire({
+          icon: "success",
+          title: "See you <3",
+          timer: 3000
+        })
+        context.dispatch('fetchCart')
+      }).catch(err => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.errors,
+          timer: 3000
+        })
       })
     }
   },

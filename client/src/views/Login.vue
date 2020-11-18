@@ -3,8 +3,9 @@
     <div v-if="pageName === 'LoginPage'" class="container my-3">
       <div class="row">
         <div class="col-12 p-0 text-center">
+          <h5 class="font-weight-light mt-3"><h1><b>Welcome</b></h1> to Apple Store</h5><br>
           <img src="https://image.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg" alt="" style="height:40%;" />
-          <h5 class="font-weight-light mb-3">You shall not pass, please verify your identity</h5>
+          <h2 class="font-weight-light mb-3">Login First</h2><br>
           <div class="row">
             <div class="col-md-6 mx-auto">
               <form @submit.prevent="login">

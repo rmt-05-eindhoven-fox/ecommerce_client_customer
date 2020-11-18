@@ -1,7 +1,7 @@
 <template>
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
-    <div v-for="banner in banners" :key="banner.id" class="carousel-item active">
+    <div v-for="(banner, i) in banners" :key="banner.id" class="carousel-item" v-bind:class="i === 0 ? 'active' : ''">
       <img class="d-block w-100 h-50" :src="banner.image_url" alt="First slide">
       <div class="carousel-caption d-none d-md-block">
           <h5>{{ banner.title }}</h5>

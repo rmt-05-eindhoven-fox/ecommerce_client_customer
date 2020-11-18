@@ -1,6 +1,10 @@
 <template>
 <div class="container">
-<div class="card text-center mt-5" v-for="product in products" :key="product.id">
+<div class="empty-product" v-if="products.length === 0">
+  <h1>Zonk</h1>
+  <img src="https://image.freepik.com/free-vector/empty-concept-illustration_114360-1253.jpg" alt="">
+</div>
+<div v-else-if="products.length > 0" class="card text-center mt-5" v-for="product in products" :key="product.id">
   <div class="card-header">
     <h3><b>{{ product.name }}</b></h3>
   </div>
@@ -9,7 +13,7 @@
     <p class="card-text"><b>Price: </b>Rp.{{ product.price }}</p>
     <p class="card-text"><b>Stock: </b>{{ product.stock }}</p>
     <p class="card-text"><b>Category:  </b>{{ product.category }}</p>
-    <a @click.prevent="addToCart(product.id)" href="#" class="btn btn-primary">Add to Cart</a>
+    <a v-if="product.stock > 0" @click.prevent="addToCart(product.id, product.stock)" href="#" class="btn btn-primary">Add to Cart</a>
   </div>
 </div>
 </div>
@@ -30,8 +34,11 @@ export default {
       fetchProduct(){
         this.$store.dispatch('fetchProduct')
       },
-      addToCart(id){
-        this.$store.dispatch('addToCart', id)
+      addToCart(id, stock){
+        const obj = {
+          id: id, stock: stock
+        }
+        this.$store.dispatch('addToCart', obj)
       }
     }
 }
