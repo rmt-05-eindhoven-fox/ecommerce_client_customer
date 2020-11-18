@@ -45,6 +45,10 @@ export default {
     },
     userLogout () {
       this.$store.dispatch('userLogout')
+    },
+    toastTest () {
+      // this.$vToastify.error('easy-peasy')
+      this.$store.commit('showSuccess', 'easy-peasy')
     }
   }
 

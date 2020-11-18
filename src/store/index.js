@@ -16,6 +16,12 @@ export default new Vuex.Store({
     },
     setCart (state, data) {
       state.cart = data
+    },
+    showSuccess (state, payload) {
+      Vue.$vToastify.success(payload.message, payload.title)
+    },
+    showError (state, payload) {
+      Vue.$vToastify.error(payload.message, payload.title)
     }
   },
   actions: {
@@ -28,9 +34,18 @@ export default new Vuex.Store({
         .then(({ data }) => {
           localStorage.setItem('access_token', data.access_token)
           router.push({ name: 'Home' })
+          const payload = {
+            title: 'Login',
+            message: 'Successfull'
+          }
+          context.commit('showSuccess', payload)
         })
         .catch(err => {
-          console.log(err.response.data.message)
+          const payload = {
+            title: 'Login',
+            message: err.response.data.message
+          }
+          context.commit('showError', payload)
         })
     },
 
@@ -47,10 +62,19 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           router.push({ name: 'Login' })
-          console.log('Register successfull')
+
+          const payload = {
+            title: 'Register',
+            message: 'Successfull'
+          }
+          context.commit('showSuccess', payload)
         })
         .catch(err => {
-          console.log(err.response.data.message)
+          const payload = {
+            title: 'Register Error',
+            message: err.response.data.message
+          }
+          context.commit('showError', payload)
         })
     },
 
@@ -63,11 +87,14 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          console.log(data, '<< Data Producst from store')
           context.commit('setProducts', data)
         })
         .catch(err => {
-          console.log(err)
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          context.commit('showError', payload)
         })
     },
 
@@ -80,10 +107,18 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          console.log('Successfully added to the Cart')
+          const payload = {
+            title: 'Add to Cart',
+            message: 'Successfull'
+          }
+          context.commit('showSuccess', payload)
         })
         .catch(err => {
-          console.log(err)
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          context.commit('showError', payload)
         })
     },
 
@@ -99,7 +134,11 @@ export default new Vuex.Store({
           context.commit('setCart', data.userCart)
         })
         .catch(err => {
-          console.log(err)
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          context.commit('showError', payload)
         })
     },
 
@@ -118,7 +157,11 @@ export default new Vuex.Store({
           context.dispatch('fetchUserCart')
         })
         .catch(err => {
-          console.log(err)
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          context.commit('showError', payload)
         })
     },
 
@@ -134,7 +177,11 @@ export default new Vuex.Store({
           context.dispatch('fetchUserCart')
         })
         .catch(err => {
-          console.log(err)
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          context.commit('showError', payload)
         })
     },
 
@@ -153,10 +200,19 @@ export default new Vuex.Store({
         .then(_ => {
           // context.dispatch('fetchUserCart')
           router.push({ name: 'Home' })
-          console.log('Checkout success')
+
+          const payload = {
+            title: 'Checkout',
+            message: 'Successfull. Enjoy your purchase!'
+          }
+          context.commit('showSuccess', payload)
         })
         .catch(err => {
-          console.log(err)
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          context.commit('showError', payload)
         })
     }
   },
