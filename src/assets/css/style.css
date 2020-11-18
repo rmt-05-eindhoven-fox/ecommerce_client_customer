@@ -93,7 +93,7 @@ body {
 }
 .homepage .container .card-product .product-name {
   margin-top: 5px;
-  height: 50px;
+  height: 40px;
 }
 .homepage .container .card-product .product-name p {
   font-size: 20px;
@@ -104,7 +104,11 @@ body {
   margin-top: 20px;
 }
 .homepage .container .card-product .product-price {
-  margin-top: -20px;
+  margin-top: -15px;
+  margin-bottom: -10px;
+}
+.homepage .container .card-product .product-price p {
+  color: #ed6a00;
 }
 .homepage .container .card-product .btn-cart {
   background: #300096;

@@ -120,7 +120,7 @@ body{
       .product-name {
 
         margin-top: 5px;
-        height: 50px;
+        height: 40px;
 
         p {
           font-size: 20px;
@@ -134,7 +134,11 @@ body{
       }
 
       .product-price {
-        margin-top: -20px;
+        margin-top: -15px;
+        margin-bottom: -10px;
+        p{
+          color: #ed6a00;
+        }
       }
 
 

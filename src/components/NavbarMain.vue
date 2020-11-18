@@ -44,7 +44,7 @@ export default {
     }
   },
   created () {
-    const user = localStorage.getItem('access_token')
+    const user = localStorage.getItem('token')
     if (user) {
       this.userLoggedIn = true
     } else {
