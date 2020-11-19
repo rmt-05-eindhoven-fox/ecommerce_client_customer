@@ -3,6 +3,12 @@
 
   <p class="h4 mb-4">Sign in</p>
 
+  <div v-if="errorMessage" v-show="error" class="alert alert-danger alert-dismissible fade show text-left" role="alert">
+    {{ errorMessage }}
+    <button @click.prevent="error = false" type="button" class="close" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   <!-- Email -->
   <input v-model="email" type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
 
@@ -36,7 +42,9 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: '',
+      error: false
     }
   },
   methods: {
@@ -51,13 +59,15 @@ export default {
               localStorage.setItem('access_token', result.access_token)
               localStorage.setItem('id', result.user.id)
               localStorage.setItem('email', result.user.email)
-              localStorage.setItem('id', result.user.id)
+              localStorage.setItem('fullname', result.user.fullname)
               this.$router.push({ name: 'Product' })
             } else {
-              console.log('Acess denied!')
+              this.errorMessage = 'Acess denied!'
+              this.error = true
             }
           } else {
-            console.log('Wrong username / password')
+            this.errorMessage = 'Wrong username / password'
+            this.error = true
           }
         }).catch((err) => {
           console.log(err)

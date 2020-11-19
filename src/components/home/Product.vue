@@ -9,6 +9,9 @@
           <h2 class="title">Category</h2>
           <nav class="navbar bg-light">
             <ul class="navbar-nav">
+              <li class="nav-item">
+                <a @click.prevent="allProduct" class="nav-link" href="#">All Category</a>
+              </li>
               <li v-for="(cat, index) in categories" :key="index" class="nav-item">
                 <a @click.prevent="productByCategory(cat.id)" class="nav-link" href="#">{{ cat.name }}</a>
               </li>
@@ -79,6 +82,9 @@ export default {
     productByCategory (id) {
       this.$store.dispatch('fetchProductByCategory', id)
     },
+    allProduct () {
+      this.$store.dispatch('fetchProducts')
+    },
     isOutOfStock (stock) {
       if (stock < 1) {
         return true
@@ -87,15 +93,27 @@ export default {
     },
     addToWhistlist (produtcId) {
       // console.log(produtcId)
-      this.$store.dispatch('addWhistlist', produtcId)
-        .then((result) => {
-          console.log(result)
-        }).catch((err) => {
-          console.log(err)
-        })
+      const token = localStorage.getItem('access_token')
+      console.log(token)
+      if (token) {
+        this.$store.dispatch('addWhistlist', produtcId)
+          .then((result) => {
+            console.log(result)
+          }).catch((err) => {
+            console.log(err)
+          })
+      } else {
+        this.$router.push({ name: 'Login' })
+      }
     },
     addToCart (productId) {
-      this.$store.dispatch('addToCart', productId)
+      const token = localStorage.getItem('access_token')
+      console.log(token)
+      if (token) {
+        this.$store.dispatch('addToCart', productId)
+      } else {
+        this.$router.push({ name: 'Login' })
+      }
     }
   },
   components: {

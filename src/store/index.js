@@ -12,7 +12,9 @@ export default new Vuex.Store({
     randomProducts: [],
     banners: [],
     whistlists: [],
-    carts: []
+    carts: [],
+    loadingWhistlist: false,
+    loadingCart: false
   },
   mutations: {
     setCategories (state, payload) {
@@ -20,7 +22,9 @@ export default new Vuex.Store({
     },
     setProducts (state, payload) {
       state.products = payload.products
-      state.randomProducts = payload.random
+      if (payload.random) {
+        state.randomProducts = payload.random
+      }
     },
     setBanners (state, payload) {
       state.banners = payload
@@ -30,6 +34,10 @@ export default new Vuex.Store({
     },
     setCarts (state, payload) {
       state.carts = payload
+    },
+    clearAllData (state) {
+      state.whistlists = []
+      state.carts = []
     }
   },
   actions: {
@@ -57,9 +65,17 @@ export default new Vuex.Store({
           method: 'get'
         })
         if (data.products) {
+          const index = []
           const random = []
-          for (let i = 0; i < 3; i++) {
-            const x = Math.floor(Math.random() * data.products.length)
+          for (let i = 0; i < 4; i++) {
+            let x = -1
+            let duplicate = []
+            do {
+              x = Math.floor(Math.random() * data.products.length)
+              duplicate = index.filter(el => el === x)
+              console.log(duplicate.length > 0)
+            } while (duplicate.length > 0)
+            index.push(x)
             random.push(data.products[x])
           }
           context.commit('setProducts', { products: data.products, random })
@@ -75,7 +91,8 @@ export default new Vuex.Store({
           url: 'categories/' + id + '/products',
           method: 'get'
         })
-        context.commit('setProducts', data.categories.Products)
+        console.log(data.categories.Products)
+        context.commit('setProducts', { products: data.categories.Products })
       } catch (error) {
         console.log(error.response.data)
       }
@@ -111,8 +128,22 @@ export default new Vuex.Store({
       }
     },
 
+    async prosesRegister (context, payload) {
+      try {
+        const { data } = await axios({
+          url: 'register',
+          method: 'post',
+          data: payload
+        })
+        return data
+      } catch (error) {
+        return error.response.data
+      }
+    },
+
     async fetchWhistlist (context) {
       try {
+        this.state.loadingWhistlist = true
         const { data } = await axios({
           url: 'whistlists',
           method: 'get',
@@ -126,6 +157,8 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error.response.data)
         return { status: 400 }
+      } finally {
+        this.state.loadingWhistlist = false
       }
     },
 
@@ -168,6 +201,7 @@ export default new Vuex.Store({
 
     async fetchCart (context) {
       try {
+        this.state.loadingCart = true
         const { data } = await axios({
           url: 'carts',
           method: 'get',
@@ -181,6 +215,8 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error.response.data)
         return { status: 400 }
+      } finally {
+        this.state.loadingCart = false
       }
     },
 
@@ -240,6 +276,9 @@ export default new Vuex.Store({
         console.log(error.response, 'errorrr')
         return { status: 400 }
       }
+    },
+    clearAllData (context) {
+      context.commit('clearAllData')
     }
   },
   modules: {

@@ -15,7 +15,8 @@
                   </tr>
                 </thead>
                 <tbody class="align-middle">
-                  <tr v-for="(whistlist, i) in whislists" :key="i">
+                  <WhistlistRow  v-for="(whistlist, i) in whislists" :key="i" :whistlist="whistlist" />
+                  <!-- <tr v-for="(whistlist, i) in whislists" :key="i">
                     <td>
                       <div class="img">
                         <a href="#"><img :src="whistlist.Product.image_url" alt="Image"></a>
@@ -25,14 +26,17 @@
                     <td>Rp {{ formatNumber(whistlist.Product.price) }}</td>
                     <td>
                       <button v-if="isOutOfStock(whistlist.Product.stock)" class="btn-cart" style="background-color: grey;" disabled>Out of Stock</button>
-                      <button v-else class="btn-cart" title="Add to cart">Add to Cart</button>
+                      <button v-else class="btn-cart" title="Add to cart" @click="addToCart(whistlist.Product.id)">Add to Cart</button>
                     </td>
                     <td>
-                      <button @click.prevent="deleteWhistlist(whistlist.id)" title="Delete from whistlist">
+                      <button v-if="loading == whistlist.id" class="btn-plus" disabled>
+                      <i class="fas fa-spinner fa-spin"></i>
+                      </button>
+                      <button v-if="loading == false" @click.prevent="deleteWhistlist(whistlist.id)" title="Delete from whistlist">
                         <i class="fa fa-trash"></i>
                       </button>
                     </td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </div>
@@ -44,6 +48,8 @@
 </template>
 
 <script>
+import WhistlistRow from '@/components/home/WhistlistRow.vue'
+
 export default {
   name: 'Whistlist',
   computed: {
@@ -51,19 +57,8 @@ export default {
       return this.$store.state.whistlists
     }
   },
-  methods: {
-    formatNumber (value) {
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-    },
-    deleteWhistlist (id) {
-      this.$store.dispatch('deleteWhistlist', id)
-    },
-    isOutOfStock (stock) {
-      if (stock < 1) {
-        return true
-      }
-      return false
-    }
+  components: {
+    WhistlistRow
   }
 }
 </script>

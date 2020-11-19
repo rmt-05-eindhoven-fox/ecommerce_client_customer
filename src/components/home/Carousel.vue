@@ -27,7 +27,7 @@
                           <span class="badge badge-secondary">Out of Stock</span>
                         </h5>
                         <div v-else>
-                          <a href="#"><i class="fa fa-cart-plus"></i></a>
+                          <a href="#" @click.prevent="addToCart(product.id)"><i class="fa fa-cart-plus"></i></a>
                           <a href="#" @click.prevent="addToWhistlist(product.id)"><i class="fa fa-heart"></i></a>
                         </div>
                       </div>
@@ -105,12 +105,25 @@ export default {
     },
     addToWhistlist (produtcId) {
       // console.log(produtcId)
-      this.$store.dispatch('addWhistlist', produtcId)
-        .then((result) => {
-          console.log(result)
-        }).catch((err) => {
-          console.log(err)
-        })
+      const token = localStorage.getItem('access_token')
+      if (token) {
+        this.$store.dispatch('addWhistlist', produtcId)
+          .then((result) => {
+            console.log(result)
+          }).catch((err) => {
+            console.log(err)
+          })
+      } else {
+        this.$router.push('/auth/login')
+      }
+    },
+    addToCart (productId) {
+      const token = localStorage.getItem('access_token')
+      if (token) {
+        this.$store.dispatch('addToCart', productId)
+      } else {
+        this.$router.push('/auth/login')
+      }
     },
     getClass (i, from = null) {
       if (from && i < 1) {

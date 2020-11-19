@@ -22,11 +22,14 @@ export default {
     Navbar
   },
   created () {
+    const token = localStorage.getItem('access_token')
     this.$store.dispatch('fetchCategories')
     this.$store.dispatch('fetchProducts')
     this.$store.dispatch('fetchLiveBanner')
-    this.$store.dispatch('fetchWhistlist')
-    this.$store.dispatch('fetchCart')
+    if (token) {
+      this.$store.dispatch('fetchWhistlist')
+      this.$store.dispatch('fetchCart')
+    }
   }
 }
 </script>

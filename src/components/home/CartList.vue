@@ -34,7 +34,14 @@
     </td>
     <td>{{ leftStock() }} items left</td>
     <td>Rp. {{ totalPrice }}</td>
-    <td><button @click.prevent="reduceAmount(cart.id, 'delete')"><i class="fa fa-trash"></i></button></td>
+    <td>
+      <button v-if="!loading" @click.prevent="reduceAmount(cart.id, 'delete')">
+        <i class="fa fa-trash"></i>
+      </button>
+      <button v-else class="btn-plus" disabled>
+        <i class="fas fa-spinner fa-spin"></i>
+      </button>
+    </td>
   </tr>
 </template>
 
@@ -97,9 +104,10 @@ export default {
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, delete it!'
+          confirmButtonText: 'Yes, remove it!'
         }).then((result) => {
           if (result.isConfirmed) {
+            this.loading = true
             this.$store.dispatch('deleteFromCart', id)
               .then((result) => {
                 if (result.status === 200) {
@@ -117,6 +125,8 @@ export default {
                 }
               }).catch((err) => {
                 console.log(err)
+              }).then(() => {
+                this.loading = false
               })
           } else {
             this.currentamount = this.cart.amount
@@ -143,11 +153,13 @@ export default {
         .then((result) => {
           if (result.status !== 200) {
             this.currentamount = this.cart.amount
+            this.$emit('errorMessage', 'sorry the amount cannot exceed the stock')
           } else {
             this.currentamount = result.cart.amount
           }
         }).catch((err) => {
           console.error(err)
+          console.log('errorMessage')
         }).then(() => {
           this.loading = false
         })

@@ -17,12 +17,12 @@
             </div>
             <div class="navbar-nav ml-auto">
               <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ userEmail }}</a>
                 <div class="dropdown-menu">
-                  <a v-if="isLogedIn" href="#" class="dropdown-item">Logout</a>
+                  <a v-if="isLogin" @click.prevent="logout" href="#" class="dropdown-item">Logout</a>
                   <div v-else>
-                    <a href="#" class="dropdown-item">Login</a>
-                    <a href="#" class="dropdown-item">Register</a>
+                    <router-link :to="{ name: 'Login' }" class="dropdown-item">Login</router-link>
+                    <router-link :to="{ name: 'Register' }" class="dropdown-item">Register</router-link>
                   </div>
                 </div>
               </div>
@@ -59,11 +59,13 @@
                 <span>({{ whistListCount }})</span>
               </a> -->
               <router-link :to="{ name: 'Whistlist' }" class="btn wishlist">
-                <i class="fa fa-heart"></i>
+                <i v-if="loadingWhistlist" class="fas fa-spinner fa-spin"></i>
+                <i v-else class="fa fa-heart"></i>
                 <span>({{ whistListCount }})</span>
               </router-link>
               <router-link :to="{ name: 'Cart' }" class="btn cart">
-                <i class="fa fa-shopping-cart"></i>
+                <i v-if="loadingCart" class="fas fa-spinner fa-spin"></i>
+                <i v-else class="fa fa-shopping-cart"></i>
                 <span>({{ cartCount }})</span>
               </router-link>
               <!-- <a href="#" @click.prevent="openCart" class="btn cart">
@@ -80,6 +82,31 @@
 <script>
 export default {
   name: 'Navbar',
+  data () {
+    return {
+      // loadingWhistlist: false
+      userLogin: '',
+      isLogin: false
+    }
+  },
+  watch: {
+    userLogin () {
+      if (this.userLogin === 'Account') {
+        this.isLogin = false
+      } else {
+        this.isLogin = true
+      }
+    }
+  },
+  created () {
+    if (localStorage.getItem('access_token')) {
+      this.isLogin = true
+      this.userLogin = localStorage.getItem('fullname')
+    } else {
+      this.isLogin = false
+      this.userLogin = 'Account'
+    }
+  },
   computed: {
     whistListCount () {
       const whistlists = this.$store.state.whistlists
@@ -88,7 +115,17 @@ export default {
     cartCount () {
       const carts = this.$store.state.carts
       return carts.length
+    },
+    loadingWhistlist () {
+      return this.$store.state.loadingWhistlist
+    },
+    loadingCart () {
+      return this.$store.state.loadingCart
+    },
+    userEmail () {
+      return this.userLogin
     }
+
   },
   methods: {
     openCart () {
@@ -97,13 +134,13 @@ export default {
     openWhistlist () {
       this.$router.push({ path: '/whistlist' })
     },
-    isLogedIn () {
-      const token = localStorage.getItem('access_token')
-      if (token) {
-        return true
+    logout () {
+      localStorage.clear()
+      this.userLogin = 'Account'
+      if (this.$route.name !== 'Product') {
+        this.$router.push({ name: 'Product' })
       }
-      console.log(token)
-      return false
+      this.$store.dispatch('clearAllData')
     }
   }
 }
