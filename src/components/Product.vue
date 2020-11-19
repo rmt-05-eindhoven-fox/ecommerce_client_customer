@@ -1,0 +1,67 @@
+<template>
+     <div class="col-md-3 product-men women_two shop-gd">
+        <div class="product-googles-info googles">
+            <div class="men-pro-item">
+            <div class="men-thumb-item">
+                <img :src="product.image_url" class="img-fluid" alt="">
+                <div class="men-cart-pro">
+                <div class="inner-men-cart-pro">
+                    <router-link to="`/detail/${product.id}`"> <a @click.prevent="showProduct" href="#" class="link-product-add-cart">Quick View</a></router-link>
+                </div>
+                </div>
+                <span class="product-new-top">New</span>
+            </div>
+            <div class="item-info-product">
+                <div class="info-product-price">
+                <div class="grid_meta">
+                    <div class="product_price">
+                    <h4>
+                        <a href="single.html">{{ product.name }} </a>
+                    </h4>
+                    <h3> Available: {{ product.stock }} </h3>
+                    <div class="grid-price mt-2">
+                        <span class="money ">{{ product.price }}</span>
+                    </div>
+                    </div>
+                </div>
+                <div class="googles single-item hvr-outline-out">
+                    <button @click.prevent="addCart" type="submit" class="googles-cart pgoogles-cart" >
+                        <i class="fa fa-cart-plus"></i>
+                    </button>
+                    <CheckoutModal></CheckoutModal>
+                </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            </div>
+        </div>
+        </div>
+</template>
+
+<script>
+import CheckoutModal from '../components/CheckoutModal'
+export default {
+    name: "Products",
+    props: ['product'],
+    components: {
+        CheckoutModal
+    },
+    methods: {
+        // deleteProduct () {
+        //     const id = this.product.id
+        //     this.$store.dispatch('showProduct', id)
+        // },
+        addCart () {
+            const payload = {
+                id: this.product.id,
+            }
+            this.$store.dispatch('addCart', payload)
+            this.$store.dispatch('fetchCarts')
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>
