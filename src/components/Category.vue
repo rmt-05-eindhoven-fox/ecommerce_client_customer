@@ -25,7 +25,10 @@
                   Rp. {{ prod.price }}
                 </mdb-card-text>
                 <mdb-card-text
-                v-if="prod.stock < 10"
+                v-if="prod.stock === 0"
+                class="text-left text-danger">No stock available</mdb-card-text>
+                <mdb-card-text
+                v-else-if="prod.stock < 10"
                 class="text-left text-danger">{{ prod.stock }} stock left!</mdb-card-text>
                 <mdb-card-text
                 v-else
@@ -105,8 +108,12 @@ export default {
   beforeCreate () {
     this.$store.dispatch('fetchCategories')
     this.$store.dispatch('fetchAllBanners')
-      .then(_ => this.$store.dispatch('checkBannersOri'))
-      .catch(({ response }) => console.log(response.data))
+      .then(({ data }) => {
+        data = data.map(el => { if (el.status) return el })
+        this.$store.commit('setBanners', data)
+        this.$store.dispatch('checkBannersOri')
+      })
+      .catch(err => console.log(err))
     this.$store.dispatch('fetchAllProducts')
     this.$store.dispatch('fetchCart')
   }

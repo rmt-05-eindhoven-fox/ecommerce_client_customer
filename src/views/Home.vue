@@ -262,6 +262,7 @@ export default {
   beforeCreate () {
     this.$store.dispatch('fetchAllBanners')
       .then(({ data }) => {
+        data = data.map(el => { if (el.status) return el })
         this.$store.commit('setBanners', data)
         this.$store.dispatch('checkBannersOri')
       })
