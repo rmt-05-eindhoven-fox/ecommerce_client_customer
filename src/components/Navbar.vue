@@ -1,25 +1,45 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-light bg-light">
     <div>
       <span class="navbar-brand">Ecommerce-hacktiv</span>
     </div>
-    <div id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+    <div>
+      <ul v-if="isLoggedIn" class="nav nav-tabs">
+        <li class="nav-item">
+          <a @click.prevent="goToDashboard" class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <button type="button" class="btn btn-dark">
+          <a @click.prevent="goToWishlist" class="nav-link" href="#">
+            <i class="fas fa-star"> Wishlist</i>
+          </a>
+        </li>
+        <!-- <li class="nav-item">
+          <a @click.prevent="goToHistory" class="nav-link" href="#">
+            <i class="fas fa-history"> Transaction History</i>
+          </a>
+        </li> -->
+        <li class="nav-item">
+          <button @click="goToCart" type="button" class="btn btn-dark">
             <i class="fas fa-shopping-cart"> Cart</i>
           </button>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            bintang.wib@mail.com
+            {{ userLoggedInEmail }}
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Logout</a>
+            <a @click.prevent="logout" class="dropdown-item" href="#">Logout</a>
           </div>
+        </li>
+      </ul>
+      <ul v-else class="nav nav-tabs">
+        <li class="nav-item">
+          <a @click.prevent="goToDashboard" class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <button @click.prevent="goToLogin" type="button" class="btn btn-primary">
+            <i class="fas fa-arrow-circle-right"> Login</i>
+          </button>
         </li>
       </ul>
     </div>
@@ -28,12 +48,66 @@
 
 <script>
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  data () {
+    return {
+      // isLoggedin: false
+    }
+  },
+  methods: {
+    goToLogin () {
+      this.$router.push({ name: 'Login' })
+    },
+    goToDashboard () {
+      this.$router.push({ name: 'Dashboard' })
+    },
+    goToCart () {
+      this.$router.push({ name: 'Carts' })
+    },
+    goToHistory () {
+      this.$router.push({ name: 'History' })
+    },
+    goToWishlist () {
+      this.$router.push({ name: 'Wishlists' })
+    },
+    logout () {
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('email')
+      if (this.$route.name !== 'Dashboard') {
+        this.$router.push({ name: 'Dashboard' })
+      }
+      // this.isLoggedin = false
+      const payload = {
+        status: false,
+        email: ''
+      }
+      this.$store.commit('SET_isLoggedIn', payload)
+    }
+  },
+  computed: {
+    isLoggedIn () {
+      return this.$store.state.isLoggedIn.status
+    },
+    userLoggedInEmail () {
+      return this.$store.state.isLoggedIn.email
+    }
+  },
+  created () {
+    // console.log(this.$route)
+    const token = localStorage.getItem('access_token')
+    if (token) {
+      const payload = {
+        status: true,
+        email: localStorage.getItem('email')
+      }
+      this.$store.commit('SET_isLoggedIn', payload)
+    }
+  }
 }
 </script>
 
 <style>
-.navbar {
+/* .navbar {
   height: 60px;
-}
+} */
 </style>

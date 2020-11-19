@@ -22,14 +22,19 @@ const routes = [
     component: () => import('../views/Register.vue')
   },
   {
-    path: '/cart',
-    name: 'Cart',
-    component: () => import('../views/Cart.vue')
+    path: '/carts',
+    name: 'Carts',
+    component: () => import('../views/Carts.vue')
   },
   {
     path: '/history',
     name: 'History',
     component: () => import('../views/History.vue')
+  },
+  {
+    path: '/wishlists',
+    name: 'Wishlists',
+    component: () => import('../views/Wishlists.vue')
   }
 ]
 
