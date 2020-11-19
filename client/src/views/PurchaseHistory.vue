@@ -1,10 +1,14 @@
 <template>
-	<div class="history">
-		<h1 class="history-page-title">Your Purchase History</h1>
-		<div class="history-list">
-			<HistoryItem v-for="history in histories" :key="history.id" :history="history" />
+  <div class="history">
+    <h1 class="history-page-title">Your Purchase History</h1>
+    <div class="history-list">
+      <HistoryItem
+        v-for="history in histories"
+        :key="history.id"
+        :history="history"
+      />
     </div>
-	</div>
+  </div>
 </template>
 
 <script>

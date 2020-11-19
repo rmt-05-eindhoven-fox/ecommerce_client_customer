@@ -58,39 +58,39 @@
 
 <script>
 export default {
-  name: "LoginForm",
-  data() {
+  name: 'LoginForm',
+  data () {
     return {
       user: {
-        email: "",
-        password: "",
+        email: '',
+        password: ''
       },
       errors: ''
-    };
+    }
   },
   methods: {
-    login() {
+    login () {
       const payload = {
         email: this.user.email,
-        password: this.user.password,
-      };
+        password: this.user.password
+      }
       this.$store
-        .dispatch("login", payload)
+        .dispatch('login', payload)
         .then(({ data }) => {
-          const token = data.token;
-          localStorage.setItem("token", token);
-          console.log("user is logged in now");
-          this.$store.commit("setLoginStatus", true);
-          this.$router.push({ name: "Home" });
+          const token = data.token
+          localStorage.setItem('token', token)
+          console.log('user is logged in now')
+          this.$store.commit('setLoginStatus', true)
+          this.$router.push({ name: 'Home' })
         })
         .catch((err) => {
-          console.log(err);
-          this.errors = err.response.data.errors.join(',')
-        });
+          console.log(err)
+          this.errors = err.response.data.errors.join(', ')
+        })
     },
-    goToRegister() {
-      this.$router.push({ name: "Register" });
-    },
-  },
-};
+    goToRegister () {
+      this.$router.push({ name: 'Register' })
+    }
+  }
+}
 </script>

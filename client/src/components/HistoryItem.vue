@@ -1,5 +1,5 @@
 <template>
-	 <div class="history-item">
+  <div class="history-item">
     <div
       class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin"
       uk-grid
@@ -19,7 +19,7 @@
             <p style="margin-top: 9%">Quantity:</p>
             <p>{{ history.quantity }}</p>
           </div>
-					<p>Purchase Date: {{ history.updatedAt.slice(0, 10) }}</p>
+          <p>Purchase Date: {{ history.updatedAt.slice(0, 10) }}</p>
         </div>
       </div>
     </div>
@@ -34,5 +34,4 @@ export default {
 </script>
 
 <style>
-
 </style>

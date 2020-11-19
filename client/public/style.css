@@ -78,6 +78,7 @@ button.banner-btn:focus, button.banner-btn:hover {
 /* Product List */
 .product-list {
 	display: flex;
+	flex-wrap: wrap;
 	padding-bottom: 20px;
 	overflow: hidden;
 	margin-right: 50px;
@@ -151,7 +152,7 @@ button.banner-btn:focus, button.banner-btn:hover {
 
 .add-cart-btn, .checkout-btn {
 	margin-left: 25%;
-	margin-top: 0px;
+	margin-top: -20px;
 	background-color: #f7d794;
 	outline: none;
 	box-shadow: 0 6px #f3a683;
@@ -159,7 +160,7 @@ button.banner-btn:focus, button.banner-btn:hover {
 }
 
 /* Cart Page */
-.cart {
+.cart, .history {
 	width: 100%;
 	height: 100%;
 	margin-left: 100px;

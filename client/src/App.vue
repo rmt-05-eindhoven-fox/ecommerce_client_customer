@@ -61,7 +61,7 @@ export default {
       localStorage.clear()
       console.log('user is logged out now')
       this.$store.commit('setLoginStatus', false)
-      this.$router.push({ name: 'Home' })
+      this.$router.push({ name: 'Login' })
     }
   }
 }

@@ -29,6 +29,17 @@
               uk-icon="icon: plus"
             ></button>
           </div>
+          <div
+            v-if="errors"
+            class="uk-alert-danger"
+            uk-alert
+            style="font-size: 12px; width: 150px; margin-left: 25%; margin-top: -20px; margin-bottom: -10px;"
+          >
+            <a class="uk-alert-close" uk-close></a>
+            <p>
+              {{ errors }}
+            </p>
+          </div>
           <button @click="removeCart" class="remove-btn" uk-icon="icon: trash">
             Remove from cart
           </button>
@@ -43,7 +54,9 @@ export default {
   name: 'CartItem',
   props: ['cart'],
   data () {
-    return {}
+    return {
+      errors: ''
+    }
   },
   methods: {
     fetchCarts () {
@@ -103,6 +116,7 @@ export default {
         })
         .catch((err) => {
           console.log(err.response)
+          this.errors = err.response.data.errors.join(', ')
         })
     }
   },

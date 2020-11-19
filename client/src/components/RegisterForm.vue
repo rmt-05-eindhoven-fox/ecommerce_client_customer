@@ -46,6 +46,12 @@
         </div>
       </fieldset>
       <button class="register-btn" type="submit">Register</button>
+      <div v-if="errors" class="uk-alert-danger" uk-alert style="font-size: 12px; width: 200px; margin-left: 25%;">
+        <a class="uk-alert-close" uk-close></a>
+        <p>
+          {{errors}}
+        </p>
+      </div>
     </form>
   </div>
 </template>
@@ -58,7 +64,8 @@ export default {
       user: {
         email: '',
         password: ''
-      }
+      },
+      errors: ''
     }
   },
   methods: {
@@ -68,6 +75,14 @@ export default {
         password: this.user.password
       }
       this.$store.dispatch('register', payload)
+        .then(({ data }) => {
+          console.log(data, 'user succesfully do register')
+          this.$router.push({ name: 'Login' })
+        })
+        .catch((err) => {
+          console.log(err)
+          this.errors = err.response.data.errors.join(', ')
+        })
     },
     goToLogin () {
       this.$router.push({ name: 'Login' })

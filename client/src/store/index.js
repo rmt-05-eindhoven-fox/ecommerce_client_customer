@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '../axios/axiosInstance.js'
-import router from '../router'
 
 Vue.use(Vuex)
 
@@ -42,7 +41,7 @@ export default new Vuex.Store({
       })
     },
     register (context, payload) {
-      axios({
+      return axios({
         url: '/register',
         method: 'POST',
         data: {
@@ -50,13 +49,6 @@ export default new Vuex.Store({
           password: payload.password
         }
       })
-        .then(({ data }) => {
-          console.log(data, 'user succesfully do register')
-          router.push({ name: 'Login' })
-        })
-        .catch((err) => {
-          console.log(err.response)
-        })
     },
     fetchProducts (context) {
       axios({
