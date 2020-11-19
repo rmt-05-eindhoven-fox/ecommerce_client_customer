@@ -6,7 +6,7 @@
       <div class="col"></div>
       <div class="col-10">
         <div
-          v-if="this.cart.length > 0"
+          v-if="this.cart.length > 0 && !this.loading"
         >
           <h1>My Shopping Cart</h1>
 
@@ -29,13 +29,19 @@
         </div>
 
         <div
-          v-else
+          v-else-if="this.cart.length === 0 && !this.loading"
         >
           <lottie-player
           class="mx-auto"
           src="https://assets6.lottiefiles.com/packages/lf20_ibd44T.json"
           background="transparent"  speed=".5" style="width: 200px; height: 200px;" loop autoplay></lottie-player>
           <h1 class="mt-3" style="text-align:center">Your Cart is Empty</h1>
+        </div>
+
+        <div
+          v-else
+        >
+          <BounceLoader class="mx-auto"/>
         </div>
       </div>
       <div class="col"></div>
@@ -49,12 +55,19 @@
 import Navbar from '../components/Navbar'
 import CartCard from '../components/CartCard'
 import currencyConvert from '../helpers/currencyConvert'
+import { BounceLoader } from '@saeris/vue-spinners'
 
 export default {
   name: 'Cart',
+  data () {
+    return {
+      loading: true
+    }
+  },
   components: {
     Navbar,
-    CartCard
+    CartCard,
+    BounceLoader
   },
   computed: {
     cart () {
@@ -82,6 +95,17 @@ export default {
   },
   created () {
     this.$store.dispatch('fetchUserCart')
+      .then(({ data }) => {
+        this.$store.commit('setCart', data.userCart)
+        this.loading = false
+      })
+      .catch(err => {
+        const payload = {
+          title: 'ERROR',
+          message: err.response.data.message
+        }
+        this.$store.commit('showError', payload)
+      })
   }
 }
 </script>

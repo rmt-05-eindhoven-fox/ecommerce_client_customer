@@ -95,23 +95,13 @@ export default new Vuex.Store({
     },
 
     fetchUserCart (context) {
-      axios({
+      return axios({
         url: '/user/cart',
         method: 'get',
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
-        .then(({ data }) => {
-          context.commit('setCart', data.userCart)
-        })
-        .catch(err => {
-          const payload = {
-            title: 'ERROR',
-            message: err.response.data.message
-          }
-          context.commit('showError', payload)
-        })
     },
 
     updateCartQty (context, payload) {
@@ -158,23 +148,13 @@ export default new Vuex.Store({
     },
 
     fetchUserHistory (context) {
-      axios({
+      return axios({
         url: '/user/history',
         method: 'get',
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
-        .then(({ data }) => {
-          context.commit('setHistory', data)
-        })
-        .catch(err => {
-          const payload = {
-            title: 'ERROR',
-            message: err.response.data.message
-          }
-          context.commit('showError', payload)
-        })
     },
 
     checkout (context) {
