@@ -28,7 +28,32 @@
                     <button @click.prevent="addCart" type="submit" class="googles-cart pgoogles-cart" >
                         <i class="fa fa-cart-plus"></i>
                     </button>
-                    <CheckoutModal></CheckoutModal>
+                    <button type="submit" data-toggle="modal" data-target="#modal_aside_right" class="googles-cart pgoogles-cart" >
+                        <i class="fa fa-cart-plus"></i>
+                    </button>
+                         <div id="modal_aside_right" class="modal fixed-right fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-dialog-aside" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Check Out</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <CheckoutModal
+                                        v-for="cart in carts"
+                                        :key="cart.id"
+                                        :cart="cart">
+                                    </CheckoutModal>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                                </div>
+                            </div> 
+                        </div> 
                 </div>
                 </div>
                 <div class="clearfix"></div>
@@ -47,18 +72,24 @@ export default {
         CheckoutModal
     },
     methods: {
-        // deleteProduct () {
-        //     const id = this.product.id
-        //     this.$store.dispatch('showProduct', id)
-        // },
-        addCart () {
-            const payload = {
-                id: this.product.id,
-            }
-            this.$store.dispatch('addCart', payload)
+        fetchCarts () {
             this.$store.dispatch('fetchCarts')
+        },
+        addCart () {
+            const id = this.product.id
+            this.$store.dispatch('addCart', id)
+            // this.$store.dispatch('addCart', payload)
+            // this.$store.dispatch('fetchCarts')
         }
+    },
+    created () {
+        this.fetchCarts()
+    },
+    computed: { 
+        carts () {
+        return this.$store.state.carts
     }
+  }
 }
 </script>
 

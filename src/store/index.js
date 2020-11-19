@@ -89,7 +89,7 @@ export default new Vuex.Store({
     },
 
     addCart (context, payload) {
-      return axios({
+      axios({
         url: '/carts',
         method: 'POST',
         headers: {
