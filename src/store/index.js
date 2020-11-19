@@ -14,7 +14,8 @@ export default new Vuex.Store({
     whistlists: [],
     carts: [],
     loadingWhistlist: false,
-    loadingCart: false
+    loadingCart: false,
+    tempSearch: []
   },
   mutations: {
     setCategories (state, payload) {
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     },
     setProducts (state, payload) {
       state.products = payload.products
+      state.tempSearch = payload.products
       if (payload.random) {
         state.randomProducts = payload.random
       }
@@ -293,18 +295,19 @@ export default new Vuex.Store({
         return { status: 400 }
       }
     },
-    searchProduct (context, keyword) {
-      if (keyword) {
-        const products = this.state.products
-        const filter = products.filter(el => {
-          const name = el.name.toLowerCase()
-          if (name.includes(keyword.toLowerCase())) {
-            return el
+    searchProduct (context, data) {
+      console.log(data.keyword)
+      const result = []
+      if (data.keyword) {
+        const products = data.tempSearch
+        for (let i = 0; i < products.length; i++) {
+          const name = products[i].name.toLowerCase()
+          if (name.includes(data.keyword.toLowerCase())) {
+            result.push(products[i])
           }
-          return el.name.includes(keyword)
-        })
-        context.commit('setProducts', { products: filter })
-        // console.log(filter)
+        }
+        context.commit('setProducts', { products: result })
+        console.log(result)
       } else {
         this.dispatch('fetchProducts')
       }

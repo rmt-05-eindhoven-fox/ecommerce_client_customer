@@ -102,7 +102,11 @@ export default {
     searchValue () {
       clearTimeout(this.myTimeOUt)
       this.myTimeOUt = setTimeout(() => {
-        this.$store.dispatch('searchProduct', this.searchValue)
+        const payload = {
+          keyword: this.searchValue,
+          tempSearch: this.$store.state.tempSearch
+        }
+        this.$store.dispatch('searchProduct', payload)
       }, 1000)
     }
   },
