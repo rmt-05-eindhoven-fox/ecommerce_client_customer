@@ -66,7 +66,7 @@
       </table>
 
       <div class="card-body border-top">
-        <a @click.prevent="checkout" href="#" class="btn btn-primary float-md-right"> Checkout <i class="fa fa-chevron-right"></i> </a>
+        <a v-if="carts.length > 0" @click.prevent="checkout" href="#" class="btn btn-primary float-md-right"> Checkout <i class="fa fa-chevron-right"></i> </a>
         <a @click.prevent="changePage('')" href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
       </div>
     </div> <!-- card.// -->
