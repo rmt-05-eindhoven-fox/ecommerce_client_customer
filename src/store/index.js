@@ -293,6 +293,22 @@ export default new Vuex.Store({
         return { status: 400 }
       }
     },
+    searchProduct (context, keyword) {
+      if (keyword) {
+        const products = this.state.products
+        const filter = products.filter(el => {
+          const name = el.name.toLowerCase()
+          if (name.includes(keyword.toLowerCase())) {
+            return el
+          }
+          return el.name.includes(keyword)
+        })
+        context.commit('setProducts', { products: filter })
+        // console.log(filter)
+      } else {
+        this.dispatch('fetchProducts')
+      }
+    },
     clearAllData (context) {
       context.commit('clearAllData')
     }

@@ -1,5 +1,5 @@
 <template>
-  <div id="product-list p-5">
+  <div id="product-list p-1 m-0">
 
     <Carousel />
     <div class="row container-fluid">
@@ -31,7 +31,7 @@
               </div>
               <div class="product-image">
                 <a href="#">
-                  <img :src="product.image_url" alt="Product Image" width="150px" height="250px">
+                  <img :src="product.image_url" alt="Product Image" width="100px" height="250px">
                 </a>
                 <div class="product-action">
                   <h5 v-if="isOutOfStock(product.stock)">
