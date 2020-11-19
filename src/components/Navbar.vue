@@ -35,8 +35,8 @@
               </router-link>
           </div>
         </div>
-          <div v-if="statusLogin" @click="logout" href="#" style="color: red">
-              <i style="cursor: pointer" class="fas fa-sign-out-alt">logout</i>
+          <div v-else href="#" style="color: red">
+              <i @click="logout" style="cursor: pointer" class="fas fa-sign-out-alt">logout</i>
           </div>
         </b-navbar-nav>
       </b-collapse>
@@ -54,7 +54,7 @@ export default {
   methods: {
     logout () {
       localStorage.clear()
-      this.$router.push({ path: '/login' })
+      this.$store.dispatch('LOGOUT')
     }
   }
 }

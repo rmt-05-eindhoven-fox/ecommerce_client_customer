@@ -19,7 +19,7 @@ export default new Vuex.Store({
     },
     ON_LOGOUT (state, payload) {
       state.userLogin = false
-      localStorage.clear()
+      localStorage.removeItem('access_token')
       router.push({ path: '/login' })
     },
     SET_DATA_PRODUCT (state, payload) {
@@ -39,6 +39,9 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err.response.data)
         })
+    },
+    LOGOUT ({ commit }) {
+      commit('ON_LOGOUT')
     },
     REGISTER ({ commit }, payload) {
       axios.post('/register', payload)
