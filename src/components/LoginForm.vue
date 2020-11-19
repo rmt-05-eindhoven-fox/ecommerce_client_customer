@@ -2,7 +2,7 @@
   <div class="container">
     <div class="card bg-light" id="login-card">
       <div class="card-body">
-        <h2 class="text-center">CMS Login</h2><br>
+        <h2 class="text-center">Login</h2><br>
         <form @submit.prevent="login">
           <div class="form-group">
             <input v-model="user.email" type="email" class="form-control" name="" id="email" placeholder="Enter email">
@@ -10,8 +10,9 @@
 
           <div class="form-group">
             <input v-model="user.password" type="password" class="form-control" name="" id="email" placeholder="Enter password">
-          </div><br>
+          </div>
 
+          <small>Don't Have an Account?</small> <router-link to="/register"><small>Register here</small></router-link>
           <button type="submit" id="button" class="btn btn-primary deep-purple btn-block">Login</button><br>
         </form>
       </div>

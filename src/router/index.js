@@ -15,6 +15,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue')
+  },
+  {
     path: '/carts',
     name: 'Cart',
     component: () => import(/* webpackChunkName: "about" */ '../views/Cart.vue')
@@ -25,6 +30,13 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'Login' && localStorage.access_token) next({ name: 'Home' })
+  else {
+    next()
+  }
 })
 
 export default router
