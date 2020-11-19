@@ -5,7 +5,7 @@
     </div>
     <div id="div-body" class="container d-flex flex-row">
       <div id="kategory" class="container w-25">
-        <Category/>
+        <Category @fetchProducts="fetchProducts"/>
       </div>
       <div id="body-product" class="container mw-100">
         <Products @changePage="changePage"/>
@@ -23,6 +23,12 @@ export default {
   methods: {
     changePage (string) {
       this.$emit('changePage', string)
+    },
+    fetchProducts () {
+      this.$emit('fetchProducts')
+    },
+    fetchCarts () {
+      this.$emit('fetchCarts')
     }
   },
   components: {

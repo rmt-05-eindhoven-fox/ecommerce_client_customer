@@ -15,10 +15,12 @@
         </nav>
       </div>
       <BoardPage v-if="defaultPage == 'Home'"
-      @changePage="changePage"/>
+      @changePage="changePage"
+      @fetchProducts="fetchProducts"/>
       <Login v-else-if="defaultPage == 'Login'"
       @checkLogin="checkLogin"/>
-      <Carts v-else-if="defaultPage == 'Carts'"/>
+      <Carts v-else-if="defaultPage == 'Carts'"
+      @fetchCarts="fetchCarts"/>
     </div>
   </div>
 </template>
@@ -76,7 +78,6 @@ export default {
     this.fetchBanner()
     this.fetchProducts()
     this.checkLogin()
-    this.fetchCarts()
     this.username = localStorage.username
   }
 }

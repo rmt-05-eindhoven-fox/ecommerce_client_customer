@@ -3,7 +3,7 @@
     <b-card-group deck>
       <b-card header="Category">
         <b-list-group>
-          <b-list-group-item href="#">All</b-list-group-item>
+          <b-list-group-item href="" @click="fetchProducts">All</b-list-group-item>
           <EachCategory v-for="category in categories" :key="category.id" :category="category"/>
         </b-list-group>
       </b-card>
@@ -21,6 +21,11 @@ export default {
   computed: {
     categories () {
       return this.$store.state.categories
+    }
+  },
+  methods: {
+    fetchProducts () {
+      this.$emit('fetchProducts')
     }
   }
 }

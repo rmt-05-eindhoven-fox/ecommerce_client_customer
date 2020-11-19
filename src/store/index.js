@@ -23,6 +23,9 @@ export default new Vuex.Store({
     },
     setCarts (state, payload) {
       state.carts = payload
+    },
+    setFiteredCategory (state, payload) {
+      state.products = payload
     }
   },
   actions: {
@@ -143,6 +146,17 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err)
         })
+    },
+    filterbyCategory (context, payload) {
+      axios({
+        url: '/products/' + payload,
+        method: 'GET'
+      })
+        .then(({ data }) => {
+          console.log(data)
+          context.commit('setFiteredCategory', data)
+        })
+        .catch(err => console.log(err))
     }
   },
   modules: {

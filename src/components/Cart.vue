@@ -27,6 +27,11 @@ export default {
   components: {
     EachCart
   },
+  methods: {
+    fetchCarts () {
+      this.$emit('fetchCarts')
+    }
+  },
   computed: {
     carts () {
       return this.$store.state.carts
@@ -51,8 +56,10 @@ export default {
         }
       }
       return totalBelanja
-      // return subtotal
     }
+  },
+  created () {
+    this.fetchCarts()
   }
 }
 </script>
