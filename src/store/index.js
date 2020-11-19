@@ -14,6 +14,8 @@ export default new Vuex.Store({
   mutations: {
     SUCCESS_LOGIN (state, payload) {
       state.userLogin = true
+      console.log('HAHA')
+      router.push({ path: '/' })
     },
     ON_LOGOUT (state, payload) {
       state.userLogin = false
@@ -32,7 +34,7 @@ export default new Vuex.Store({
       axios.post('/login', payload)
         .then(({ data }) => {
           localStorage.setItem('access_token', data.access_token)
-          router.push({ path: '/' })
+          commit('SUCCESS_LOGIN')
         })
         .catch(err => {
           console.log(err.response.data)
