@@ -1,49 +1,105 @@
 <template>
-    <div class="row">
-        <div
+  <section>
+    <section class="section-pagetop bg">
+      <div class="container">
+          <h2 class="title-page text-blue">Shopping cart</h2>
+      </div>
+    </section>
+
+    <section class="section-content padding-y">
+      <div class="container">
+
+      <div class="row">
+          <main class="col-md-9">
+      <div class="card mb-5">
+
+      <table class="table table-borderless table-shopping-cart">
+        <thead class="text-muted">
+          <tr class="small text-uppercase">
+          <th scope="col">Product</th>
+          <th scope="col" width="120">Quantity</th>
+          <th scope="col" width="120">Price</th>
+          <th scope="col" class="text-right" width="200"> </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
             v-for="cart in carts"
             :key="cart.id"
-            class="col-3"
-        >
-            <!--Card-->
-            <div class="card card-cascade card-ecommerce wider">
-
-                <!--Card image-->
-                <div class="view view-cascade overlay">
-                <img class="card-img-top" :src="cart.Product.image_url"
-                    style="width: 250px; height: 250px; object-fit: contain:">
+          >
+            <td>
+              <div class="itemside">
+                <div class="aside">
+                  <img :src="cart.Product.image_url" class="img-sm" >
                 </div>
 
-                <!--Card content-->
-                <div class="card-body card-body-cascade text-center">
-                <h6 class="card-title"><strong><a href="">{{cart.Product.name}}</a></strong></h6>
-                <div class="card-footer">
-                    <span class="float-left" style="font-size: 13px">Rp {{cart.Product.price.toLocaleString(['ban', 'id'])}}</span><br>
-                    <button @click="minus(cart.quantity, cart.id, cart.Product.price)" class="btn btn-primary">-</button>
-                    <span class="px-3" style="font-size: 13px">{{cart.quantity}}</span>
-                    <button @click="plus(cart.quantity, cart.id, cart.Product.price)" class="btn btn-primary">+</button>
+                <div class="info">
+                  <div href="" class="title text-dark">{{cart.Product.name}}</div>
                 </div>
-
-                </div>
-                <!--/.Card content-->
-                <button @click="cartRemove(cart.id)" class="btn btn-danger btn-block">Remove from Cart</button>
             </div>
-            <!--/.Card-->
-           </div>
-           <div>
-             TOTAL
-             Rp {{total.toLocaleString(['ban', 'id'])}}
-           </div>
-           <div>
-             <button @click="checkout" class="btn btn-primary">CHECKOUT</button>
-           </div>
+          </td>
+          <td>
+            <button v-if="cart.quantity <= 1" @click.prevent="minus(cart.quantity, cart.id, cart.Product.price)" class="text-decoration-none" disabled style="border: none; background: none; padding: 5px"   href=""><i class="fas fa-minus"></i></button>
+            <button v-else @click.prevent="minus(cart.quantity, cart.id, cart.Product.price)" class="text-decoration-none" style="border: none; background: none; padding: 5px; color: blue" href=""><i class="fas fa-minus"></i></button>
+            <span class="px-3" style="font-size: 13px">{{cart.quantity}}</span>
+            <button v-if="cart.quantity >= cart.Product.stock" @click.prevent="plus(cart.quantity, cart.id, cart.Product.price)" disabled style="border: none; background; none: padding: 5px"  href=""><i  class="fas fa-plus"></i></button>
+            <button v-else @click.prevent="plus(cart.quantity, cart.id, cart.Product.price)" style="border: none; background: none; padding: 5px; color: blue" href=""><i  class="fas fa-plus"></i></button>
+          </td>
+          <td>
+            <div class="price-wrap">
+                <var class="price" style="font-size: 15px">Rp {{(cart.Product.price * cart.quantity).toLocaleString(['ban', 'id'])}}</var>
+                <br>
+                <small class="text-muted" style="font-size: 12px">
+                 Rp {{cart.Product.price.toLocaleString(['ban', 'id'])}} each
+                </small>
+            </div>
+          </td>
+          <td class="text-right">
+          <a @click.prevent="cartRemove(cart.id)" href="" class="btn btn-light"> Remove</a>
+          </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card-body border-top">
+        <a @click.prevent="checkout" href="#" class="btn btn-primary float-md-right"> Checkout <i class="fa fa-chevron-right"></i> </a>
+        <a @click.prevent="changePage('')" href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
       </div>
+    </div> <!-- card.// -->
+
+      </main> <!-- col.// -->
+      <aside class="col-md-3">
+
+        <div class="card">
+          <div class="card-body">
+            <dl class="dlist-align">
+              <dt>Total:</dt>
+              <dd class="text-right  h5"><strong>Rp {{total.toLocaleString(['ban', 'id'])}}</strong></dd>
+            </dl>
+            <hr>
+            <p class="text-center mb-3">
+                <img src="../assets/download.jpg" height="20">
+            </p>
+
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    </div>
+    </section>
+    <img src="../assets/wave.svg" style="position: fixed; z-index: -1;bottom:0px;">
+    <Footer/>
+  </section>
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+import Footer from './Footer.vue'
 export default {
   name: 'CartList',
   components: {
+    Footer
   },
   data () {
     return {
@@ -73,6 +129,22 @@ export default {
         })
         .catch(err => {
           console.log(err.response.data)
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: 'error',
+            title: (err.response.data.msg)
+          })
         })
     },
     plus (quantity, id, price) {
@@ -87,34 +159,149 @@ export default {
         })
         .catch(err => {
           console.log(err.response.data)
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: 'error',
+            title: (err.response.data.msg)
+          })
         })
     },
     cartRemove (id) {
       this.$store.dispatch('cartRemove', id)
         .then(({ data }) => {
           this.fetchCart()
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Product has been removed'
+          })
         })
         .catch(err => {
           console.log(err.response.data)
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: 'error',
+            title: (err.response.data.msg)
+          })
         })
     },
     checkout () {
       this.$store.dispatch('checkout')
         .then(({ data }) => {
           this.fetchCart()
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: 'success',
+            title: 'Checkout succesfully'
+          })
         })
         .catch(err => {
           console.log(err.response.data)
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+
+          Toast.fire({
+            icon: 'error',
+            title: (err.response.data.msg)
+          })
         })
+    },
+    changePage (path) {
+      this.$store.dispatch('changePage', path)
     }
   },
   created () {
     this.fetchCart()
-    // this.totalPrice()
   }
 }
 </script>
 
 <style>
+  .img-sm {
+      width: 80px;
+      height: 80px;
+  }
+  .img-xs, .img-sm, .img-md, .img-lg {
+    object-fit: cover;
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+  img {
+    vertical-align: middle;
+    border-style: none;
+  }
+  .itemside .info {
+    padding-left: 15px;
+    padding-right: 7px;
+  }
+  .itemside .title {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .text-dark {
+    color: #212529 !important;
+  }
+  .itemside .aside {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .itemside {
+    position: relative;
+    display: flex;
+    width: 100%;
+  }
 
 </style>

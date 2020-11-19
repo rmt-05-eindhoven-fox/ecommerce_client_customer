@@ -1,38 +1,45 @@
 <template>
+  <section class="section-name  padding-y-sm">
+    <div class="container">
+
+    <header class="section-heading">
+        <h2 class="section-title text-blue">Products</h2>
+    </header>
+
     <div class="row">
         <div
-            v-for="product in products"
-            :key="product.id"
-            class="col-3"
+          v-for="product in products"
+          :key="product.id"
+          class="col-3"
         >
-            <!--Card-->
-            <div class="card card-cascade card-ecommerce wider">
-
-                <!--Card image-->
-                <div class="view view-cascade overlay">
-                <img class="card-img-top" :src="product.image_url"
-                    style="width: 250px; height: 250px; object-fit: contain:">
-                </div>
-
-                <!--Card content-->
-                <div class="card-body card-body-cascade text-center">
-                <h6 class="card-title"><strong><a href="">{{product.name}}</a></strong></h6>
-                <div class="card-footer">
-                    <span class="float-left" style="font-size: 13px">Rp {{product.price.toLocaleString(['ban', 'id'])}}</span><br>
-                    <span class="float-left" style="font-size: 13px">{{product.stock}} left</span>
-
-                </div>
-
-                </div>
-                <!--/.Card content-->
-                <button @click="addCart(product.id)" class="btn btn-primary btn-block">Add to Cart</button>
+            <div v-if="product.stock !== 0" href="#" class="card card-hover card-product-grid shadow-sm">
+              <a class="img-wrap" > <img class="img-center" :src="product.image_url" title="" style="" height="175"> </a>
+              <div class="info-wrap">
+                  <div href="" class="title">{{product.name}}</div>
+                  <div class="mt-1 font-weight-bold price-product">Rp {{product.price.toLocaleString(['ban', 'id'])}}</div>
+                  <span class="float-left stock" style="font-size: 13px">{{product.stock}} left</span>
+                  <span v-if="isLogin === true" @click.prevent="addCart(product.id)" class="float-right icon-product" style="font-size: 13px" type="button"><i class="fas fa-shopping-cart"></i> Cart</span>
+              </div>
             </div>
-            <!--/.Card-->
-           </div>
-      </div>
+            <div v-else href="#" class="card card-product-grid shadow-sm" style="background-color: #f0f0ee;padding: 18px 20px;">
+              <a class="img-wrap" > <img class="img-center" :src="product.image_url" title="" style="opacity: 0.3" height="175"> </a>
+              <div class="info-wrap">
+                  <div href="" class="title text-muted">{{product.name}}</div>
+                  <div class="mt-1 font-weight-bold">Sold Out</div>
+                  <span class="float-left stock text-muted" style="font-size: 13px">{{product.stock}} left</span>
+              </div>
+            </div>
+        </div>
+    </div> <!-- row.// -->
+
+    </div><!-- container // -->
+    <img src="../assets/wave.svg" style="position: fixed; z-index: -1;bottom:0px;">
+    <Footer/>
+  </section>
 </template>
 
 <script>
+import Footer from './Footer.vue'
 export default {
   name: 'ProductList',
   data () {
@@ -41,10 +48,14 @@ export default {
     }
   },
   components: {
+    Footer
   },
   computed: {
     products () {
       return this.$store.state.products
+    },
+    isLogin () {
+      return this.$store.state.isLogin
     }
   },
   methods: {
@@ -62,5 +73,107 @@ export default {
 </script>
 
 <style>
+  .card-product-grid {
+      margin-bottom: 20px;
+  }
+  .card .img-wrap {
+    overflow: hidden;
+    position: relative;
+  }
 
+  .card-hover {
+    transition: all .5s;
+  }
+  .card-hover:hover {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    outline: 1px solid #007bff ;
+  }
+
+  .card .img-wrap .img-center {
+    position: absolute;
+    top: -9999px;
+    bottom: -9999px;
+    left: -9999px;
+    right: -9999px;
+    margin: auto;
+  }
+
+  .card-product-grid .img-wrap {
+    border-radius: 0.2rem 0.2rem 0 0;
+    height: 220px;
+  }
+
+  img {
+    vertical-align: middle;
+    border-style: none;
+  }
+  .card-hover .info-wrap {
+    overflow: hidden;
+    padding: 18px 20px;
+    transition: all .5s;
+    color: #007bff
+  }
+
+  .card-hover:hover .info-wrap {
+    overflow: hidden;
+    padding: 18px 20px;
+    background-color: #007bff;
+    /* border-top: 1px solid #007bff ; */
+    color: #fff
+  }
+
+  .card-hover .info-wrap .title {
+    color: #215994;
+    transition: all .5s;
+    /* text-shadow: 0 0 1px #007bff; */
+  }
+
+  .card-hover:hover .info-wrap .title {
+    color: #fff;
+  }
+
+  .card-hover .info-wrap .price-product {
+    color: #007bff;
+    font-size: 16px;
+    transition: all .5s;
+  }
+
+  .card-hover:hover .info-wrap .price-product {
+    color: #fff;
+  }
+
+  .card-hover .info-wrap .stock {
+    color: #94c8ff;
+    transition: all .5s;
+  }
+
+  .card-hover:hover .info-wrap .stock {
+    color: #fff;
+  }
+
+  .icon-product {
+    transition: all .3s;
+  }
+
+  .icon-product:hover {
+    color: #fff;
+    transform: scale(1.1);
+    text-shadow: 0 0 5px #fff;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .text-blue {
+    color: #007bff;
+  }
+  .text-putih {
+    color: #fff;
+    transition: all .3s;
+  }
+
+  .text-putih:hover {
+    text-shadow: 0 0 5px #fff;
+  }
 </style>
