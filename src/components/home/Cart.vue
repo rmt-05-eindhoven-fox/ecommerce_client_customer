@@ -6,7 +6,7 @@
       <div class="col-lg-9">
         <div class="cart-page-inner">
           <div v-if="errorMessage" v-show="error" class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Warning!</strong> {{ errorMessage }}
+            {{ errorMessage }}
             <button @click.prevent="error = false" type="button" class="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

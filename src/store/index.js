@@ -15,7 +15,8 @@ export default new Vuex.Store({
     carts: [],
     loadingWhistlist: false,
     loadingCart: false,
-    tempSearch: []
+    tempSearch: [],
+    loading: false
   },
   mutations: {
     setCategories (state, payload) {
@@ -62,6 +63,7 @@ export default new Vuex.Store({
 
     async fetchProducts (context) {
       try {
+        this.state.loading = true
         const { data } = await axios({
           url: 'products',
           method: 'get'
@@ -84,11 +86,14 @@ export default new Vuex.Store({
         }
       } catch (error) {
         console.log(error.response.data)
+      } finally {
+        this.state.loading = false
       }
     },
 
     async fetchProductByCategory (context, id) {
       try {
+        this.state.loading = true
         const { data } = await axios({
           url: 'categories/' + id + '/products',
           method: 'get'
@@ -97,6 +102,8 @@ export default new Vuex.Store({
         context.commit('setProducts', { products: data.categories.Products })
       } catch (error) {
         console.log(error.response.data)
+      } finally {
+        this.state.loading = false
       }
     },
 
@@ -118,6 +125,7 @@ export default new Vuex.Store({
 
     async prosesLogin (context, payload) {
       try {
+        this.state.loading = true
         const { data } = await axios({
           url: 'login',
           method: 'post',
@@ -127,6 +135,8 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error.response.data)
         return { status: 401 }
+      } finally {
+        this.state.loading = false
       }
     },
 
