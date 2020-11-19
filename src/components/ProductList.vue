@@ -15,8 +15,8 @@
         >
             <div v-if="product.stock !== 0" href="#" class="card card-hover card-product-grid shadow-sm">
               <a class="img-wrap" > <img class="img-center" :src="product.image_url" title="" style="" height="175"> </a>
-              <div class="info-wrap">
-                  <div href="" class="title">{{product.name}}</div>
+              <div class="info-wrap ">
+                  <div href="" class="title text-hidden-wrap">{{product.name}}</div>
                   <div class="mt-1 font-weight-bold price-product">Rp {{product.price.toLocaleString(['ban', 'id'])}}</div>
                   <span class="float-left stock" style="font-size: 13px">{{product.stock}} left</span>
                   <span v-if="isLogin === true" @click.prevent="addCart(product.id)" class="float-right icon-product" style="font-size: 13px" type="button">
@@ -118,7 +118,17 @@ export default {
     overflow: hidden;
     padding: 18px 20px;
     transition: all .5s;
-    color: #007bff
+    color: #007bff;
+
+  }
+
+  .text-hidden-wrap {
+    display: block;/* or inline-block */
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 1.6em;
+    line-height: 1.8em;
   }
 
   .card-hover:hover .info-wrap {
