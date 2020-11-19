@@ -18,9 +18,9 @@
               <mdb-dropdown-item>cat3</mdb-dropdown-item>
             </mdb-dropdown-menu>
           </mdb-dropdown> -->
-                  <form>
+                  <!-- <form>
           <mdb-input type="text" class="text-white" placeholder="Search" aria-label="Search" label navInput waves waves-fixed/>
-        </form>
+        </form> -->
 
         </mdb-navbar-nav>
       </mdb-navbar-toggler>
