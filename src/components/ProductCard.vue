@@ -16,13 +16,6 @@
       <v-card-text>
         <div class="product-title d-flex">
           <h2>{{product.name}}</h2>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon class="white-heart">mdi-heart-outline</v-icon>
-          </v-btn>
-          <v-btn icon>
-            <v-icon class="filled-heart">mdi-heart</v-icon>
-          </v-btn>
         </div>
         <p v-if="product.stock">Stock: {{product.stock}}</p>
         <p v-else style="color: red">Out of Stock</p>

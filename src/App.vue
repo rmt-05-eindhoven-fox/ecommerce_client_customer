@@ -25,9 +25,6 @@
           ></v-text-field>
         </v-responsive>
         <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
         <v-btn @click="drawer = !drawer" icon>
           <v-icon>mdi-cart</v-icon>
         </v-btn>
@@ -114,7 +111,7 @@
       v-if="isHomePage"
     >
       <v-container>
-        <h1>Halo</h1>
+        <h1 class="text-center">© 2020, yosiaelnino</h1>
       </v-container>
     </v-card>
   </v-app>
