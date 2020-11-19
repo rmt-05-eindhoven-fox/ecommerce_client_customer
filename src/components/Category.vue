@@ -12,7 +12,7 @@
             v-for="prod in perCol(i)"
             :key="prod.id"
             >
-              <mdb-view class="mt-3 zoom" hover>
+              <mdb-view class="mt-3 h-50 align-items-center justify-content-center d-flex zoom" hover>
                 <a href="#!">
                   <mdb-card-image :src="prod.image_url" :alt="prod.name"></mdb-card-image>
                   <mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
