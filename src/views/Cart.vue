@@ -127,7 +127,6 @@ export default {
     removeFromCart (payload) {
       this.$store.dispatch('removeFromCart', payload)
         .then(_ => {
-          console.log('removed from cart')
           this.fetchUserCart()
         })
         .catch(err => {

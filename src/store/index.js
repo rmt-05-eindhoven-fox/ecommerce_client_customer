@@ -16,7 +16,6 @@ export default new Vuex.Store({
       state.products = data
     },
     setCart (state, data) {
-      console.log('setting to cart data')
       state.cart = data
     },
     setHistory (state, data) {
