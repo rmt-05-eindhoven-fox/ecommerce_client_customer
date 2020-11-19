@@ -77,6 +77,8 @@ export default {
         this.$store.dispatch('patchCart', payload)
           .then(_ => this.$store.dispatch('fetchCart'))
           .catch(({ response }) => console.log(response.data))
+      } else {
+        this.$vToastify.error('You\'ve reached the limit of available stock!')
       }
     },
     minusAmount (ProductId, amount) {
@@ -92,20 +94,37 @@ export default {
             this.$vToastify.error(response.data.error)
           })
       } else {
-        this.$store.dispatch('deleteCart', payload)
-          .then(_ => this.$store.dispatch('fetchCart'))
-          .catch(({ response }) => {
-            this.$vToastify.error(response.data.error)
+        this.$vToastify.prompt({
+          body: 'Are you sure you want to remove this product from your cart?',
+          position: 'center-center',
+          answers: { Yes: true, No: false }
+        })
+          .then(val => {
+            if (val) {
+              this.$store.dispatch('deleteCart', payload)
+                .then(_ => this.$store.dispatch('fetchCart'))
+                .catch(({ response }) => {
+                  this.$vToastify.error(response.data.error)
+                })
+            }
           })
       }
     },
     deleteProd (ProductId) {
-      const payload = {
-        ProductId
-      }
-      this.$store.dispatch('deleteCart', payload)
-        .then(_ => this.$store.dispatch('fetchCart'))
-        .catch(({ response }) => console.log(response.data))
+      this.$vToastify.prompt({
+        body: 'Are you sure you want to remove this product from your cart?',
+        answers: { Yes: true, No: false }
+      })
+        .then(val => {
+          if (val) {
+            const payload = {
+              ProductId
+            }
+            this.$store.dispatch('deleteCart', payload)
+              .then(_ => this.$store.dispatch('fetchCart'))
+              .catch(({ response }) => console.log(response.data.error))
+          }
+        })
     }
   },
   beforeCreate () {

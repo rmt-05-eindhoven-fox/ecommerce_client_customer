@@ -76,6 +76,7 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
+          data = data.filter(cat => cat.Products.length > 0)
           context.commit('setCategories', data)
         })
         .catch(err => console.log(err))

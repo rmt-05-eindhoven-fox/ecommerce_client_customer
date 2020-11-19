@@ -68,7 +68,7 @@
     </mdb-navbar>
     <div
     v-if="this.$route.path === '/'">
-    <mdb-carousel style="z-index: 20" class="bg-light" :interval="8000" :items="carousel.length" multi controlls slide indicators>
+    <mdb-carousel class="mdb-color" style="z-index: 20" :interval="8000" :items="carousel.length" multi controlls slide indicators>
       <template
       v-for="(banner, i) in carousel"
       :slot="i + 1"
@@ -228,7 +228,6 @@ export default {
     signOut () {
       this.$vToastify.prompt({
         body: 'Are you sure?',
-        position: 'center-center',
         answers: { Yes: true, No: false }
       })
         .then(val => {
@@ -275,4 +274,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

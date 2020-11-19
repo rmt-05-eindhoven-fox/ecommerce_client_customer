@@ -18,7 +18,7 @@
                   <mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
                 </a>
               </mdb-view>
-              <mdb-card-body>
+              <mdb-card-body class="d-flex flex-column">
                 <mdb-card-title class="text-left">{{ prod.name }}</mdb-card-title>
                 <mdb-card-text
                 class="text-left">
@@ -34,9 +34,11 @@
                 v-else
                 class="text-left">Available stock : {{ prod.stock }}</mdb-card-text>
                 <mdb-btn
+                class="mt-auto mx-5"
+                v-if="prod.stock > 0"
                 @click="checkLogin(prod.id)"
                 size="md"
-                color="primary"> <mdb-icon icon="cart-plus"/> Add To Cart</mdb-btn>
+                color="mdb-color"> <mdb-icon icon="cart-plus"/> Add To Cart</mdb-btn>
               </mdb-card-body>
             </mdb-card>
           </mdb-card-group>
@@ -87,15 +89,16 @@ export default {
           payload.amount = amount
           this.$store.dispatch('patchCart', payload)
             .then(({ data }) => {
+              this.$vToastify.success('You\'ve added product to cart!')
               this.$store.dispatch('fetchCart')
             })
             .catch(({ response }) => {
-              this.$vToastify.error(response.data.error)
+              this.$vToastify.error('You\'ve reached the limit of available stock!')
             })
         } else {
           this.$store.dispatch('addToCart', payload)
             .then(({ data }) => {
-              console.log(data)
+              this.$vToastify.success('You\'ve added product to cart!')
               this.$store.dispatch('fetchCart')
             })
             .catch(({ response }) => {
