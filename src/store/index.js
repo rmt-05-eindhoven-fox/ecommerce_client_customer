@@ -33,7 +33,7 @@ export default new Vuex.Store({
           context.commit('SET_PRODUCT', data)
         })
         .catch(err => {
-          console.log(err.response.message)
+          console.log(err)
         })
     },
     getItemToCart (context, payload) {
