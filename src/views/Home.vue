@@ -3,7 +3,7 @@
     <nav class="navbar navbar-light bg-light border-bottom shadow-sm">
       <router-link to="/" class="navbar-brand ml-3 font-weight-bold">JuaLaku</router-link>
       <div>
-        <router-link to='/carts' class="mr-4 text-decoration-none text-dark">Your Cart (1)</router-link>
+        <router-link to='/carts' class="mr-4 text-decoration-none text-dark">Your Cart ({{carts.length}})</router-link>
         <button @click.prevent="logout" class="btn btn-danger my-2 my-sm-0">Logout</button>
       </div>
     </nav>
@@ -26,39 +26,19 @@
 
 <script>
 // @ is an alias to /src
-import axios from '../axios/axiosInstance'
-
 export default {
   name: 'Home',
-  data () {
-    return {
-      products: []
-    }
-  },
   methods: {
     fetchProducts () {
-      axios({
-        url: '/products',
-        method: 'GET',
-        headers: {
-          access_token: localStorage.getItem('access_token')
-        }
-      })
-        .then(({ data }) => {
-          this.products = data.data
-        })
-        .catch(err => {
-          console.log(err.response.data)
-        })
+      const token = localStorage.getItem('access_token')
+      this.$store.dispatch('fetchProducts', token)
     },
     addToCart (id) {
-      axios({
-        url: '/carts/' + id,
-        method: 'POST',
-        headers: {
-          access_token: localStorage.getItem('access_token')
-        }
-      })
+      const payload = {
+        id,
+        token: localStorage.getItem('access_token')
+      }
+      this.$store.dispatch('addToCart', payload)
         .then(response => {
           this.$router.push('/carts')
         })
@@ -71,8 +51,17 @@ export default {
       this.$router.push('/login')
     }
   },
+  computed: {
+    products () {
+      return this.$store.state.products
+    },
+    carts () {
+      return this.$store.state.carts
+    }
+  },
   created () {
     this.fetchProducts()
+    this.$store.dispatch('fetchProductsInCart', localStorage.access_token)
   }
 }
 </script>

@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import axios from '../axios/axiosInstance'
 export default {
   name: 'Register',
   data () {
@@ -34,14 +33,11 @@ export default {
   },
   methods: {
     register () {
-      axios({
-        url: '/register',
-        method: 'POST',
-        data: {
-          email: this.email,
-          password: this.password
-        }
-      })
+      const payload = {
+        email: this.email,
+        password: this.password
+      }
+      this.$store.dispatch('register', payload)
         .then(({ data }) => {
           console.log(data)
           this.$router.push('/login')

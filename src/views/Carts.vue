@@ -48,31 +48,12 @@
 </template>
 
 <script>
-import axios from '../axios/axiosInstance'
-
 export default {
   name: 'Carts',
-  data () {
-    return {
-      carts: [],
-      quantity: ''
-    }
-  },
   methods: {
     fetchProductsInCart () {
-      axios({
-        url: '/carts',
-        method: 'GET',
-        headers: {
-          access_token: localStorage.getItem('access_token')
-        }
-      })
-        .then(({ data }) => {
-          this.carts = data.carts
-        })
-        .catch(err => {
-          console.log(err.response.data)
-        })
+      const token = localStorage.getItem('access_token')
+      this.$store.dispatch('fetchProductsInCart', token)
     },
     updateQuantity (id, status, quantity) {
       if (status === 'minus') {
@@ -80,16 +61,12 @@ export default {
       } else {
         quantity++
       }
-      axios({
-        url: '/carts/' + id,
-        method: 'PATCH',
-        headers: {
-          access_token: localStorage.getItem('access_token')
-        },
-        data: {
-          quantity
-        }
-      })
+      const payload = {
+        token: localStorage.getItem('access_token'),
+        quantity,
+        id
+      }
+      this.$store.dispatch('updateQuantity', payload)
         .then(response => {
           console.log(response)
           this.fetchProductsInCart()
@@ -99,13 +76,11 @@ export default {
         })
     },
     removeCart (id) {
-      axios({
-        url: '/carts/' + id,
-        method: 'DELETE',
-        headers: {
-          access_token: localStorage.getItem('access_token')
-        }
-      })
+      const payload = {
+        id,
+        token: localStorage.getItem('access_token')
+      }
+      this.$store.dispatch('removeCart', payload)
         .then(({ data }) => {
           console.log(data)
           this.fetchProductsInCart()
@@ -126,6 +101,9 @@ export default {
         totalPrice += cart.quantity * cart.Product.price
       })
       return totalPrice
+    },
+    carts () {
+      return this.$store.state.carts
     }
   },
   created () {
