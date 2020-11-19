@@ -12,14 +12,32 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
   name: 'ListProduct',
   props: ['product'],
   methods: {
     addToCart ({ id, stock }) {
-      console.log(this.product, 'dikirimkan dari list prodak ketika add to cart')
-      this.$store.dispatch('ADD_TO_CART', { id, stock })
+      this.$store.dispatch('addToCart', { id, stock })
+        .then(response => {
+          console.log(response)
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Success add to Cart',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
+    // addToCart ({ id, stock }) {
+    //   console.log(this.product, 'dikirimkan dari list prodak ketika add to cart')
+    //   this.$store.dispatch('ADD_TO_CART', { id, stock })
+    // }
   }
 }
 </script>

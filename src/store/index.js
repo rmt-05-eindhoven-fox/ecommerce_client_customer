@@ -76,21 +76,14 @@ export default new Vuex.Store({
           console.log('masuk error', err)
         })
     },
-    ADD_TO_CART ({ commit }, payload) {
-      console.log('MASUK', payload)
-      axios.post('/carts', {
-        ProductId: payload
+    addToCart ({ commit }, payload) {
+      return axios.post('/carts', {
+        dataProduct: payload
       }, {
         headers: {
           access_token: localStorage.access_token
         }
       })
-        .then(result => {
-          console.log(result, 'ini dari add to cart')
-        })
-        .catch(err => {
-          console.log(err)
-        })
     },
     UPDATE_QUANTITY_CART ({ dispatch }, payload) {
       axios.put(`/carts/${payload.id}`, {
@@ -107,19 +100,14 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    DELETE_CART ({ dispatch }, payload) {
-      console.log(payload, 'payload dari delete cart yaa')
-      axios.delete(`/carts/${payload}`, {
+    deleteProduct (context, id) {
+      return axios({
+        method: 'delete',
+        url: `/carts/${id}`,
         headers: {
-          access_token: localStorage.access_token
+          access_token: localStorage.getItem('access_token')
         }
       })
-        .then(() => {
-          dispatch('GET_LIST_CART')
-        })
-        .catch(err => {
-          console.log(err)
-        })
     }
   },
   modules: {
