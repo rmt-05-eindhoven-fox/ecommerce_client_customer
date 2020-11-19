@@ -42,7 +42,7 @@ export default new Vuex.Store({
           password: payload.password
         }
       }).then(res => {
-        router.push('/login')
+        router.push('/')
       }).catch(err => {
         console.log(err)
       })
