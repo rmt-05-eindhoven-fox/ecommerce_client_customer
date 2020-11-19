@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from '../axios/axiosInstance'
+import axios from '../config/axios'
 import router from '../router'
 
 Vue.use(Vuex)
@@ -32,7 +32,6 @@ export default new Vuex.Store({
       axios.post('/login', payload)
         .then(({ data }) => {
           localStorage.setItem('access_token', data.access_token)
-          // commit('SUCCESS_LOGIN')
           router.push({ path: '/' })
         })
         .catch(err => {

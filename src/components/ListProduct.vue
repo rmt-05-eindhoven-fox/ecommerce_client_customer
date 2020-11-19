@@ -6,7 +6,7 @@
         Price
         <p class="card-text">Rp {{product.price.toLocaleString()}}</p>
         <p class="card-text">Stock {{product.stock}}</p>
-        <center><a href="#" class="btn btn-success" @click.prevent="addToCart(product.id)">Add To Cart</a></center>
+        <center><a href="#" class="btn btn-success" @click.prevent="addToCart({id: product.id, stock: product.stock})">Add To Cart</a></center>
     </div>
     </div>
 </template>
@@ -16,9 +16,9 @@ export default {
   name: 'ListProduct',
   props: ['product'],
   methods: {
-    addToCart (id) {
+    addToCart ({ id, stock }) {
       console.log(this.product, 'dikirimkan dari list prodak ketika add to cart')
-      this.$store.dispatch('ADD_TO_CART', id)
+      this.$store.dispatch('ADD_TO_CART', { id, stock })
     }
   }
 }

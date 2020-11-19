@@ -6,12 +6,13 @@
         </th>
         <td>Rp. {{data.Product.price.toLocaleString()}}</td>
         <td>
-            <i class="far fa-minus-square mr-2" @click="decrementQuantity(data.ProductId)"></i>
+            <button v-if="this.data.quantity > 1" class="far fa-minus-square mr-2" @click="decrementQuantity(data.id)"></button>
+            <button v-else class="far fa-minus-square mr-2" @click="decrementQuantity(data.id)" disabled></button>
             {{data.quantity}}
-            <i class="far fa-plus-square ml-2" @click="incrementQuantity(data.ProductId)"></i>
+            <button class="far fa-plus-square ml-2" @click="incrementQuantity(data.id)"></button>
         </td>
         <td>
-            <button class="btn btn-danger ml-1" @click="Delete(data.ProductId)"> delete </button>
+            <button class="btn btn-danger ml-1" @click="Delete(data.id)"> delete </button>
             </td>
     </tr>
 </template>
@@ -22,13 +23,15 @@ export default {
   props: ['data'],
   methods: {
     incrementQuantity (id) {
-      this.$store.dispatch('UPDATE_QUANTITY_CART', { id, quantity: 1 })
+      console.log(id)
+      this.$store.dispatch('UPDATE_QUANTITY_CART', { id, quantity: this.data.quantity + 1 })
     },
     decrementQuantity (id) {
-      this.$store.dispatch('UPDATE_QUANTITY_CART', { id, quantity: -1 })
+      console.log(id)
+      this.$store.dispatch('UPDATE_QUANTITY_CART', { id, quantity: this.data.quantity - 1 })
     },
     Delete (id) {
-      console.log(this.data, 'dari cartcard.vue delete')
+      console.log(id, 'dari cartcard.vue delete')
       this.$store.dispatch('DELETE_CART', id)
     }
   }
