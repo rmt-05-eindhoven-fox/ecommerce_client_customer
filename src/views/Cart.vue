@@ -2,39 +2,19 @@
   <div>
     <NavbarMain />
     <div class="container">
-      <div class="row">
-        <!-- CARD CART -->
-        <div class="col-xs-12 col-lg-8">
-          <div class="card card-on-cart">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-4">
-                  <img src="bg-login.jpg" alt="" class="card-img" />
-                </div>
-                <div class="col-8">
-                  <div
-                    class="card-header d-flex justify-content-between align-items-baseline p-0"
-                  >
-                    <h5>Product name</h5>
-                    <button class="btn btn-danger">
-                      <i class="fas fa-trash"></i> Remove
-                    </button>
-                  </div>
-                  <small class="text-muted">Rp 30.000.000</small>
-                  <form action="" class="mt-3">
-                    <label for="qty">Quantity :</label>
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="qty"
-                      min="1"
-                    />
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="card">
+        <div class="card-body d-flex justify-content-between">
+          <h3>Your Cart</h3>
+          <h4>Total price: {{getPrice}}</h4>
+          <button class="btn btn-success" @click="checkoutCart">Checkout</button>
         </div>
+      </div>
+      <div class="row d-flex">
+        <!-- CARD CART -->
+        <CartCard v-for="product in getCart"
+        :key="product.id"
+        :product="product"
+        />
       </div>
     </div>
   </div>
@@ -42,10 +22,40 @@
 
 <script>
 import NavbarMain from '@/components/NavbarMain.vue'
+import CartCard from '@/components/CartCard.vue'
 export default {
   name: 'Cart',
   components: {
-    NavbarMain
+    NavbarMain,
+    CartCard
+  },
+  computed: {
+    itemCart () {
+      return this.$store.state.itemCart
+    },
+    getCart () {
+      return this.$store.state.cartUser
+    },
+    getPrice () {
+      let total = 0
+      this.getCart.forEach(el => {
+        const price = el.Product.price
+        const amount = el.amount
+        total += (price * amount)
+      })
+      return total.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })
+    }
+  },
+  methods: {
+    retrieveUserCart () {
+      this.$store.dispatch('retrieveUserCart')
+    },
+    checkoutCart () {
+      this.$store.dispatch('checkoutCart')
+    }
+  },
+  created () {
+    this.retrieveUserCart()
   }
 }
 </script>
@@ -53,9 +63,14 @@ export default {
 <style lang="scss" scoped>
 .container {
   margin-top : 100px;
+  font-family: 'Roboto Slab', sans-serif;
 
   .card-header{
    background-color : #FFFFFF ;
+  }
+
+  .btn-success {
+    border-radius: 8px;
   }
 }
 </style>

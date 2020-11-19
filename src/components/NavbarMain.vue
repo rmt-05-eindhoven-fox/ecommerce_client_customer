@@ -12,9 +12,6 @@
               <router-link to="/your-cart" class="nav-link"><i class="fas fa-shopping-cart"></i> Cart</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#"><i class="fas fa-history"></i> Recent Transaction</a>
-            </li>
-            <li class="nav-item">
               <button @click="logOut" class="btn btn-logout" v-if="userLoggedIn">Logout</button>
             </li>
           </ul>

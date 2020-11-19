@@ -69,7 +69,6 @@ export default {
           localStorage.setItem('token', data.access_token)
           localStorage.setItem('full_name', data.full_name)
           localStorage.setItem('role', data.role)
-          console.log(data.role)
           this.$router.push('/')
         })
         .catch(err => {

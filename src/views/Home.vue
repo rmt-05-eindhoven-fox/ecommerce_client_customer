@@ -1,32 +1,31 @@
 <template>
-<div>
-  <NavbarMain/>
-  <div class="homepage mt-5">
+  <div>
+    <NavbarMain />
+    <div class="homepage mt-5">
       <!-- BANNER -->
       <div class="container-fluid">
         <div class="row">
           <div class="jumbotron text-right text-white">
             <h1>Welcome to our shop</h1>
-            <h5>{{userName}}</h5>
+            <h5>{{ userName }}</h5>
           </div>
         </div>
         <div class="product-header">
           <h3>Our Product</h3>
         </div>
       </div>
-
-      <div class="container d-flex justify-content-center">
+      <div class="container">
         <div class="row">
           <!-- PRODUCT CARD -->
           <ProductCard
-          v-for="product in products"
-          :key="product.id"
-          :product="product"
+            v-for="product in products"
+            :key="product.id"
+            :product="product"
           />
         </div>
       </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -56,6 +55,14 @@ export default {
   },
   created () {
     this.getProduct()
+  },
+  beforeRouterEnter (to, from, next) {
+    const role = localStorage.getItem('role')
+    if (role === 'Admin') {
+      next()
+    } else {
+      next('/')
+    }
   }
 }
 </script>
