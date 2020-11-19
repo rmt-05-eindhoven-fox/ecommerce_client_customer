@@ -1,5 +1,6 @@
 <template>
-  <section class="section-name  padding-y-sm">
+  <section class="section-name padding-y-sm animate__animated animate__fadeIn">
+    <img v-if="isLoading === true" class="animate__animated animate__fadeIn" src="../assets/animation_500_khoa45kz.gif" style="position: fixed; z-index: 999; top:0; left:0; right:0; bottom:0; margin:auto;" height="300">
     <div class="container">
 
     <header class="section-heading">
@@ -18,7 +19,14 @@
                   <div href="" class="title">{{product.name}}</div>
                   <div class="mt-1 font-weight-bold price-product">Rp {{product.price.toLocaleString(['ban', 'id'])}}</div>
                   <span class="float-left stock" style="font-size: 13px">{{product.stock}} left</span>
-                  <span v-if="isLogin === true" @click.prevent="addCart(product.id)" class="float-right icon-product" style="font-size: 13px" type="button"><i class="fas fa-shopping-cart"></i> Cart</span>
+                  <span v-if="isLogin === true" @click.prevent="addCart(product.id)" class="float-right icon-product" style="font-size: 13px" type="button">
+                    <img v-if="isLoading === true" class="animate__animated animate__fadeIn" src="../assets/animation_200_kho8sqjs.gif" height="60" style="position: absolute; right: 11px; bottom: -3px">
+                    <span v-else>
+                      <i class="fas fa-shopping-cart"></i> Cart
+                    </span>
+
+                  </span>
+
               </div>
             </div>
             <div v-else href="#" class="card card-product-grid shadow-sm" style="background-color: #f0f0ee;padding: 18px 20px;">
@@ -26,20 +34,17 @@
               <div class="info-wrap">
                   <div href="" class="title text-muted">{{product.name}}</div>
                   <div class="mt-1 font-weight-bold">Sold Out</div>
-                  <span class="float-left stock text-muted" style="font-size: 13px">{{product.stock}} left</span>
+                  <span v-if="isLoading === true" class="float-left stock text-muted" style="font-size: 13px">{{product.stock}} left</span>
               </div>
             </div>
         </div>
     </div> <!-- row.// -->
 
     </div><!-- container // -->
-    <img src="../assets/wave.svg" style="position: fixed; z-index: -1;bottom:0px;">
-    <Footer/>
   </section>
 </template>
 
 <script>
-import Footer from './Footer.vue'
 export default {
   name: 'ProductList',
   data () {
@@ -48,7 +53,6 @@ export default {
     }
   },
   components: {
-    Footer
   },
   computed: {
     products () {
@@ -56,6 +60,9 @@ export default {
     },
     isLogin () {
       return this.$store.state.isLogin
+    },
+    isLoading () {
+      return this.$store.state.isLoading
     }
   },
   methods: {

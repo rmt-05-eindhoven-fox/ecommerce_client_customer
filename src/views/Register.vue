@@ -1,7 +1,9 @@
 <template>
   <div>
       <Navbar/>
-      <div class="row justify-content-center " style="margin-top: 15vh; ">
+      <img v-if="isLoading === true" class="animate__animated animate__fadeIn" src="../assets/animation_500_khoa45kz.gif" style="position: fixed; z-index: 999; top:0; left:0; right:0; bottom:0; margin:auto;" height="300">
+
+      <div class="row justify-content-center animate__animated animate__fadeIn" style="margin-top: 15vh; ">
             <img class="card shadow col-3 align-items-center" width="190px" src="../assets/undraw_completed_tasks_vs6q.svg">
             <div class="card shadow p-2 col-3 align-items-center">
                 <div class="card-body">
@@ -59,6 +61,11 @@ export default {
       password: ''
     }
   },
+  computed: {
+    isLoading () {
+      return this.$store.state.isLoading
+    }
+  },
   methods: {
     register () {
       const payload = {
@@ -67,6 +74,7 @@ export default {
       }
       this.$store.dispatch('register', payload)
         .then(({ data }) => {
+          this.$store.commit('SET_ISLOADING', false)
           this.$router.push('/login')
           const Toast = Swal.mixin({
             toast: true,
@@ -86,6 +94,7 @@ export default {
           })
         })
         .catch(err => {
+          this.$store.commit('SET_ISLOADING', false)
           console.log(err.response.data)
           const Toast = Swal.mixin({
             toast: true,

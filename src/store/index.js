@@ -12,7 +12,8 @@ export default new Vuex.Store({
     carts: [],
     total: 0,
     isLogin: false,
-    email: ''
+    email: '',
+    isLoading: false
   },
   mutations: {
     SET_PRODUCTS (state, payload) {
@@ -39,10 +40,14 @@ export default new Vuex.Store({
       } else {
         state.email = ''
       }
+    },
+    SET_ISLOADING (state, boolean) {
+      state.isLoading = boolean
     }
   },
   actions: {
     fetchProduct (context) {
+      context.commit('SET_ISLOADING', true)
       axios({
         url: '/productList',
         method: 'GET'
@@ -55,13 +60,16 @@ export default new Vuex.Store({
           if (localStorage.getItem('access_token')) {
             context.dispatch('fetchCart')
           }
+          context.commit('SET_ISLOADING', false)
           // console.log(this.products)
         })
         .catch(err => {
+          context.commit('SET_ISLOADING', false)
           console.log(err.response.data, 'fetch product')
         })
     },
     fetchCart (context) {
+      context.commit('SET_ISLOADING', true)
       axios({
         url: '/carts',
         method: 'GET',
@@ -73,12 +81,15 @@ export default new Vuex.Store({
           context.commit('SET_CARTS', data)
           context.commit('SET_LOGIN', localStorage.getItem('access_token'))
           context.commit('SET_EMAIL', data)
+          context.commit('SET_ISLOADING', false)
         })
         .catch(err => {
+          context.commit('SET_ISLOADING', false)
           console.log(err.response.data, 'fetch cart')
         })
     },
     addCart (context, id) {
+      context.commit('SET_ISLOADING', true)
       return axios({
         url: `/carts/${id}`,
         method: 'POST',
@@ -88,6 +99,7 @@ export default new Vuex.Store({
       })
         .then(({ data }) => {
           // console.log(data)
+          context.commit('SET_ISLOADING', false)
           context.dispatch('fetchCart')
           const Toast = Swal.mixin({
             toast: true,
@@ -108,6 +120,7 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err.response.data)
+          context.commit('SET_ISLOADING', false)
           const Toast = Swal.mixin({
             toast: true,
             position: 'top',
@@ -160,6 +173,7 @@ export default new Vuex.Store({
       })
     },
     login (context, payload) {
+      context.commit('SET_ISLOADING', true)
       return axios({
         url: '/login',
         method: 'POST',
@@ -170,6 +184,7 @@ export default new Vuex.Store({
       })
     },
     register (context, payload) {
+      context.commit('SET_ISLOADING', true)
       return axios({
         url: '/register',
         method: 'POST',
@@ -182,6 +197,7 @@ export default new Vuex.Store({
     logout (context) {
       localStorage.removeItem('access_token')
       // router.push('/')
+      router.push('/').catch(() => {})
       context.commit('SET_LOGIN', localStorage.getItem('access_token'))
       context.commit('SET_EMAIL')
       const Toast = Swal.mixin({

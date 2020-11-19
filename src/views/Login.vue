@@ -1,7 +1,9 @@
 <template>
   <div>
       <Navbar/>
-      <div class="row justify-content-center " style="margin-top: 15vh;">
+      <img v-if="isLoading === true" class="animate__animated animate__fadeIn" src="../assets/animation_500_khoa45kz.gif" style="position: fixed; z-index: 999; top:0; left:0; right:0; bottom:0; margin:auto;" height="300">
+
+      <div class="row justify-content-center animate__animated animate__fadeIn" style="margin-top: 15vh;">
 
             <div class="card shadow p-2 col-3 align-items-center" >
                 <div class="card-body">
@@ -39,8 +41,9 @@
             </div>
 
             <img class="card shadow col-3 align-items-center" width="190px" src="../assets/undraw_verified_re_4io7 (1).svg">
-            <img src="../assets/wave.svg" style="position: fixed; z-index: -1;bottom:0px;">
+
         </div>
+        <img src="../assets/wave.svg" style="position: fixed; z-index: -1;bottom:0px;">
         <Footer/>
   </div>
 </template>
@@ -61,6 +64,11 @@ export default {
       password: ''
     }
   },
+  computed: {
+    isLoading () {
+      return this.$store.state.isLoading
+    }
+  },
   methods: {
     login () {
       const payload = {
@@ -72,7 +80,7 @@ export default {
           localStorage.setItem('access_token', data.access_token)
           this.$store.commit('SET_LOGIN', data.access_token)
           this.$router.push('/')
-
+          this.$store.commit('SET_ISLOADING', false)
           const Toast = Swal.mixin({
             toast: true,
             position: 'top',
@@ -91,6 +99,7 @@ export default {
           })
         })
         .catch(err => {
+          this.$store.commit('SET_ISLOADING', false)
           console.log(err.response.data)
           const Toast = Swal.mixin({
             toast: true,

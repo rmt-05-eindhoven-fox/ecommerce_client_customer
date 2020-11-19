@@ -1,5 +1,7 @@
 <template>
-  <section>
+  <section class="animate__animated animate__fadeIn">
+
+    <img v-if="isLoading === true" src="../assets/animation_500_khoa45kz.gif" class="animate__animated animate__fadeIn" style="position: fixed; z-index: 999; top:0; left:0; right:0; bottom:0; margin:auto;" height="300">
     <section class="section-pagetop bg">
       <div class="container">
           <h2 class="title-page text-blue">Shopping cart</h2>
@@ -41,7 +43,9 @@
           <td>
             <button v-if="cart.quantity <= 1" @click.prevent="minus(cart.quantity, cart.id, cart.Product.price)" class="text-decoration-none" disabled style="border: none; background: none; padding: 5px"   href=""><i class="fas fa-minus"></i></button>
             <button v-else @click.prevent="minus(cart.quantity, cart.id, cart.Product.price)" class="text-decoration-none" style="border: none; background: none; padding: 5px; color: blue" href=""><i class="fas fa-minus"></i></button>
+
             <span class="px-3" style="font-size: 13px">{{cart.quantity}}</span>
+
             <button v-if="cart.quantity >= cart.Product.stock" @click.prevent="plus(cart.quantity, cart.id, cart.Product.price)" disabled style="border: none; background; none: padding: 5px"  href=""><i  class="fas fa-plus"></i></button>
             <button v-else @click.prevent="plus(cart.quantity, cart.id, cart.Product.price)" style="border: none; background: none; padding: 5px; color: blue" href=""><i  class="fas fa-plus"></i></button>
           </td>
@@ -88,18 +92,16 @@
 
     </div>
     </section>
-    <img src="../assets/wave.svg" style="position: fixed; z-index: -1;bottom:0px;">
-    <Footer/>
+
   </section>
 </template>
 
 <script>
 import Swal from 'sweetalert2'
-import Footer from './Footer.vue'
+
 export default {
   name: 'CartList',
   components: {
-    Footer
   },
   data () {
     return {
@@ -111,6 +113,9 @@ export default {
     },
     total () {
       return this.$store.state.total
+    },
+    isLoading () {
+      return this.$store.state.isLoading
     }
   },
   methods: {
