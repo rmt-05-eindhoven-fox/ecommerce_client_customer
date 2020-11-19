@@ -14,7 +14,7 @@
           <img
             @click="addToCart"
             class="card-btn" src="../assets/icons8-addcart.svg"/>
-          <img class="card-btn" src="../assets/icons8-heart.svg"/>
+          <!-- <img class="card-btn" src="../assets/icons8-heart.svg"/> -->
         </div>
       </div>
 
@@ -22,11 +22,6 @@
         v-else
         class="card-out-stock">
         <p class="card-text mb-1" style="font-size: small; color:red"><b>Out of Stock</b></p>
-
-        <div class="card-btn-group float-right">
-          <img class="card-btn" src="../assets/icons8-addcart-inactive.svg"/>
-          <img class="card-btn" src="../assets/icons8-heart-inactive.svg"/>
-        </div>
       </div>
 
     </div>

@@ -13,12 +13,14 @@
               type="email"
               class="form-control"
               v-model="email"
+              :disabled="inputDisabled"
               placeholder="Your Email Address" id="exampleInputEmail1" aria-describedby="emailHelp">
           </div>
           <div class="form-group">
             <input
             type="password"
             v-model="password"
+            :disabled="inputDisabled"
             placeholder="Your Password" class="form-control" id="exampleInputPassword1">
           </div>
           <div>
@@ -45,21 +47,41 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      inputDisabled: false
     }
   },
   methods: {
     goToLogin () {
       this.$router.push({ name: 'Login' })
     },
+    resetInput () {
+      this.email = ''
+      this.password = ''
+      this.inputDisabled = false
+    },
     userRegister () {
+      this.inputDisabled = true
       const payload = {
         email: this.email,
         password: this.password
       }
-      this.email = ''
-      this.password = ''
       this.$store.dispatch('userRegister', payload)
+        .then(({ data }) => {
+          this.$router.push({ name: 'Login' })
+          this.$store.commit('showSuccess', {
+            title: 'Register',
+            message: 'Successfull'
+          })
+          this.resetInput()
+        })
+        .catch(err => {
+          this.$store.commit('showError', {
+            title: 'Register Error',
+            message: err.response.data.message
+          })
+          this.inputDisabled = false
+        })
     }
   }
 }

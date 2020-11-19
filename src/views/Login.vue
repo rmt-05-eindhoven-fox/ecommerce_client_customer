@@ -15,12 +15,14 @@
             <input
               type="email"
               v-model="email"
+              :disabled="inputDisabled"
               class="form-control" placeholder="Your Email Address" id="exampleInputEmail1" aria-describedby="emailHelp">
           </div>
           <div class="form-group">
             <input
               type="password"
               v-model="password"
+              :disabled="inputDisabled"
               placeholder="Your Password" class="form-control" id="exampleInputPassword1">
           </div>
           <button
@@ -43,7 +45,8 @@ export default {
   data () {
     return {
       email: '',
-      password: ''
+      password: '',
+      inputDisabled: false
     }
   },
   methods: {
@@ -55,9 +58,26 @@ export default {
         email: this.email,
         password: this.password
       }
-      this.email = ''
-      this.password = ''
+      this.inputDisabled = true
       this.$store.dispatch('userLogin', payload)
+        .then(({ data }) => {
+          localStorage.setItem('access_token', data.access_token)
+          this.$store.commit('showSuccess', {
+            title: 'Login',
+            message: 'Successfull'
+          })
+          this.$router.push({ name: 'Home' })
+          this.email = ''
+          this.password = ''
+          this.inputDisabled = false
+        })
+        .catch(err => {
+          this.$store.commit('showError', {
+            title: 'Login',
+            message: err.response.data.message
+          })
+          this.inputDisabled = false
+        })
     }
   }
 

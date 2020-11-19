@@ -26,27 +26,11 @@ export default new Vuex.Store({
   },
   actions: {
     userLogin (context, payload) {
-      axios({
+      return axios({
         url: '/user/login/customer',
         method: 'post',
         data: payload
       })
-        .then(({ data }) => {
-          localStorage.setItem('access_token', data.access_token)
-          router.push({ name: 'Home' })
-          const payload = {
-            title: 'Login',
-            message: 'Successfull'
-          }
-          context.commit('showSuccess', payload)
-        })
-        .catch(err => {
-          const payload = {
-            title: 'Login',
-            message: err.response.data.message
-          }
-          context.commit('showError', payload)
-        })
     },
 
     userLogout (context) {
@@ -55,27 +39,11 @@ export default new Vuex.Store({
     },
 
     userRegister (context, payload) {
-      axios({
+      return axios({
         url: '/user/register',
         method: 'post',
         data: payload
       })
-        .then(({ data }) => {
-          router.push({ name: 'Login' })
-
-          const payload = {
-            title: 'Register',
-            message: 'Successfull'
-          }
-          context.commit('showSuccess', payload)
-        })
-        .catch(err => {
-          const payload = {
-            title: 'Register Error',
-            message: err.response.data.message
-          }
-          context.commit('showError', payload)
-        })
     },
 
     fetchProducts (context) {
@@ -198,7 +166,7 @@ export default new Vuex.Store({
         }
       })
         .then(_ => {
-          // context.dispatch('fetchUserCart')
+          context.dispatch('fetchUserCart')
           router.push({ name: 'Home' })
 
           const payload = {

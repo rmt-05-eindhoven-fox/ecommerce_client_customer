@@ -44,7 +44,11 @@ router.beforeEach((to, from, next) => {
       next('/login')
     }
   } else {
-    next()
+    if (to.name === 'Register' || to.name === 'Login') {
+      next('/')
+    } else {
+      next()
+    }
   }
 })
 

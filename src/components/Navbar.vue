@@ -20,7 +20,6 @@
             User
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Wishlist</a>
             <a
               @click.prevent="userLogout"
               class="dropdown-item" href="">Logout</a>
