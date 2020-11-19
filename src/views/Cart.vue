@@ -6,7 +6,7 @@
         <thead>
             <tr>
                 <th scope="col">NAME</th>
-                <th scope="col">PRICE</th>
+                <th scope="col">TOTAL BELANJA</th>
                 <th scope="col">Quantity</th>
                 <th scope="col"> </th>
             </tr>

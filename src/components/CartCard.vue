@@ -4,7 +4,7 @@
             <img :src="data.Product.image_url" alt="" width="250px">
             <div style="font-size:25px;">{{data.Product.name}}</div>
         </th>
-        <td>Rp. {{data.Product.price.toLocaleString()}}</td>
+        <td>Rp. {{(data.Product.price*data.quantity).toLocaleString()}}</td>
         <td>
             <button v-if="this.data.quantity > 1" class="far fa-minus-square mr-2" @click="decrementQuantity(data.id)"></button>
             <button v-else class="far fa-minus-square mr-2" @click="decrementQuantity(data.id)" disabled></button>

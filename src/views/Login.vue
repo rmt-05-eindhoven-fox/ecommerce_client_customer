@@ -24,6 +24,7 @@
           <input type="submit" value="Login" />
         </div>
         <div class="signup-link">Not a member?  <router-link to='/register'>Register</router-link></div>
+        <div class="signup-link">Back to home?  <router-link to='/'>Home</router-link></div>
       </form>
     </div>
   </div>
@@ -56,17 +57,19 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 * {
-  margin: 0;
+  margin : 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
 .login-page {
-  display: grid;
   height: 100%;
   width: 100%;
+  min-height: 100vh;
+  min-width: 100vw;
+  display: grid;
   place-items: center;
-  background: #f2f2f2;
+  background: skyblue;
   /* background: linear-gradient(-135deg, #c850c0, #4158d0); */
 }
 ::selection {

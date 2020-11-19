@@ -23,6 +23,8 @@
         <div class="field">
           <input type="submit" value="register" />
         </div>
+        <div class="signup-link">Have account?  <router-link to='/login'>Login</router-link></div>
+        <div class="signup-link">Back to home?  <router-link to='/'>Home</router-link></div>
       </form>
     </div>
   </div>
@@ -62,12 +64,14 @@ export default {
   font-family: 'Poppins', sans-serif;
 }
 .register-page{
-  display: grid;
   height: 100%;
   width: 100%;
+  min-height: 100vh;
+  min-width: 100vw;
+  display: grid;
   place-items: center;
-  background: #f2f2f2;
-  /* background: linear-gradient(-135deg, #c850c0, #4158d0); */
+  /* background: #f2f2f2; */
+  background: linear-gradient(-135deg, #c850c0, #4158d0);
 }
 ::selection{
   background: #4158d0;
