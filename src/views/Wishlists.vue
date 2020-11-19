@@ -1,16 +1,20 @@
 <template>
   <section id="register-page">
     <Navbar/>
-    <div id="products-board-items">
+    <div class="container" id="products-board-items">
       <br>
-      <h2>Wishlist</h2>
-      <div class="row">
+      <h2 class="text-left">Wishlist</h2>
+      <hr>
+      <div v-if="wishlists.length > 0" class="row">
         <WishlistItem
           v-for="wishlist in wishlists"
           :key="wishlist.id"
           :wishlist="wishlist"
           @fetchWishlists="fetchWishlists"
         />
+      </div>
+      <div v-else class="alert alert-info" role="alert">
+        Wishlist is still empty
       </div>
     </div>
   </section>

@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
   name: 'Navbar',
   data () {
@@ -56,32 +58,51 @@ export default {
   },
   methods: {
     goToLogin () {
-      this.$router.push({ name: 'Login' })
+      if (this.$route.name !== 'Login') {
+        this.$router.push({ name: 'Login' })
+      }
     },
     goToDashboard () {
-      this.$router.push({ name: 'Dashboard' })
-    },
-    goToCart () {
-      this.$router.push({ name: 'Carts' })
-    },
-    goToHistory () {
-      this.$router.push({ name: 'History' })
-    },
-    goToWishlist () {
-      this.$router.push({ name: 'Wishlists' })
-    },
-    logout () {
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('email')
       if (this.$route.name !== 'Dashboard') {
         this.$router.push({ name: 'Dashboard' })
       }
-      // this.isLoggedin = false
-      const payload = {
-        status: false,
-        email: ''
+    },
+    goToCart () {
+      if (this.$route.name !== 'Carts') {
+        this.$router.push({ name: 'Carts' })
       }
-      this.$store.commit('SET_isLoggedIn', payload)
+    },
+    goToHistory () {
+      if (this.$route.name !== 'History') {
+        this.$router.push({ name: 'History' })
+      }
+    },
+    goToWishlist () {
+      if (this.$route.name !== 'Wishlists') {
+        this.$router.push({ name: 'Wishlists' })
+      }
+    },
+    logout () {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Logout'
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('email')
+            if (this.$route.name !== 'Dashboard') {
+              this.$router.push({ name: 'Dashboard' })
+            }
+            const payload = { status: false, email: '' }
+            this.$store.commit('SET_isLoggedIn', payload)
+          }
+        })
     }
   },
   computed: {

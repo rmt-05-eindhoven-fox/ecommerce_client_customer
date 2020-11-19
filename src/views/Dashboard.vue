@@ -27,12 +27,15 @@
           </div>
           <!-- products -->
           <div id="products-board-items">
-            <div class="row">
+            <div v-if="products.length > 0" class="row">
               <ProductItem
                 v-for="product in products"
                 :key="product.id"
                 :product="product"
               />
+            </div>
+            <div v-else class="alert alert-info" role="alert">
+              Product in this category is empty
             </div>
           </div>
         </div>
@@ -61,9 +64,6 @@ export default {
     fetchProducts () {
       this.$store.dispatch('fetchProducts')
     },
-    // setSelectedCategory () {
-    //   this.$store.commit('SET_SELECTED_CATEGORY', this.selectedCategory)
-    // },
     fetchCategories () {
       this.$store.dispatch('fetchCategories')
     }
@@ -76,9 +76,6 @@ export default {
       }
       return products
     },
-    // selectedCategory () {
-    //   return this.$store.state.selectedCategory
-    // },
     categories () {
       return this.$store.state.categories
     }
@@ -88,10 +85,6 @@ export default {
     this.fetchCategories()
   },
   watch: {
-    // selectedCategory () {
-    //   // this.setSelectedCategory(this.selectedCategory)
-    //   this.$store.commit('SET_SELECTED_CATEGORY', this.selectedCategory)
-    // }
     selectedCategory () {
       console.log(this.selectedCategory)
     }
@@ -100,13 +93,5 @@ export default {
 </script>
 
 <style>
-/* body {
-  background-color: rgba(15, 12, 12, 0.616);
-} */
 
-/* #side-menu {
-  height: 100vh;
-  overflow-x: hidden;
-  padding-top: 20px;
-} */
 </style>

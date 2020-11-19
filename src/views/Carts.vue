@@ -2,17 +2,22 @@
   <section id="cart-page">
     <Navbar/>
     <div class="container mt-5">
+      <h2 class="text-left">Carts</h2>
+      <hr>
       <div class="row">
         <!-- cart table -->
         <div class="col-7">
           <!-- cart item -->
-          <div class="cart-item">
+          <div v-if="carts.length > 0" class="cart-item">
             <CartItem
               v-for="cart in carts"
               :key="cart.id"
               :cart="cart"
               @fetchCarts="fetchCarts"
             />
+          </div>
+          <div v-else class="alert alert-info" role="alert">
+            Carts is still empty
           </div>
         </div>
         <!-- checkout table -->

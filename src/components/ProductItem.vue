@@ -24,15 +24,28 @@ export default {
   props: ['product'],
   methods: {
     addCart (ProductId) {
-      this.$store.dispatch('addCart', ProductId)
+      if (this.isLoggedIn) {
+        this.$store.dispatch('addCart', ProductId)
+      } else {
+        this.$router.push({ name: 'Login' })
+      }
     },
     addWishlist (ProductId) {
-      this.$store.dispatch('addWishlist', ProductId)
+      if (this.isLoggedIn) {
+        this.$store.dispatch('addWishlist', ProductId)
+      } else {
+        this.$router.push({ name: 'Login' })
+      }
     },
     formatRupiah (money) {
       return new Intl.NumberFormat('id-ID',
         { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }
       ).format(money)
+    }
+  },
+  computed: {
+    isLoggedIn () {
+      return this.$store.state.isLoggedIn.status
     }
   }
 }

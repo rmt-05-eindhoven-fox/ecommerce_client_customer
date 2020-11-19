@@ -1,7 +1,7 @@
 <template>
   <section id="login-page">
     <Navbar/>
-    <div class="container login-board">
+    <div class="container mt-5">
       <div class="row">
         <div class="col-8">
           <!-- <p>Ini tulisan</p> -->
@@ -68,9 +68,9 @@ body {
   background-color: rgba(223, 219, 219, 0.616);
 }
 
-/* .login-board {
-  height: 80vh;
-} */
+.login-board {
+  margin: 10px;
+}
 
 img {
   height: 400px;
