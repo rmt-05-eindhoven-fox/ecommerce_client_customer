@@ -18,18 +18,18 @@
                 <h3>Summary</h3>
                 <div class="summary-item">
                   <span class="text">Subtotal</span
-                  ><span class="price">$360</span>
+                  ><span class="price">{{this.total}}</span>
                 </div>
                 <div class="summary-item">
                   <span class="text">Discount</span
-                  ><span class="price">$0</span>
+                  ><span class="price">0</span>
                 </div>
                 <div class="summary-item">
                   <span class="text">Shipping</span
-                  ><span class="price">$0</span>
+                  ><span class="price">0</span>
                 </div>
                 <div class="summary-item">
-                  <span class="text">Total</span><span class="price">$360</span>
+                  <span class="text">Total</span><span class="price">{{this.total}}</span>
                 </div>
                 <button type="button" class="btn btn-primary btn-lg btn-block">
                   Checkout
@@ -53,15 +53,29 @@ export default {
   computed: {
     carts () {
       return this.$store.state.carts
+    },
+    total () {
+      return this.$store.state.total
     }
   },
   methods: {
     fetchCart () {
       this.$store.dispatch('fetchCart')
+    },
+    price () {
+      let payload = 0
+      this.carts.forEach(element => {
+        payload += (element.amount * element.Product.price)
+      })
+      this.$store.commit('setTotal', payload)
     }
   },
   created () {
     this.fetchCart()
+    this.price()
+    if (!localStorage.getItem('token')) {
+      this.$router.push('/signin')
+    }
   }
 }
 </script>

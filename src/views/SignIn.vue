@@ -62,6 +62,7 @@ export default {
           } else {
             const token = data.access_token
             localStorage.setItem('token', token)
+            this.$store.commit('setLogin', true)
             this.$router.push('/')
           }
         })
@@ -72,6 +73,11 @@ export default {
     },
     signup () {
       this.$router.push('/signup')
+    }
+  },
+  created () {
+    if (localStorage.getItem('token')) {
+      this.$router.push('/')
     }
   }
 }

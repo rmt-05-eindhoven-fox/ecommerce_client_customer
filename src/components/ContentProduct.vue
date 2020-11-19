@@ -54,6 +54,7 @@ export default {
           const amount = ++filter[0].amount
           const payload = {
             ProductId: id,
+            id: filter[0].id,
             amount: amount
           }
           this.$store.dispatch('updateAmount', payload)

@@ -69,11 +69,16 @@ export default {
           this.$router.push('/signin')
         })
         .catch(err => {
-          console.log(err)
+          this.isError = err.response.data.error
         })
     },
     signin () {
       this.$router.push('/signin')
+    }
+  },
+  created () {
+    if (localStorage.getItem('token')) {
+      this.$router.push('/')
     }
   }
 }

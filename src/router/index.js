@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import VueLoading from 'vuejs-loading-plugin'
+
+Vue.use(VueLoading)
 
 Vue.use(VueRouter)
 

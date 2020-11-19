@@ -16,9 +16,15 @@
 
         <div>
           <router-link
+            to="/cart"
+            class="btn btn-primary my-2 my-sm-0"
+            style="margin-right: 15px"
+          ><i class="fas fa-cart-plus"></i>
+          </router-link>
+          <router-link
             to="/signin"
             class="btn btn-outline-primary my-2 my-sm-0"
-            v-if="!token"
+            v-if="!isLogin"
             >Sign In </router-link
           >
           <button @click.prevent="signout" v-else class="btn btn-danger">Sign Out</button>
@@ -30,17 +36,21 @@
 </template>
 <script>
 export default {
-  data () {
-    return {
-      token: ''
+  name: 'App',
+  computed: {
+    isLogin () {
+      return this.$store.state.isLogin
     }
   },
   methods: {
     signout () {
       localStorage.clear()
+      this.$store.commit('setLogin', false)
     },
     isToken () {
-      this.token = localStorage.getItem('token')
+      if (localStorage.getItem('token')) {
+        this.$store.commit('setLogin', true)
+      }
     }
   },
   created () {

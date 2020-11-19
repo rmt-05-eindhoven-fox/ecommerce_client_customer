@@ -18,11 +18,12 @@
             <div class="col-md-4 quantity">
               <label for="quantity">Quantity:</label>
               <input
+                v-model="query"
+                v-on:input="updateAmount"
                 id="quantity"
                 type="number"
                 min="1"
                 :max="carts.Product.stock"
-                :value="carts.amount"
                 class="form-control quantity-input"
               />
             </div>
@@ -30,7 +31,7 @@
               <span>Rp. {{carts.Product.price * carts.amount}}</span>
             </div>
             <div class="col-md-1 tex-danger">
-              <i class="fas fa-trash"></i>
+              <a @click.prevent="deleteCart(carts.id)" href=""><i class="fas fa-trash text-danger"></i></a>
             </div>
           </div>
         </div>
@@ -40,9 +41,38 @@
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   name: 'ContentCart',
-  props: ['carts']
+  props: ['carts'],
+  data () {
+    return {
+      query: this.carts.amount
+    }
+  },
+  methods: {
+    updateAmount: _.debounce(function () {
+      const payload = {
+        ProductId: this.carts.ProductId,
+        id: this.carts.id,
+        amount: +this.query
+      }
+      setTimeout(() => {
+        this.$store.dispatch('fetchCart')
+        this.$store.commit('setTotal', this.query * this.carts.Product.price)
+      }, 300)
+      this.$store.dispatch('updateAmount', payload)
+    }, 300),
+    deleteCart (id) {
+      this.$store.dispatch('deleteCart', id)
+        .then(() => {
+          this.$store.dispatch('fetchCart')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
+  }
 }
 </script>
 

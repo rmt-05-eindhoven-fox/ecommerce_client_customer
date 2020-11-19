@@ -8,7 +8,9 @@ export default new Vuex.Store({
   state: {
     banners: [],
     categories: [],
-    carts: []
+    carts: [],
+    total: 0,
+    isLogin: false
   },
   mutations: {
     setBanners (state, payload) {
@@ -19,6 +21,12 @@ export default new Vuex.Store({
     },
     setCarts (state, payload) {
       state.carts = payload
+    },
+    setTotal (state, payload) {
+      state.total = payload
+    },
+    setLogin (state, payload) {
+      state.isLogin = payload
     }
   },
   actions: {
@@ -80,23 +88,25 @@ export default new Vuex.Store({
     },
     fetchCart (context) {
       const token = localStorage.getItem('token')
-      axios({
-        url: '/products/cart',
-        method: 'GET',
-        headers: {
-          token
-        }
-      })
-        .then(({ data }) => {
-          context.commit('setCarts', data)
+      if (token) {
+        axios({
+          url: '/products/cart',
+          method: 'GET',
+          headers: {
+            token
+          }
         })
-        .catch(err => {
-          console.log(err)
-        })
+          .then(({ data }) => {
+            context.commit('setCarts', data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
     },
     updateAmount (context, payload) {
       const token = localStorage.getItem('token')
-      const id = payload.ProductId
+      const id = payload.id
       axios({
         url: `/products/cart/${id}`,
         method: 'PATCH',
@@ -111,6 +121,18 @@ export default new Vuex.Store({
         .catch(err => {
           console.log(err)
         })
+    },
+    deleteCart (context, payload) {
+      const token = localStorage.getItem('token')
+      const id = payload
+      return axios({
+        url: `/products/cart/${id}`,
+        method: 'DELETE',
+        data: payload,
+        headers: {
+          token
+        }
+      })
     }
   },
   modules: {
