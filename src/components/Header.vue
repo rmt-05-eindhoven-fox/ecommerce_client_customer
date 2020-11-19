@@ -6,7 +6,7 @@
           </div>
        </div>
        <div class="col-md-4 col-12 text-center my-2">
-          <h2 class="my-md-3 site-title text-center">E-Commerce Customer</h2>
+          <h2 class="my-md-3 site-title text-center">Rama E-Commerce</h2>
        </div>
        <div class="account col-md-4 col-12 my-2">
          <p class="my-md-4 header-links">
@@ -45,7 +45,7 @@
               <span><router-link to="/cart"> Cart <i class="fas fa-shopping-basket fa-md"></i></router-link></span>
               <span v-if="cartLength > 0" class="badge">{{cartLength}}</span>
             </a>
-            <a href="#">Transaction</a>
+            <a href="#"><router-link to="/transactions">Transaction</router-link></a>
         </div>
       </nav>
      </div>

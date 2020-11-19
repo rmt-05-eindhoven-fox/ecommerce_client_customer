@@ -40,13 +40,17 @@ export default {
   methods: {
     addToCart (id) {
       const accessToken = localStorage.getItem('access_token')
-      const payload = {
-        id,
-        accessToken,
-        quantity: 1
+      if (!accessToken) {
+        this.$router.push('/landingPage/signIn')
+      } else {
+        const payload = {
+          id,
+          accessToken,
+          quantity: 1
+        }
+        this.$store.dispatch('addToCart', payload)
+        this.$router.push('/cart')
       }
-      this.$store.dispatch('addToCart', payload)
-      window.scrollTo(0, 0)
     }
   },
   mounted () {

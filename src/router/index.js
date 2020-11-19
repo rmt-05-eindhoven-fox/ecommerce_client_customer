@@ -6,7 +6,7 @@ import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Home from '@/components/Home.vue'
 import Cart from '@/components/Cart.vue'
-import ProductsByCategory from '@/components/ProductsByCategory.vue'
+import Transactions from '@/components/Transactions.vue'
 
 Vue.use(VueRouter)
 
@@ -27,9 +27,9 @@ const routes = [
         component: Cart
       },
       {
-        path: '/products',
-        name: 'Products',
-        component: ProductsByCategory
+        path: '/transactions',
+        name: 'Transactions',
+        component: Transactions
       }
     ]
   },

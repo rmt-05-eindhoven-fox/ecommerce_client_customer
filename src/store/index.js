@@ -14,7 +14,8 @@ export default new Vuex.Store({
     products: [],
     cartProducts: [],
     cartWatch: '',
-    notifyMessage: ''
+    notifyMessage: '',
+    transactions: []
   },
   mutations: {
     SET_BACKGROUND_COLOR (state, val) {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     UPDATE_CART_WATCH (state, val) {
       state.cartWatch = val
+    },
+    SET_TRANSACTIONS (state, payload) {
+      state.transactions = payload
     }
   },
   actions: {
@@ -50,11 +54,13 @@ export default new Vuex.Store({
         })
     },
     fetchProducts ({ commit }) {
+      Vue.swal.showLoading()
       axios({
         method: 'GET',
         url: '/products'
       })
         .then(response => {
+          Vue.swal.close()
           console.log(response.data)
           commit('SET_PRODUCTS', response.data)
         })
@@ -77,12 +83,14 @@ export default new Vuex.Store({
         })
     },
     fetchCartProducts ({ commit }, accessToken) {
+      Vue.swal.showLoading()
       axios({
         method: 'GET',
         url: '/cart',
         headers: { access_token: accessToken }
       })
         .then(response => {
+          Vue.swal.close()
           commit('SET_CART_PRODUCTS', response.data)
           console.log(response.data)
         })
@@ -124,6 +132,29 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err.response.data.message)
+          Vue.swal.fire({
+            title: err.response.data.message,
+            icon: 'error'
+          })
+        })
+    },
+    checkoutProduct ({ commit }, payload) {
+      axios({
+        method: 'POST',
+        url: `/cart/${payload.id}`,
+        headers: { access_token: payload.accessToken },
+        data: { paid: true, stock: payload.stock }
+      })
+        .then(response => {
+          commit('UPDATE_CART_WATCH', response.data)
+          console.log(response.data)
+        })
+        .catch(err => {
+          console.log(err.response.data.message)
+          Vue.swal.fire({
+            title: err.response.data.message,
+            icon: 'error'
+          })
         })
     },
     fetchByCategory ({ commit }, category) {
@@ -136,6 +167,27 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err.response.data.message)
+          Vue.swal.fire({
+            title: err.response.data.message,
+            icon: 'error'
+          })
+        })
+    },
+    fetchTransactions ({ commit }, accessToken) {
+      axios({
+        method: 'GET',
+        url: '/transactions',
+        headers: { access_token: accessToken }
+      })
+        .then(response => {
+          commit('SET_TRANSACTIONS', response.data)
+        })
+        .catch(err => {
+          console.log(err.response.data.message)
+          Vue.swal.fire({
+            title: err.response.data.message,
+            icon: 'error'
+          })
         })
     }
   },

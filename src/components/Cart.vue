@@ -74,18 +74,24 @@ export default {
         accessToken,
         quantity: val
       }
-      if (val === 1 && quantity >= stock) {
-        console.log('cek')
-        const payload = {
-          id,
-          accessToken,
-          quantity: 0
+      if (val === 1) {
+        if (quantity >= stock) {
+          console.log('cek')
+          const payload = {
+            id,
+            accessToken,
+            quantity: 0
+          }
+          this.$store.dispatch('addToCart', payload)
+        } else {
+          this.$store.dispatch('addToCart', payload)
         }
-        this.$store.dispatch('addToCart', payload)
-      } else if (quantity > 1) {
-        this.$store.dispatch('addToCart', payload)
       } else {
-        this.deleteProduct(id, stock)
+        if (quantity > 1) {
+          this.$store.dispatch('addToCart', payload)
+        } else {
+          this.deleteProduct(payload.id, stock)
+        }
       }
     },
     deleteProduct (id, stock) {
@@ -99,12 +105,18 @@ export default {
     },
     checkoutProduct () {
       this.$noty.success('Thanks for buying our products!')
+      const accessToken = localStorage.getItem('access_token')
       for (let i = 0; i < this.cartProducts.length; i++) {
         console.log(i)
         const cart = this.cartProducts[i]
-        const stock = cart.Product.stock - cart.quantity
         const id = cart.Product.id
-        this.deleteProduct(id, stock)
+        const stock = cart.Product.stock - cart.quantity
+        const payload = {
+          accessToken,
+          id,
+          stock
+        }
+        this.$store.dispatch('checkoutProduct', payload)
       }
     }
   }

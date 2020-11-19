@@ -16,7 +16,7 @@
             <input v-model="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
           </div>
           <div class="form-group">
-            <a href="#">Not registered yet?</a>
+            <a href="#"><router-link to="/landingPage/signUp">Not registered yet?</router-link></a>
           </div>
           <button type="submit" class="btn btn-primary bg-warning btn-lg">Submit</button>
         </form>
