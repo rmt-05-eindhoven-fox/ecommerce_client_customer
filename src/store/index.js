@@ -115,6 +115,34 @@ export default new Vuex.Store({
           context.commit('setCarts', data)
         })
         .catch(err => console.log(err))
+    },
+    deleteCart (context, payload) {
+      axios({
+        url: '/carts/' + payload,
+        method: 'DELETE',
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(data => {
+          console.log('Delete berhasil')
+        })
+        .catch(err => console.log(err))
+    },
+    decreaseCart (context, payload) {
+      axios({
+        url: '/carts/decrease/' + payload,
+        method: 'DELETE',
+        headers: {
+          token: localStorage.token
+        }
+      })
+        .then(data => {
+          console.log('decrease berhasil!')
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   modules: {

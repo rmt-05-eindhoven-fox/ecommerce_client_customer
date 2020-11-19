@@ -11,7 +11,7 @@
       footer-tag="footer"
     >
       <b-card-text>
-        Price : RP {{ product.price }}
+        Price : RP {{ newPrice }}
       </b-card-text>
       <p>Stock ({{ product.stock }})</p>
       <b-button href="#" variant="primary" @click="addCart"><i class="fas fa-cart-plus"></i> Add to Cart</b-button>
@@ -39,6 +39,24 @@ export default {
     },
     changePage (string) {
       this.$emit('changePage', string)
+    }
+  },
+  computed: {
+    newPrice () {
+      let total = this.product.price
+      let index = 1
+      let result = ''
+      total = total.toString()
+      for (let i = total.length - 1; i >= 0; i--) {
+        if (index % 3 === 0 && index !== total.length) {
+          result = '.' + total[i] + result
+          index++
+        } else {
+          index++
+          result = total[i] + result
+        }
+      }
+      return result
     }
   }
 }
