@@ -14,7 +14,7 @@
             <img class="image" :src="cart.Product.image_url" alt="">
             <p class="card-title mt-3">Quantity: {{ cart.quantity }}</p>
             <p class="card-text">Category: {{ cart.Product.category}}</p>
-            <p class="card-text">Price: Rp.{{cart.Product.price}}</p>
+            <p class="card-text">Price: Rp.{{cart.Product.price * cart.quantity}}</p>
             <p class="card-text">Stock: {{cart.Product.stock}}</p>
             <!-- <p class="card-text">Status: {{cart.Product.status}} </p> -->
             <a @click.prevent="minus(cart.id, cart.quantity)" href="" class="btn btn-danger">-</a>
