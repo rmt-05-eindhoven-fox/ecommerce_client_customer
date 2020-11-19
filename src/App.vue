@@ -90,6 +90,7 @@
               <v-row justify="center" class="checkout-btn">
                 <v-btn
                 color="#FEDBD0"
+                @click="checkout"
                 >
                   Checkout
                 </v-btn>
@@ -141,11 +142,7 @@ export default {
       }
     },
     islogin () {
-      const accessToken = localStorage.getItem('access_token')
-      if (accessToken) {
-        return true
-      }
-      return false
+      return this.$store.state.isLogin
     },
     carts () {
       return this.$store.state.carts
@@ -189,10 +186,26 @@ export default {
         duration: 2000,
         theme: 'light'
       })
+    },
+    checkout () {
+      this.$swal({
+        title: 'Process to Checkout?',
+        text: 'Do you want to process to checkout',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        reverseButtons: true
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            this.$router.push('/checkout')
+          }
+        })
     }
   },
   created () {
     this.fetchCarts()
+    this.$store.commit('setLogin')
   }
 }
 </script>

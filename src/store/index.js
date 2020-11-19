@@ -12,9 +12,18 @@ export default new Vuex.Store({
     currentCategory: '',
     loadingProduct: false,
     detailProduct: '',
-    carts: []
+    carts: [],
+    isLogin: false
   },
   mutations: {
+    setLogin (state) {
+      const accessToken = localStorage.getItem('access_token')
+      if (accessToken) {
+        state.isLogin = true
+      } else {
+        state.isLogin = false
+      }
+    },
     setBanners (state, payload) {
       state.banners = payload
     },

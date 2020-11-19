@@ -13,7 +13,8 @@
             <h1 class="product-detail-title">{{product.name}}</h1>
             <h4>Price:</h4>
             <h1>{{price}}</h1>
-            <h4 class="quantity">Quantity ({{product.stock}} availables)</h4>
+            <h4 v-if="product.stock" class="quantity">Quantity ({{product.stock}} availables)</h4>
+            <h4 v-else style="color: red">Out of Stock</h4>
             <IntegerPlusminus
             v-model="amount" class="quantity-count" min="1" :max="product.stock" ></IntegerPlusminus>
             <v-btn
@@ -21,7 +22,7 @@
             class="add-to-cart-btn"
             @click="addToCart"
             :loading="isLoading"
-            :disabled="loading"
+            :disabled="!product.stock || loading"
             >
               <v-icon>mdi-cart-plus</v-icon> Add to cart
             </v-btn>

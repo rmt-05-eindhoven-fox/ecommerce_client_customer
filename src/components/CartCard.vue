@@ -82,7 +82,7 @@ export default {
     },
     minusCart () {
       const amountNow = this.cart.amount -= 1
-      if (amountNow === 0) {
+      if (amountNow <= 0) {
         this.deleteCart()
       } else {
         this.isLoading = true

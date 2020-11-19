@@ -63,17 +63,35 @@ export default {
       }
       this.$store.dispatch('login', payload)
         .then(({ data }) => {
-          localStorage.setItem('access_token', data.access_token)
-          this.isLoading = false
-          this.$router.push('/')
-          this.$vToastify.success({
-            title: 'Success',
-            body: 'Login success.',
-            canTimeout: true,
-            duration: 2000,
-            theme: 'light'
-          })
-          this.$store.dispatch('fetchCarts')
+          if (data.role === 'admin') {
+            this.isLoading = false
+            this.$swal({
+              title: 'Not admin zone',
+              text: 'Login as admin on Skoutwear CMS',
+              icon: 'error',
+              showCancelButton: true,
+              confirmButtonText: 'Go to CMS',
+              reverseButtons: true
+            })
+              .then((result) => {
+                if (result.isConfirmed) {
+                  window.location.href = 'https://ecommerce-cms-yosiaelnino.web.app/'
+                }
+              })
+          } else {
+            localStorage.setItem('access_token', data.access_token)
+            this.isLoading = false
+            this.$router.push('/')
+            this.$vToastify.success({
+              title: 'Success',
+              body: 'Login success.',
+              canTimeout: true,
+              duration: 2000,
+              theme: 'light'
+            })
+            this.$store.dispatch('fetchCarts')
+            this.$store.commit('setLogin')
+          }
         })
         .catch(err => {
           this.isLoading = false
