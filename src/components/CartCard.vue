@@ -49,10 +49,10 @@ export default {
       } else {
         payload.quantity--
       }
-      this.$store.dispatch('updateCartQty', payload)
+      this.$emit('updateQty', payload)
     },
     removeFromCart () {
-      this.$store.dispatch('removeFromCart', this.product.ProductId)
+      this.$emit('removeFromCart', this.product.ProductId)
     }
   }
 }

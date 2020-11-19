@@ -14,6 +14,8 @@
             v-for="product in cart"
             :key="product.id"
             :product="product"
+            @updateQty='updateQty'
+            @removeFromCart='removeFromCart'
           />
 
           <hr>
@@ -91,21 +93,54 @@ export default {
   methods: {
     checkout () {
       this.$store.dispatch('checkout')
+    },
+
+    fetchUserCart () {
+      this.$store.dispatch('fetchUserCart')
+        .then(({ data }) => {
+          this.$store.commit('setCart', data.userCart)
+          this.loading = false
+        })
+        .catch(err => {
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          this.$store.commit('showError', payload)
+        })
+    },
+
+    updateQty (payload) {
+      this.$store.dispatch('updateCartQty', payload)
+        .then(_ => {
+          this.fetchUserCart()
+        })
+        .catch(err => {
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          this.$store.commit('showError', payload)
+        })
+    },
+
+    removeFromCart (payload) {
+      this.$store.dispatch('removeFromCart', payload)
+        .then(_ => {
+          console.log('removed from cart')
+          this.fetchUserCart()
+        })
+        .catch(err => {
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          this.$store.commit('showError', payload)
+        })
     }
   },
   created () {
-    this.$store.dispatch('fetchUserCart')
-      .then(({ data }) => {
-        this.$store.commit('setCart', data.userCart)
-        this.loading = false
-      })
-      .catch(err => {
-        const payload = {
-          title: 'ERROR',
-          message: err.response.data.message
-        }
-        this.$store.commit('showError', payload)
-      })
+    this.fetchUserCart()
   }
 }
 </script>

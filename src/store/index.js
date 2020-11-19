@@ -16,6 +16,7 @@ export default new Vuex.Store({
       state.products = data
     },
     setCart (state, data) {
+      console.log('setting to cart data')
       state.cart = data
     },
     setHistory (state, data) {
@@ -105,7 +106,7 @@ export default new Vuex.Store({
     },
 
     updateCartQty (context, payload) {
-      axios({
+      return axios({
         url: `/user/cart/${payload.productId}`,
         method: 'patch',
         headers: {
@@ -115,36 +116,16 @@ export default new Vuex.Store({
           quantity: payload.quantity
         }
       })
-        .then(_ => {
-          context.dispatch('fetchUserCart')
-        })
-        .catch(err => {
-          const payload = {
-            title: 'ERROR',
-            message: err.response.data.message
-          }
-          context.commit('showError', payload)
-        })
     },
 
     removeFromCart (context, productId) {
-      axios({
+      return axios({
         url: `/user/cart/${productId}`,
         method: 'delete',
         headers: {
           access_token: localStorage.getItem('access_token')
         }
       })
-        .then(_ => {
-          context.dispatch('fetchUserCart')
-        })
-        .catch(err => {
-          const payload = {
-            title: 'ERROR',
-            message: err.response.data.message
-          }
-          context.commit('showError', payload)
-        })
     },
 
     fetchUserHistory (context) {
