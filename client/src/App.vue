@@ -6,6 +6,7 @@
         alt="logo"
         style="width: 100px; margin-top: 15px"
       />
+      <h1 style="font-size: 26px; background-color: #f7d794; margin-top: 0px; text-align: center; font-family: Assistant">Bookoo Shop</h1>
       <div class="nav-links">
         <router-link
           class="nav-icon"
@@ -17,7 +18,7 @@
           class="nav-icon"
           to="/cart"
           uk-icon="icon: cart; ratio: 1.5"
-          uk-tooltip="title: Cart; pos: right; delay: 150"
+          uk-tooltip="title: Shopping Cart; pos: right; delay: 150"
         ></router-link>
         <router-link
           v-if="loginStatus"
@@ -33,13 +34,14 @@
           uk-icon="icon: sign-in; ratio: 1.5"
           uk-tooltip="title: Login; pos: right; delay: 150"
         ></router-link>
-        <router-link
+        <button
+          @click="logout"
           v-if="loginStatus"
           class="nav-icon"
           to="/"
           uk-icon="icon: sign-out; ratio: 1.5"
           uk-tooltip="title: Logout; pos: right"
-        ></router-link>
+        ></button>
       </div>
     </div>
     <router-view />
@@ -52,6 +54,14 @@ export default {
   computed: {
     loginStatus () {
       return this.$store.state.loginStatus
+    }
+  },
+  methods: {
+    logout () {
+      localStorage.clear()
+      console.log('user is logged out now')
+      this.$store.commit('setLoginStatus', false)
+      this.$router.push({ name: 'Home' })
     }
   }
 }

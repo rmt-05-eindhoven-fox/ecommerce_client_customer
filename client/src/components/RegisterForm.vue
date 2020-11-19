@@ -8,7 +8,7 @@
           font-family: 'Assistant', sans-serif;
         "
       >
-        Bookoo
+        Bookoo Shop
       </h3>
       <p style="text-align: center">Register for a new user account</p>
       <a @click.prevent="goToLogin" href="#"
