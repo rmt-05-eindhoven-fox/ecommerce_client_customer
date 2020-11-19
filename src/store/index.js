@@ -387,6 +387,55 @@ export default new Vuex.Store({
         'Your product has been checkout from cart.',
         'success'
       )
+    },
+    increment (context, payload) {
+      const accessToken = localStorage.getItem('access_token')
+      axios({
+        method: 'PATCH',
+        url: `/carts/${+payload.id}/incrementQuantity`,
+        headers: {
+          access_token: accessToken
+        },
+        data: {
+          quantity: payload.quantity,
+          ProductId: payload.ProductId
+        }
+      })
+        .then((result) => {
+          context.dispatch('readCart')
+        })
+        .catch((err) => {
+          console.log(err.response.data.msg)
+          Vue.swal(
+            'Error!',
+            err.response.data.msg,
+            'error'
+          )
+        })
+    },
+    decrement (context, payload) {
+      const accessToken = localStorage.getItem('access_token')
+      axios({
+        method: 'PATCH',
+        url: `/carts/${+payload.id}/decrementQuantity`,
+        headers: {
+          access_token: accessToken
+        },
+        data: {
+          quantity: payload.quantity
+        }
+      })
+        .then((result) => {
+          context.dispatch('readCart')
+        })
+        .catch((err) => {
+          console.log(err.response.data.msg)
+          Vue.swal(
+            'Error!',
+            err.response.data.msg,
+            'error'
+          )
+        })
     }
   },
   modules: {

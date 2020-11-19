@@ -18,8 +18,10 @@
         <h6 class="card-title"><i class="fas fa-tags"></i> : {{cartsProduct.moneyFormat}} / Items</h6>
         <form @submit.prevent="updateCart()">
           <label for="quantity" class="mr-2">Quantity : </label>
+          <a href="#" @click.prevent="decrement()" class="btn btn-primary btn-sm mx-1" :class="[cartsProduct.quantity === 1 ? 'disabled' : '']" aria-disabled="true">-</a>
           <input v-model="cartsProduct.quantity" type="number" name="quantity" min="1" :max="cartsProduct.Product.stock">
-          <input type="submit" class="ml-2" value="Submit"><span v-if="cartsProduct.quantity >= cartsProduct.Product.stock" class="text-danger font-weight-bold"> *Max limit stock!</span>
+          <a href="#" @click.prevent="increment()" class="btn btn-primary btn-sm mx-1" :class="[cartsProduct.quantity >= cartsProduct.Product.stock ? 'disabled' : '']" aria-disabled="true">+</a>
+          <input v-show="false" type="submit" class="ml-2" value="Submit"><span v-if="cartsProduct.quantity >= cartsProduct.Product.stock" class="text-danger font-weight-bold"> *Max limit stock!</span>
         </form>
       </div>
     </div>
@@ -34,7 +36,24 @@ export default {
     deleteCart (id) {
       this.$store.dispatch('deleteCart', id)
     },
-    updateCart () {
+    increment () {
+      const payload = {
+        id: this.cartsProduct.id,
+        ProductId: this.cartsProduct.ProductId,
+        quantity: this.cartsProduct.quantity
+      }
+      this.$store.dispatch('increment', payload)
+    },
+    decrement () {
+      const payload = {
+        id: this.cartsProduct.id,
+        quantity: this.cartsProduct.quantity
+      }
+      this.$store.dispatch('decrement', payload)
+    }
+  },
+  watch: {
+    'cartsProduct.quantity' () {
       const payload = {
         id: this.cartsProduct.id,
         quantity: this.cartsProduct.quantity
