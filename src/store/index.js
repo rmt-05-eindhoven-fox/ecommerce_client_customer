@@ -128,6 +128,22 @@ export default new Vuex.Store({
       }
     },
 
+    async googleLogin (authCode) {
+      try {
+        const { data } = axios({
+          url: 'googlesignin',
+          method: 'post',
+          data: {
+            google_access_token: authCode
+          }
+        })
+        return data
+      } catch (error) {
+        console.error(error)
+        return { status: 401 }
+      }
+    },
+
     async prosesRegister (context, payload) {
       try {
         const { data } = await axios({

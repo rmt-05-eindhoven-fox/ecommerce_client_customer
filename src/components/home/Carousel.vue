@@ -20,7 +20,7 @@
                     </div>
                     <div class="product-image">
                       <a href="#">
-                        <img :src="product.image_url" alt="Product Image">
+                        <img :src="product.image_url" height="250px" alt="Product Image">
                       </a>
                       <div class="product-action">
                         <h5 v-if="isOutOfStock(product.stock)">

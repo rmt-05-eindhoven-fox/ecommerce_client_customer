@@ -11,7 +11,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div v-if="itemTotal < 1" class="h2 text-center">
+          <div v-if="carts.length < 1" class="h2 text-center">
             You dont have any product in cart, happy shopping!
           </div>
           <div v-else class="table-responsive">

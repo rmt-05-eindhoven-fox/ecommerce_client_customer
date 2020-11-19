@@ -72,6 +72,17 @@ export default {
         }).catch((err) => {
           console.log(err)
         })
+    },
+    loginWithGoogle () {
+      this.$gAuth
+        .signIn()
+        .then((googleUser) => {
+          // const userInfo = googleUser.getAuthResponse()
+          // const access_token = this.$emit('googleLogin', userInfo.id_token)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }

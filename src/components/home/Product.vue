@@ -23,15 +23,15 @@
 
       <div class="col-md-9">
         <div class="row">
-          <h1 v-if="products < 1" class="center">No product with selected category</h1>
-          <div v-for="(product, index) in products" :key="index" class="col-lg-4 m-1 mb-4" style="max-width: 320px">
+          <h1 v-if="products < 1" class="text-center">No product with selected category</h1>
+          <div v-for="(product, index) in products" :key="index" class="col-lg-4 m-0 mb-4" style="max-heiht: 310px; min-width: 310px">
             <div class="product-item">
               <div class="product-title">
                 <a href="#">{{ product.name }}</a>
               </div>
               <div class="product-image">
                 <a href="#">
-                  <img :src="product.image_url" alt="Product Image">
+                  <img :src="product.image_url" alt="Product Image" width="150px" height="250px">
                 </a>
                 <div class="product-action">
                   <h5 v-if="isOutOfStock(product.stock)">
