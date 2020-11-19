@@ -35,7 +35,7 @@ export default {
     },
     logout () {
       localStorage.removeItem('access_token')
-      this.$router.push('/')
+      // this.$router.push('/')
       this.checkLogin()
     },
     showCart () {
@@ -53,9 +53,7 @@ export default {
     }
   },
   created () {
-    if (localStorage.getItem('access_token')) {
-      this.isLoggedIn = true
-    }
+    this.checkLogin()
   }
 }
 </script>
@@ -69,6 +67,7 @@ export default {
   }
   .header {
     background-color: #a0dbdb;
+    max-width: 100%;
     @apply h-20 flex justify-between
   }
   .nav {

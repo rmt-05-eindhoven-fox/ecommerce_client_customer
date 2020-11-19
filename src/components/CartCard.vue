@@ -52,6 +52,7 @@ export default {
         }
         this.$store.dispatch('updateCart', payload)
           .then(({ data }) => {
+            this.showError = false
             this.$store.dispatch('fetchCart')
           })
           .catch(err => {

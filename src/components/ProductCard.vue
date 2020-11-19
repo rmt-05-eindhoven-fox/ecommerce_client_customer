@@ -17,6 +17,9 @@
     <div v-if="showError" class="text-red-500 mt-2">
       {{ errorMessage }}
     </div>
+    <div v-if="showSuccess" class="text-green-600 mt-2">
+      {{ product.name }} succesfully added
+    </div>
   </div>
 </template>
 
@@ -27,7 +30,8 @@ export default {
     return {
       qty: 1,
       showError: false,
-      erroMessage: ''
+      erroMessage: '',
+      showSuccess: false
     }
   },
   props: ['product'],
@@ -43,6 +47,8 @@ export default {
       // console.log(payload, '<< vue ProductId')
       this.$store.dispatch('addToCart', payload)
         .then(({ data }) => {
+          this.showError = false
+          this.showSuccess = true
           console.log(data)
           console.log('Add Success')
         })
