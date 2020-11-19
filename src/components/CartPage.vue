@@ -6,7 +6,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand" href="#">BliBli</a>
+        <a @click="dashboard" class="navbar-brand" href="#">BliBli</a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item active">
             <p></p>
@@ -48,13 +48,15 @@
       <div class="category-container">
         <div class="task-container overflow-auto">
           <div class="card" v-for="(cart, id) in carts.CartDetails" :key="id">
+            <div class="card-header">
+              {{cart.Product.name}}
+            </div>
             <div class="card-body">
-
+              <a style="align-text: center;" target="_blank" :href="cart.Product.image_url">
+                <img :src="cart.Product.image_url" class="card-img-top product-picture" alt="">
+              </a>
               <div class="d-flex justify-content-between">
-                <a style="align-text: center;" target="_blank" :href="cart.Product.image_url">
-                  <img :src="cart.Product.image_url" class="card-img-top product-picture" alt="">
-                </a>
-                <h5 class="card-title">{{cart.Product.name}}</h5>
+                <h5 class="card-title">Price</h5>
                 <div class="dropdown">
                   <a href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-three-dots" fill="currentColor"
@@ -71,19 +73,19 @@
 
               </div>
 
-              <p class="card-text"></p>
-
+              <h5 class="card-text">{{cart.quantity}} x {{cart.Product.price}}</h5>
+              <h5 class="card-text">Total: {{cart.price}}</h5>
               <div class="d-flex justify-content-between pt-3">
-                <button class="btn btn-primary" @click="removeQuantity(cart.ProductId, cart.quantity)">
+                <a href="#" @click="removeQuantity(cart.ProductId, cart.quantity)">
                   <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-dash-square" fill="currentColor"
                     xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd"
                       d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
                     <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
                   </svg>
-                </button>
+                </a>
                 <p>{{ cart.quantity}}</p>
-                <button class="btn btn-primary" @click="addQuantity(cart.ProductId, cart.quantity)">
+                <a href="#" @click="addQuantity(cart.ProductId, cart.quantity)">
                   <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-square" fill="currentColor"
                     xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd"
@@ -91,13 +93,36 @@
                     <path fill-rule="evenodd"
                       d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                   </svg>
-                </button>
+                </a>
               </div>
 
             </div>
           </div>
-
         </div>
+
+      </div>
+
+      <div class="col-md-4 order-md-2 mb-4">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Your cart</span>
+          <span class="badge badge-secondary badge-pill">{{carts.CartDetails.length}}</span>
+        </h4>
+        <ul class="list-group mb-3" >
+          <li class="list-group-item d-flex justify-content-between lh-condensed" v-for="(cart, id) in carts.CartDetails" :key="id">
+            <div>
+              <h6 class="my-0">{{cart.Product.name}}</h6>
+            </div>
+            <span class="text-muted">Rp. {{cart.price}}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (IDR)</span>
+            <strong>Rp. {{carts.totalPrice}}</strong>
+          </li>
+        </ul>
+
+        <form class="card p-2">
+          <button @click.prevent="checkout" class="btn btn-primary btn-lg btn-block" type="submit">Checkout</button>
+        </form>
       </div>
     </div>
   </div>
@@ -128,7 +153,7 @@
           CartId: this.carts.id,
           ProductId: id
         }
-        if(payload.quantity <= 0) {
+        if (payload.quantity <= 0) {
           this.$store.dispatch('deleteCart', cartId)
             .then(() => {
               this.fetchCarts()
@@ -148,8 +173,18 @@
 
         this.$store.dispatch('removeFromCart', payload)
       },
-      logout () {
-      this.$store.dispatch('logout')
+      checkout() {
+        let payload = {
+          id: this.carts.id
+        }
+
+        this.$store.dispatch('checkout', payload)
+      },
+      logout() {
+        this.$store.dispatch('logout')
+      },
+      dashboard() {
+        this.$router.push({ name: 'Home' })
       }
     },
     created() {
@@ -190,10 +225,6 @@
     width: 500px;
   }
 
-  .progress {
-    height: 5px;
-  }
-
   .card-header {
     font-size: 25px;
     font-weight: 400;
@@ -230,6 +261,7 @@
   .card-text {
     font-weight: 300;
     font-size: 18px;
+    text-align: left;
   }
 
   .card-body h6 {

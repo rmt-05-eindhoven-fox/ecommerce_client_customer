@@ -2,10 +2,11 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '@/config/axios'
 import router from '../router'
+import Swal from 'sweetalert2'
 
 Vue.use(Vuex)
 
-const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0dXNlckBtYWlsLmNvbSIsImlhdCI6MTYwNTczOTQ4Mn0.ve_AmttQnE5Y5rqBuW_7AZXuPRIvWUzbRdOmK1Q1JTk'
+
 export default new Vuex.Store({
   state: {
     products: [],
@@ -31,6 +32,7 @@ export default new Vuex.Store({
         })
     },
     fetchAllCarts (context) {
+      const accessToken = localStorage.getItem('access_token')
       return axios
         .get('carts', {
           headers: {
@@ -45,6 +47,7 @@ export default new Vuex.Store({
         })
     },
     addToCart (context, payload) {
+      const accessToken = localStorage.getItem('access_token')
       axios({
         url: 'carts/add-cart',
         method: 'POST',
@@ -65,6 +68,7 @@ export default new Vuex.Store({
         })
     },
     deleteCart (context, payload) {
+      const accessToken = localStorage.getItem('access_token')
       axios({
         url: `carts/${payload.CartId}`,
         method: 'DELETE',
@@ -77,6 +81,7 @@ export default new Vuex.Store({
       })
     },
     removeFromCart (context, payload) {
+      const accessToken = localStorage.getItem('access_token')
       axios({
         url: `carts/items/${payload.CartId}`,
         method: 'DELETE',
@@ -87,6 +92,22 @@ export default new Vuex.Store({
           ProductId: payload.ProductId
         }
       })
+    },
+    checkout (context, payload) {
+      const accessToken = localStorage.getItem('access_token')
+      return axios({
+        url: `carts/checkout/${payload.id}`,
+        method: 'POST',
+        headers: {
+          access_token: accessToken
+        }
+      })
+        .then(() => {
+          router.push({ name: 'Home' })
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     login(context, payload) {
       return axios({
@@ -104,6 +125,23 @@ export default new Vuex.Store({
         })
         .catch(err => {
           console.log(err)
+          Swal.fire('Oops...', 'Wrong email/password', 'error')
+        })
+    },
+    register(context, payload) {
+      return axios({
+        url: 'customers/register',
+        method: 'POST',
+        data: {
+          email: payload.email,
+          password: payload.password
+        }
+      })
+        .then(({ data }) => {
+          router.push({ name: 'Login' })
+        })
+        .catch(err => {
+          Swal.fire('Oops...', `${err.response.data.error}`, 'error')
         })
     },
     logout (context) {
