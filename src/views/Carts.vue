@@ -76,10 +76,17 @@ export default {
         totalPrice += cart.total
       })
       return totalPrice
+    },
+    isLoggedIn () {
+      return this.$store.state.isLoggedIn.status
     }
   },
   created () {
-    this.fetchCarts()
+    if (this.isLoggedIn) {
+      this.fetchCarts()
+    } else {
+      this.$router.push({ name: 'Login' })
+    }
   }
 }
 </script>

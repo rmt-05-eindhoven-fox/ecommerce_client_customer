@@ -38,10 +38,17 @@ export default {
   computed: {
     wishlists () {
       return this.$store.state.wishlists
+    },
+    isLoggedIn () {
+      return this.$store.state.isLoggedIn.status
     }
   },
   created () {
-    this.fetchWishlists()
+    if (this.isLoggedIn) {
+      this.fetchWishlists()
+    } else {
+      this.$router.push({ name: 'Login' })
+    }
   }
 }
 </script>

@@ -59,6 +59,16 @@ export default {
       }
       this.$store.dispatch('login', payload)
     }
+  },
+  computed: {
+    isLoggedIn () {
+      return this.$store.state.isLoggedIn.status
+    }
+  },
+  created () {
+    if (this.isLoggedIn) {
+      this.$router.push({ name: 'Dashboard' })
+    }
   }
 }
 </script>
