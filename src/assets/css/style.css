@@ -72,6 +72,12 @@ body {
   width: 100%;
   height: 500px;
 }
+.homepage .jumbotron .header-wrap {
+  font-family: "Roboto Slab", sans-serif;
+  padding: 10px;
+  background-color: #000000c9;
+  width: fit-content;
+}
 .homepage .product-header {
   display: flex;
   justify-content: center;

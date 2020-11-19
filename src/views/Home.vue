@@ -3,11 +3,14 @@
     <NavbarMain />
     <div class="homepage mt-5">
       <!-- BANNER -->
+      <flash-message/>
       <div class="container-fluid">
         <div class="row">
-          <div class="jumbotron text-right text-white">
+          <div class="jumbotron text-white">
+            <div class="header-wrap">
             <h1>Welcome to our shop</h1>
             <h5>{{ userName }}</h5>
+            </div>
           </div>
         </div>
         <div class="product-header">
@@ -25,13 +28,14 @@
         </div>
       </div>
     </div>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import NavbarMain from '@/components/NavbarMain.vue'
 import ProductCard from '@/components/ProductCard'
-
+import Footer from '@/components/Footer.vue'
 export default {
   name: 'Home',
   data () {
@@ -46,7 +50,8 @@ export default {
   },
   components: {
     NavbarMain,
-    ProductCard
+    ProductCard,
+    Footer
   },
   methods: {
     getProduct () {

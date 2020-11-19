@@ -2,7 +2,7 @@
   <div class="col-3 d-flex justify-content-center">
     <div class="card card-product">
       <div class="card-body">
-        <img :src="product.image_url" style="max-width: 180px;" alt="">
+        <img :src="product.image_url" style="max-width: 180px; min-height: 182px;" alt="">
         <div class="product-name">
           <p>{{product.name}}</p>
         </div>
