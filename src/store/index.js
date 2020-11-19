@@ -8,7 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     products: [],
-    cart: []
+    cart: [],
+    history: []
   },
   mutations: {
     setProducts (state, data) {
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     },
     setCart (state, data) {
       state.cart = data
+    },
+    setHistory (state, data) {
+      state.history = data
     },
     showSuccess (state, payload) {
       Vue.$vToastify.success(payload.message, payload.title)
@@ -143,6 +147,26 @@ export default new Vuex.Store({
       })
         .then(_ => {
           context.dispatch('fetchUserCart')
+        })
+        .catch(err => {
+          const payload = {
+            title: 'ERROR',
+            message: err.response.data.message
+          }
+          context.commit('showError', payload)
+        })
+    },
+
+    fetchUserHistory (context) {
+      axios({
+        url: '/user/history',
+        method: 'get',
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+        .then(({ data }) => {
+          context.commit('setHistory', data)
         })
         .catch(err => {
           const payload = {

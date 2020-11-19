@@ -15,21 +15,18 @@
             @click.prevent="goTo('Cart')"
             class="nav-link" href="">My Cart</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            User
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a
-              @click.prevent="userLogout"
-              class="dropdown-item" href="">Logout</a>
-          </div>
+        <li class="nav-item">
+          <a
+            @click.prevent="goTo('History')"
+            class="nav-link" href="">Purchase History</a>
+        </li>
+        <li class="nav-item">
+          <a
+            @click.prevent="userLogout"
+            class="nav-link" href="">Logout</a>
         </li>
       </ul>
-      <!-- <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form> -->
+
     </div>
   </nav>
 
