@@ -2,11 +2,10 @@
 <div class="my-5 mx-5">
     <mdb-row>
       <mdb-col col="10">
-        <mdb-row
-        v-for="i in prodRows"
-        :key="i"
-        class="mt-5 mr-5">
-          <mdb-card-group class="row" deck>
+          <mdb-card-group deck
+          v-for="i in prodRows"
+          :key="i"
+          class="mt-5 mr-5">
             <mdb-card
             class="col-4"
             v-for="prod in perCol(i)"
@@ -42,7 +41,6 @@
               </mdb-card-body>
             </mdb-card>
           </mdb-card-group>
-        </mdb-row>
       </mdb-col>
       <mdb-col col="2">
         <mdb-row

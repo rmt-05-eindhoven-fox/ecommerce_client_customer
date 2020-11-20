@@ -84,11 +84,10 @@
     </mdb-carousel>
 
     <mdb-container class="my-5">
-      <mdb-row
-      v-for="i in catRows"
-      :key="i"
-      class="mt-5">
-        <mdb-card-group deck>
+        <mdb-card-group deck
+        v-for="i in catRows"
+        :key="i"
+        class="mt-5">
           <mdb-card
           v-for="cat in perCol(i)"
           :key="cat.id">
@@ -106,7 +105,6 @@
             </mdb-card-body>
           </mdb-card>
         </mdb-card-group>
-      </mdb-row>
     </mdb-container>
     </div>
     <!-- ! Modal Register/Login -->
@@ -188,8 +186,7 @@ export default {
       return this.$store.state.categories
     },
     catRows () {
-      if (this.categories.length < 3) return 1
-      else return Math.floor(this.categories.length / 3)
+      return Math.ceil(this.categories.length / 3)
     },
     cart () {
       return this.$store.state.cart
