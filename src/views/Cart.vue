@@ -9,7 +9,8 @@
                 <ContentCart
                   v-for="cart in carts"
                   :key="cart.id"
-                  :carts="cart"
+                  :cart="cart"
+                  :carts="carts"
                 />
               </div>
             </div>
