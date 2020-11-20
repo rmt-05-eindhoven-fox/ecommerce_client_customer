@@ -87,7 +87,7 @@
         <mdb-card-group deck
         v-for="i in catRows"
         :key="i"
-        class="mt-5">
+        class="mt-5 row">
           <mdb-card
           v-for="cat in perCol(i)"
           :key="cat.id">

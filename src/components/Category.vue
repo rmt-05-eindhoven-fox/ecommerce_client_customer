@@ -5,7 +5,7 @@
           <mdb-card-group deck
           v-for="i in prodRows"
           :key="i"
-          class="mt-5 mr-5">
+          class="mt-5 mr-5 row">
             <mdb-card
             class="col-4"
             v-for="prod in perCol(i)"
