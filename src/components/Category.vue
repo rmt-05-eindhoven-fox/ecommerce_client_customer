@@ -69,8 +69,7 @@ export default {
       return this.$store.state.potraitBanners
     },
     prodRows () {
-      if (this.productsPerCat.length < 3) return 1
-      else return Math.floor(this.productsPerCat.length / 3)
+      return Math.ceil(this.productsPerCat.length / 3)
     }
   },
   methods: {
