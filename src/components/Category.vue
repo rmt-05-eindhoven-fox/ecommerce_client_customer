@@ -1,23 +1,24 @@
 <template>
-<div class="my-5 mx-5">
-    <mdb-row>
-      <mdb-col col="10">
+<div class="my-5 mx-5 d-flex">
+    <mdb-row class="d-flex">
+      <mdb-col col="10 d-flex flex-column">
           <mdb-card-group deck
           v-for="i in prodRows"
           :key="i"
-          class="mt-5 mr-5 row">
+          class="row d-flex mx-2 my-4 h-100">
             <mdb-card
-            class="col-4"
+            class="col-4 d-flex"
             v-for="prod in perCol(i)"
             :key="prod.id"
             >
-              <mdb-view class="mt-3 h-50 align-items-center justify-content-center d-flex zoom" hover>
+              <mdb-view class="m-2 h-50 align-items-center justify-content-center d-flex zoom" hover>
                 <a href="#!">
                   <mdb-card-image :src="prod.image_url" :alt="prod.name"></mdb-card-image>
                   <mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
                 </a>
               </mdb-view>
-              <mdb-card-body class="d-flex flex-column">
+              <mdb-card-body class="h-50 d-flex flex-column justify-content-between">
+                <span class="align-self-start">
                 <mdb-card-title class="text-left">{{ prod.name }}</mdb-card-title>
                 <mdb-card-text
                 class="text-left">
@@ -32,12 +33,15 @@
                 <mdb-card-text
                 v-else
                 class="text-left">Available stock : {{ prod.stock }}</mdb-card-text>
+                </span>
+                <span class="align-self-center">
                 <mdb-btn
-                class="mt-auto mx-5"
+                class="mb-auto"
                 v-if="prod.stock > 0"
                 @click="checkLogin(prod.id)"
                 size="md"
                 color="mdb-color"> <mdb-icon icon="cart-plus"/> Add To Cart</mdb-btn>
+                </span>
               </mdb-card-body>
             </mdb-card>
           </mdb-card-group>
@@ -46,7 +50,7 @@
         <mdb-row
         v-for="banner in potraitBanners"
         :key="banner.id">
-          <img :src="banner.image_url" class="img-fluid z-depth-1 mt-5" :alt="banner.title">
+          <img :src="banner.image_url" class="img-fluid z-depth-1" :alt="banner.title">
         </mdb-row>
       </mdb-col>
     </mdb-row>
