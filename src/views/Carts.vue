@@ -24,7 +24,7 @@
           </div>
           <div class="col-md-auto text-center">
             <h3 class="bg-light rounded p-3 shadow">Total: {{carts.total}}</h3>
-            <button @click.prevent="checkout(carts.cart)" class="btn btn-primary btn-lg">CHECKOUT</button>
+            <button @click.prevent="checkout()" class="btn btn-primary btn-lg">CHECKOUT</button>
           </div>
         </div>
       </div>
@@ -52,8 +52,8 @@ export default {
     readCart () {
       this.$store.dispatch('readCart')
     },
-    checkout (payload) {
-      this.$store.dispatch('checkout', payload)
+    checkout () {
+      this.$store.dispatch('checkout')
     }
   },
   created () {

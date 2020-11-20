@@ -358,35 +358,29 @@ export default new Vuex.Store({
     },
     checkout (context, payload) {
       const accessToken = localStorage.getItem('access_token')
-      payload.forEach(cart => {
-        axios({
-          method: 'PUT',
-          url: `/carts/${+cart.id}`,
-          headers: {
-            access_token: accessToken
-          },
-          data: {
-            quantity: cart.quantity,
-            ProductId: cart.ProductId
-          }
-        })
-          .then((result) => {
-            context.dispatch('readCart')
-          })
-          .catch((err) => {
-            console.log(err.response.data.msg)
-            Vue.swal(
-              'Error!',
-              err.response.data.msg,
-              'error'
-            )
-          })
+      axios({
+        method: 'POST',
+        url: '/carts/checkout',
+        headers: {
+          access_token: accessToken
+        }
       })
-      Vue.swal(
-        'Checkout!',
-        'Your product has been checkout from cart.',
-        'success'
-      )
+        .then((result) => {
+          Vue.swal(
+            'Checkout!',
+            'Your product has been checkout from cart.',
+            'success'
+          )
+          context.dispatch('readCart')
+        })
+        .catch((err) => {
+          console.log(err.response.data.msg)
+          Vue.swal(
+            'Error!',
+            err.response.data.msg,
+            'error'
+          )
+        })
     },
     increment (context, payload) {
       const accessToken = localStorage.getItem('access_token')
