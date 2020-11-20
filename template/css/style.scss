@@ -1,0 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.login-page {
+  font-family: 'Rubik', sans-serif;
+  align-items: center;
+  min-height: 80vh;
+
+  .section-left {
+
+    .bg-image {
+      background-size: 50%;
+    }
+  }
+
+  .section-right {
+
+    h2 {
+      font-family: 'Roboto Slab', sans-serif;
+      margin-bottom: 50px;
+    }
+
+    input {
+      border: 1px #000000 solid;
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .btn-login {
+      color: #FFFFFF;
+      background: #300096;
+      border-radius: 10px;
+      width: 120px;
+
+      &:hover {
+        background: #1b0055;
+        transition: 0.5s ease;
+      }
+    }
+
+    .btn-link {
+      padding: 0;
+      margin-top: 10px;
+    }
+  }
+}
+
+.homepage {
+
+  .jumbotron {
+    background-color: #545454;
+    width: 100%;
+    height: 300px;
+  }
+
+  .product-header {
+    display: flex;
+    justify-content: center;
+    font-family: 'Roboto Slab', sans-serif;
+    margin-bottom: 50px;
+  }
+
+  .container {
+
+    justify-content: center;
+    margin-bottom: 50px;
+
+    .card-product {
+      font-family: 'Rubik', sans-serif;
+      width: 200px;
+      height: 280px;
+      border: 1px #b5b5b5 solid;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 8px 8px 2px #d1d1d1;
+
+      .product-name {
+
+        margin-top: 5px;
+        height: 50px;
+
+        p {
+          font-size: 20px;
+          font-weight: 500;
+        }
+      }
+
+      .product-stock {
+        font-size: 12px;
+        margin-top: 20px;
+      }
+
+      .product-price {
+        margin-top: -20px;
+      }
+
+
+      .btn-cart {
+        background: #300096;
+        border-radius: 10px;
+        color: #FFFFFF;
+        width: 180px;
+
+        &:hover {
+          background: #1b0055;
+          transition: 0.3s ease-in-out;
+        }
+      }
+    }
+  }
+}
+
+
+.cart {
+
+
+
+  .cart-header {
+    font-family: 'Roboto Slab', sans-serif;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+
+  .card-on-cart {
+    width: 100%x;
+    border: 1px solid #000000;
+    font-family: 'Rubik', sans-serif;
+
+    img {
+      width: 100%;
+      height: 150px
+    }
+
+
+  }
+}
