@@ -7,13 +7,13 @@
       <div class="card-body">
         <h5 class="card-title">{{products.name}}</h5>
         <div class="row justify-content-around">
-          <button :disabled="products.stock === 0 || loading"
+          <button :disabled="products.stock === 0 || loading || limit"
             @click.prevent="addCart(products.id)"
             class="btn btn-outline-primary">
             <i class="fas fa-cart-plus"></i> Add to cart
             <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           </button>
-          <button :disabled="products.stock === 0 || loading" @click.prevent="buy(products.id)" class="btn btn-primary">Buy now</button>
+          <button :disabled="products.stock === 0 || loading || limit" @click.prevent="buy(products.id)" class="btn btn-primary">Buy now</button>
         </div>
       </div>
       <div class="card-footer text-muted">
@@ -34,17 +34,31 @@ export default {
   props: ['products', 'amount'],
   data () {
     return {
-      loading: false
+      loading: false,
+      limit: false
     }
   },
   computed: {
     carts () {
-      return this.$store.state.carts
+      const data = this.$store.state.carts
+      const resFetch = data.filter(datum => datum.Product.name === this.products.name)
+      // const result = []
+      // data.forEach(el => {
+      //   result.push({
+      //     [el.Product.name]: el.amount
+      //   })
+      // })
+      return resFetch
     }
   },
   methods: {
     fetchCart () {
       this.$store.dispatch('fetchCart')
+    },
+    limitCheck () {
+      if (this.carts[0] && (this.carts[0].amount === this.products.stock)) {
+        this.limit = true
+      }
     },
     addCart (id) {
       this.loading = true
@@ -98,6 +112,9 @@ export default {
   },
   created () {
     this.fetchCart()
+    setTimeout(() => {
+      this.limitCheck()
+    }, 1000)
   }
 }
 </script>
