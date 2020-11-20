@@ -3,10 +3,10 @@
     <b-modal
     :hide-footer="true"
     :hide-header="true"
-    v-model="error"
+    v-model="success"
     @change="close"
     >
-      <div v-for="(err, i) in errorMessage" :key="i" class="text-danger font-weight-bolder text-sm-center border mb-1 rounded border-danger pb-1">{{ err }}</div>
+      <div v-for="(succ, i) in successMessage" :key="i" class="text-success font-weight-bolder text-sm-center border mb-1 rounded border-success pb-1">{{ succ }}</div>
     </b-modal>
   </div>
 </template>
@@ -17,10 +17,10 @@ import { mapState } from 'vuex'
 export default {
   methods: {
     close () {
-      this.$store.commit('CLOSE_ERROR')
+      this.$store.commit('CLOSE_SUCCESS')
     }
   },
-  computed: mapState(['error', 'errorMessage'])
+  computed: mapState(['success', 'successMessage'])
 }
 </script>
 

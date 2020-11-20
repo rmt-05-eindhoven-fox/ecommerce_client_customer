@@ -4,7 +4,6 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Account from '../views/Account.vue'
-import Products from '../views/Products.vue'
 
 Vue.use(VueRouter)
 
@@ -37,9 +36,21 @@ const routes = [
     ]
   },
   {
-    path: '/products',
-    name: 'Products',
-    component: Products
+    path: '/search',
+    name: 'Search',
+    component: () => import('../views/Search.vue'),
+    children: [
+      {
+        path: ':name',
+        name: 'search item',
+        component: () => import('../views/SearchResult.vue')
+      }
+    ]
+  },
+  {
+    path: '/:category',
+    name: 'Category',
+    component: () => import('../views/Category.vue')
   }
   // {
   //   path: '/about',

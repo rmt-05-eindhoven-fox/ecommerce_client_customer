@@ -1,7 +1,8 @@
 <template>
   <div id="app" class="">
     <error/>
-    <cart/>
+    <success/>
+    <cart v-if="login"/>
     <navbar class=""/>
     <router-view/>
   </div>
@@ -11,9 +12,14 @@
 import Cart from './components/Cart.vue'
 import Error from './components/Error.vue'
 import Navbar from './components/Navbar.vue'
+import { mapState } from 'vuex'
+import Success from './components/Success.vue'
 
 export default {
-  components: { Navbar, Error, Cart }
+  computed: {
+    ...mapState(['login'])
+  },
+  components: { Navbar, Error, Cart, Success }
 }
 </script>
 

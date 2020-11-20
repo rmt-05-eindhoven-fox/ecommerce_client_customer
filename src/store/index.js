@@ -9,21 +9,17 @@ export default new Vuex.Store({
   state: {
     error: false,
     errorMessage: [],
-    cart: [],
+    success: false,
+    successMessage: [],
     cartShown: false,
     products: [],
     banners: [],
-    carts: []
+    carts: [],
+    login: Boolean(localStorage.getItem('access_token'))
   },
   mutations: {
     CLOSE_ERROR (state, data) {
       state.error = false
-    },
-    CLOSE_CART (state, data) {
-      state.cartShown = false
-    },
-    SHOW_CART (state, data) {
-      state.cartShown = true
     },
     ERROR (state, data) {
       state.error = true
@@ -37,17 +33,39 @@ export default new Vuex.Store({
         state.error = false
       }, 5000)
     },
+    CLOSE_SUCCESS (state, data) {
+      state.success = false
+    },
+    SUCCESS (state, data) {
+      state.success = true
+      if (typeof (data) === 'string') {
+        state.successMessage = [data]
+      } else {
+        state.successMessage = data
+      }
+      setTimeout(() => {
+        state.successMessage = []
+        state.success = false
+      }, 5000)
+    },
+    CLOSE_CART (state, data) {
+      state.cartShown = false
+    },
+    SHOW_CART (state, data) {
+      state.cartShown = true
+    },
     GET_PRODUCTS (state, data) {
       state.products = data
     },
     BANNERS (state, data) {
       data = JSON.parse(JSON.stringify(data, null, 2))
-      data = data.map(el => {
+      const banner = []
+      data.forEach(el => {
         if (el.shown) {
-          return el
+          banner.push(el)
         }
       })
-      state.banners = data
+      state.banners = banner
     },
     ADD_CART (state, data) {
       const lama = JSON.parse(JSON.stringify(state.carts, null, 2))
@@ -56,6 +74,12 @@ export default new Vuex.Store({
     },
     CARTS (state, data) {
       state.carts = data
+    },
+    LOGIN (state, data) {
+      state.login = true
+    },
+    LOGOUT (state, data) {
+      state.login = false
     }
   },
   actions: {
@@ -65,6 +89,8 @@ export default new Vuex.Store({
         data,
         method: 'post'
       }).then(({ data }) => {
+        context.commit('SUCCESS', 'User logined successfully')
+        context.commit('LOGIN')
         localStorage.setItem('access_token', data.access_token)
         route.push('/')
       }).catch(({ response }) => {
@@ -87,6 +113,8 @@ export default new Vuex.Store({
         method: 'post',
         data
       }).then(({ data }) => {
+        context.commit('SUCCESS', 'User logined successfully')
+        context.commit('LOGIN')
         localStorage.setItem('access_token', data.access_token)
         route.push('/')
       }).catch(({ response }) => {
@@ -98,34 +126,85 @@ export default new Vuex.Store({
         url: '/banners',
         method: 'get'
       }).then(({ data }) => {
-        // console.log(JSON.stringify(data, null, 2))
         context.commit('BANNERS', data.banners)
       }).catch(({ response }) => {
         context.commit('ERROR', response.data.msg)
       })
     },
-    addToCart (context, data) {
-      if (!data.amount) data.amount = 1
+    addToCart ({ commit, dispatch, state }, data) {
+      if (!localStorage.getItem('access_token')) commit('ERROR', 'You have to login first')
+      else {
+        let amount = 1
+        JSON.parse(JSON.stringify(state.carts, null, 2)).forEach(el => {
+          if (el.ProductId === data.id) {
+            amount = el.amount + amount
+          }
+        })
+        axios({
+          url: '/transactions',
+          method: 'post',
+          headers: { access_token: localStorage.getItem('access_token') },
+          data: {
+            ProductId: data.id, amount
+          }
+        }).then(({ data }) => {
+          // context.commit('ADD_CART', data.cart)
+          dispatch('getCart')
+          commit('SUCCESS', 'Add to cart successfully')
+        }).catch(({ response }) => {
+          commit('ERROR', response.data.msg)
+        })
+      }
+    },
+    getCart (context, data) {
+      if (!localStorage.getItem('access_token')) context.commit('ERROR', 'You have to login first')
+      else {
+        axios({
+          url: '/transactions',
+          method: 'get',
+          headers: { access_token: localStorage.getItem('access_token') }
+        }).then(({ data }) => {
+          context.commit('CARTS', data.carts)
+        }).catch(({ response }) => {
+          context.commit('ERROR', response.data.msg)
+        })
+      }
+    },
+    deleteCart (context, id) {
       axios({
         url: '/transactions',
-        method: 'post',
+        method: 'delete',
         headers: { access_token: localStorage.getItem('access_token') },
-        data: {
-          ProductId: data.id, amount: data.amount
-        }
+        data: { ProductId: id }
       }).then(({ data }) => {
-        context.commit('ADD_CART', data.cart)
+        context.commit('SUCCESS', 'Product deleted successfully')
+        // context.commit('CARTS', data.carts)
       }).catch(({ response }) => {
         context.commit('ERROR', response.data.msg)
       })
     },
-    getCart (context, data) {
+    checkout ({ dispatch, commit }, data) {
       axios({
         url: '/transactions',
-        method: 'get',
+        method: 'patch',
         headers: { access_token: localStorage.getItem('access_token') }
       }).then(({ data }) => {
-        context.commit('CARTS', data.carts)
+        dispatch('getCart')
+        commit('SUCCESS', 'Cart checkouted successfully')
+        commit('CLOSE_CART', 'Cart checkouted successfully')
+      }).catch(({ response }) => {
+        commit('ERROR', response.data.msg)
+      })
+    },
+    editAmount (context, data) {
+      const amount = +data.amount
+      const { ProductId } = data
+      axios({
+        url: '/transactions',
+        method: 'post',
+        headers: { access_token: localStorage.getItem('access_token') },
+        data: { amount, ProductId }
+      }).then(({ data }) => {
       }).catch(({ response }) => {
         context.commit('ERROR', response.data.msg)
       })
@@ -148,8 +227,13 @@ export default new Vuex.Store({
       })
       return category
     },
-    logged () {
-      return Boolean(localStorage.getItem('access_token'))
+    search: state => cari => {
+      const data = JSON.parse(JSON.stringify(state.products, null, 2))
+      const category = []
+      data.forEach(el => {
+        if (el.name.toLowerCase().includes(cari.toLowerCase())) category.push(el)
+      })
+      return category
     }
   },
   modules: {
