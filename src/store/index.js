@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     products: [],
     banners: [],
-    carts: []
+    carts: [],
+    isLoggedIn: false
   },
   mutations: {
     listProducts (state, payload) {
@@ -19,19 +20,36 @@ export default new Vuex.Store({
     },
     listCarts (state, payload) {
       state.carts = payload
+    },
+    setLoggedIn(state) { 
+      if (localStorage.getItem("token") ){
+        state.isLoggedIn = true
+      } else {
+        state.isLoggedIn = false
+      }
     }
   },
   actions: {
-    // login (context, payload) {
-    //   return axios({
-    //     url: '/login',
-    //     method: 'POST',
-    //     data: {
-    //       email: payload.email,
-    //       password: payload.password
-    //     }
-    //   })
-    // },
+    login (context, payload) {
+      return axios({
+        url: '/login',
+        method: 'POST',
+        data: {
+          email: payload.email,
+          password: payload.password
+        }
+      })
+    },
+    signup (context, payload) {
+      return axios({
+        url: '/register',
+        method: 'POST',
+        data: {
+          email: payload.email,
+          password: payload.password
+        }
+      })
+    },
     fetchProducts (context) {
       axios({
         url: '/products',
@@ -103,7 +121,7 @@ export default new Vuex.Store({
 
     updateCart (context, payload) {
       axios({
-        url: '/carts',
+        url: '/carts/'+ payload.id,
         method: 'PATCH',
         headers: {
           token: localStorage.getItem('token')

@@ -6,7 +6,7 @@
                 <img :src="product.image_url" class="img-fluid" alt="">
                 <div class="men-cart-pro">
                 <div class="inner-men-cart-pro">
-                    <router-link to="`/detail/${product.id}`"> <a @click.prevent="showProduct" href="#" class="link-product-add-cart">Quick View</a></router-link>
+                    <router-link to="/detail"> <a href="#" class="link-product-add-cart">Quick View</a></router-link>
                 </div>
                 </div>
                 <span class="product-new-top">New</span>
@@ -25,10 +25,10 @@
                     </div>
                 </div>
                 <div class="googles single-item hvr-outline-out">
-                    <button @click.prevent="addCart" type="submit" class="googles-cart pgoogles-cart" >
+                    <!-- <button @click.prevent="addCart" type="submit" class="googles-cart pgoogles-cart" >
                         <i class="fa fa-cart-plus"></i>
-                    </button>
-                    <button type="submit" data-toggle="modal" data-target="#modal_aside_right" class="googles-cart pgoogles-cart" >
+                    </button> -->
+                    <button @click.prevent="addCart" type="submit" data-toggle="modal" data-target="#modal_aside_right" class="googles-cart pgoogles-cart" >
                         <i class="fa fa-cart-plus"></i>
                     </button>
                          <div id="modal_aside_right" class="modal fixed-right fade" tabindex="-1" role="dialog">
@@ -78,12 +78,11 @@ export default {
         addCart () {
             const id = this.product.id
             this.$store.dispatch('addCart', id)
-            // this.$store.dispatch('addCart', payload)
-            // this.$store.dispatch('fetchCarts')
+            this.$store.dispatch('fetchCarts')
         }
     },
     created () {
-        this.fetchCarts()
+        this.$store.dispatch('fetchCarts')
     },
     computed: { 
         carts () {
