@@ -73,7 +73,7 @@
     </mdb-navbar>
     <div
     v-if="this.$route.path === '/'">
-    <mdb-carousel class="mdb-color" style="z-index: 20" :interval="8000" :items="carousel.length" multi controlls slide indicators>
+    <mdb-carousel class="mdb-color row" style="z-index: 20" :interval="8000" :items="carousel.length" multi controlls slide indicators>
       <template
       v-for="(banner, i) in carousel"
       :slot="i + 1"
