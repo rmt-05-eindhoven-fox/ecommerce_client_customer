@@ -5,7 +5,9 @@
         <mdb-card>
           <mdb-card-body>
             <div>
-              <mdb-tbl responsive>
+              <mdb-tbl 
+              v-if="cart.length > 0"
+              responsive>
                 <mdb-tbl-head color="dark" textWhite>
                   <tr>
                     <th colspan="2">Product</th>
@@ -50,7 +52,14 @@
                 </mdb-tbl-body>
               </mdb-tbl>
             </div>
-          <mdb-btn color="primary">Checkout</mdb-btn>
+          <mdb-btn
+          v-if="cart.length > 0" 
+          @click.native="checkout"
+          color="primary">Checkout</mdb-btn>
+          <mdb-container
+          v-else>
+            No Products yet
+          </mdb-container>
           </mdb-card-body>
         </mdb-card>
       </mdb-col>
@@ -124,6 +133,28 @@ export default {
               .then(_ => this.$store.dispatch('fetchCart'))
               .catch(({ response }) => console.log(response.data.error))
           }
+        })
+    },
+    checkout () {
+      this.$vToastify.prompt({
+        body: 'Checkout all items?',
+        answers: { Yes: true, No: false }
+      })
+        .then(val => {
+          if (val) {
+            return this.$store.dispatch('checkoutCart')
+          } else {
+            throw null
+          }
+        })
+        .then(_ => {
+          this.$store.dispatch('fetchCart')
+          this.$vToastify.success('Thank you for buying our products!')
+          this.$store.dispatch('fetchCategories')
+          this.$store.dispatch('fetchAllProducts')
+        })
+        .catch(err => {
+          if (err) this.$vToastify.error(err.response.data.error)
         })
     }
   },

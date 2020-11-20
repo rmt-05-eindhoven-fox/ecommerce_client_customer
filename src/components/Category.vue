@@ -112,7 +112,7 @@ export default {
     this.$store.dispatch('fetchCategories')
     this.$store.dispatch('fetchAllBanners')
       .then(({ data }) => {
-        data = data.map(el => { if (el.status) return el })
+        data = data.filter(el => el.status)
         this.$store.commit('setBanners', data)
         this.$store.dispatch('checkBannersOri')
       })

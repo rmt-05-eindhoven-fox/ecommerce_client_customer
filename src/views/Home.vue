@@ -60,6 +60,11 @@
             <mdb-badge pill color="light-blue">{{ cart.length }}</mdb-badge>
             <mdb-icon color="white" icon="shopping-cart" />
           </a>
+          <a
+          @click.prevent="goToTrans"
+          href="#" class="nav-link navbar-link-2 waves-effect">
+            <mdb-icon color="white" icon="history" />
+          </a>
         </span>
         <mdb-btn
         v-else
@@ -254,6 +259,9 @@ export default {
     goToCart () {
       this.$router.push('/cart', () => {})
     },
+    goToTrans () {
+      this.$router.push('/history', () => {})
+    },
     toggleModal () {
       this.register = true
     }
@@ -261,7 +269,7 @@ export default {
   beforeCreate () {
     this.$store.dispatch('fetchAllBanners')
       .then(({ data }) => {
-        data = data.map(el => { if (el.status) return el })
+        data = data.filter(el => el.status)
         this.$store.commit('setBanners', data)
         this.$store.dispatch('checkBannersOri')
       })
@@ -269,6 +277,7 @@ export default {
 
     this.$store.dispatch('fetchAllProducts')
     this.$store.dispatch('fetchCategories')
+    this.$store.dispatch('fetchCart')
   }
 }
 </script>

@@ -18,7 +18,7 @@ export default new Vuex.Store({
     landscapeBanners: [],
     potraitBanners: [],
     cart: [],
-    isLogin: false
+    transHistory: []
   },
   mutations: {
     setUserDetail (state, payload) {
@@ -41,7 +41,10 @@ export default new Vuex.Store({
       state.potraitBanners = payload
     },
     setCart (state, payload) {
-      state.cart = payload.Products
+      state.cart = payload
+    },
+    setTrans (state, payload) {
+      state.transHistory = payload
     }
   },
   actions: {
@@ -117,7 +120,12 @@ export default new Vuex.Store({
         }
       })
         .then(({ data }) => {
-          commit('setCart', data)
+          if (data.Products.length > 0) {
+            const cart = data.Products.filter(el => !el.Cart.status)
+            const history = data.Products.filter(el => el.Cart.status)
+            commit('setCart', cart)
+            commit('setTrans', history)
+          }
         })
         .catch(({ response }) => {
           console.log(response.data)
@@ -139,6 +147,13 @@ export default new Vuex.Store({
     },
     deleteCart (con, payload) {
       return axios.delete(`/carts/${payload.ProductId}`, {
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+    },
+    checkoutCart (con) {
+      return axios.patch(`/carts/checkout`, null, {
         headers: {
           access_token: localStorage.access_token
         }
@@ -173,6 +188,10 @@ export default new Vuex.Store({
       for (const c of state.cart) {
         if (c.id === id) return c.Cart.amount
       }
+    },
+    sortTrans: (state) => {
+      if (state.transHistory.length === 0) return []
+      return state.transHistory.sort((a, b) => a.Cart.updatedAt - b.Cart.updatedAt)
     }
   }
 })

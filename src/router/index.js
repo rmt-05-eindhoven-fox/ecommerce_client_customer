@@ -27,6 +27,11 @@ const routes = [
         component: () => import('../components/Cart.vue')
       },
       {
+        path: 'history',
+        name: 'TransHistory',
+        component: () => import('../components/TransHistory.vue')
+      },
+      {
         path: '*',
         name: 'NotFound',
         component: NotFound
