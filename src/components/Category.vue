@@ -48,6 +48,7 @@
       </mdb-col>
       <mdb-col col="2">
         <mdb-row
+        class="my-4"
         v-for="banner in potraitBanners"
         :key="banner.id">
           <img :src="banner.image_url" class="img-fluid z-depth-1" :alt="banner.title">
