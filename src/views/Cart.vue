@@ -2,7 +2,7 @@
   <div class="page">
     <div class="shopping-cart dark">
       <div class="container">
-        <div class="content">
+        <div v-if="!loading" class="content">
           <div class="row">
             <div class="col-md-12 col-lg-8">
               <div class="items">
@@ -50,6 +50,11 @@ export default {
   components: {
     ContentCart
   },
+  data () {
+    return {
+      loading: true
+    }
+  },
   computed: {
     carts () {
       return this.$store.state.carts
@@ -71,6 +76,9 @@ export default {
     }
   },
   created () {
+    setTimeout(() => {
+      this.loading = false
+    }, 500)
     this.fetchCart()
     this.price()
     if (!localStorage.getItem('token')) {

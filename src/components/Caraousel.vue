@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="!loading"
     id="carouselExampleIndicators"
     class="container carousel slide"
     data-ride="carousel"
@@ -46,6 +47,11 @@
 import CaraouselItem from '@/components/CaraouselItem.vue'
 export default {
   name: 'Caraousel',
+  data () {
+    return {
+      loading: true
+    }
+  },
   components: {
     CaraouselItem
   },
@@ -64,6 +70,9 @@ export default {
     }
   },
   created () {
+    setTimeout(() => {
+      this.loading = false
+    }, 500)
     this.fetchBanners()
   }
 }

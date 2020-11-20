@@ -7,8 +7,13 @@
       <div class="card-body">
         <h5 class="card-title">{{products.name}}</h5>
         <div class="row justify-content-around">
-          <button :disabled="products.stock === 0" @click.prevent="addCart(products.id)" class="btn btn-outline-primary"><i class="fas fa-cart-plus"></i> Add to cart</button>
-          <button :disabled="products.stock === 0" @click.prevent="buy(products.id)" class="btn btn-primary">Buy now</button>
+          <button :disabled="products.stock === 0 || loading"
+            @click.prevent="addCart(products.id)"
+            class="btn btn-outline-primary">
+            <i class="fas fa-cart-plus"></i> Add to cart
+            <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          </button>
+          <button :disabled="products.stock === 0 || loading" @click.prevent="buy(products.id)" class="btn btn-primary">Buy now</button>
         </div>
       </div>
       <div class="card-footer text-muted">
@@ -27,6 +32,11 @@
 export default {
   name: 'ContentProduct',
   props: ['products', 'amount'],
+  data () {
+    return {
+      loading: false
+    }
+  },
   computed: {
     carts () {
       return this.$store.state.carts
@@ -37,6 +47,7 @@ export default {
       this.$store.dispatch('fetchCart')
     },
     addCart (id) {
+      this.loading = true
       if (!localStorage.getItem('token')) {
         this.$router.push('/signin')
       } else {
@@ -48,6 +59,7 @@ export default {
         if (!filter[0]) {
           setTimeout(() => {
             this.fetchCart()
+            this.loading = false
           }, 500)
           this.$store.dispatch('addCart', payload)
         } else {
@@ -57,6 +69,9 @@ export default {
             id: filter[0].id,
             amount: amount
           }
+          setTimeout(() => {
+            this.loading = false
+          }, 500)
           this.$store.dispatch('updateAmount', payload)
         }
       }

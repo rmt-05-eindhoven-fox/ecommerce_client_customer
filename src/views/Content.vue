@@ -1,8 +1,10 @@
 <template>
   <div class="features-boxed mt">
     <div class="container">
-      <div class="row justify-content-center features">
-        <h1 v-if="products[0].length === 0" class="mt-5">Oops... item is empty</h1>
+      <div v-if="!loading" class="row justify-content-center features">
+        <div>
+          <h1 v-if="products[0].length === 0" class="mt-5">Oops... item is empty</h1>
+        </div>
         <ContentProduct
           v-for="product in products[0]"
           :key="product.id"
@@ -17,6 +19,11 @@
 import ContentProduct from '@/components/ContentProduct.vue'
 export default {
   name: 'Content',
+  data () {
+    return {
+      loading: true
+    }
+  },
   components: {
     ContentProduct
   },
@@ -34,11 +41,18 @@ export default {
   },
   methods: {
     fetchCategories () {
+      setTimeout(() => {
+        this.loading = false
+      }, 500)
       this.$store.dispatch('fetchCategories')
     }
   },
   created () {
-    this.fetchCategories()
+    this.$loading(true)
+    setTimeout(() => {
+      this.fetchCategories()
+      this.$loading(false)
+    }, 500)
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <div class="row">
+    <div v-if="!loading" class="row">
       <div class="col-md-3">
         <img
           class="img-fluid mx-auto d-block image"
@@ -28,7 +28,7 @@
               />
             </div>
             <div class="col-md-3 price">
-              <span>Rp. {{carts.Product.price * carts.amount}}</span>
+              <span>Rp. {{carts.Product.price}}</span>
             </div>
             <div class="col-md-1 tex-danger">
               <a @click.prevent="deleteCart(carts.id)" href=""><i class="fas fa-trash text-danger"></i></a>
@@ -47,6 +47,7 @@ export default {
   props: ['carts'],
   data () {
     return {
+      loading: true,
       query: this.carts.amount
     }
   },
@@ -72,9 +73,17 @@ export default {
           console.log(err)
         })
     }
+  },
+  created () {
+    setTimeout(() => {
+      this.loading = false
+    }, 500)
   }
 }
 </script>
 
 <style>
+.product {
+  padding-left: 15px;
+}
 </style>

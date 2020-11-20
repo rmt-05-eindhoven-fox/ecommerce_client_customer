@@ -1,6 +1,6 @@
 <template>
   <div class="features-boxed">
-    <div class="container">
+    <div v-if="!loading" class="container">
       <div class="intro">
         <h2 class="text-center">Category</h2>
       </div>
@@ -19,6 +19,11 @@
 import CategoryItem from '@/components/CategoryItem.vue'
 export default {
   name: 'Category',
+  data () {
+    return {
+      loading: true
+    }
+  },
   components: {
     CategoryItem
   },
@@ -30,10 +35,15 @@ export default {
   methods: {
     fetchCategories () {
       this.$store.dispatch('fetchCategories')
+      this.loading = false
     }
   },
   created () {
-    this.fetchCategories()
+    this.$loading(true)
+    setTimeout(() => {
+      this.$loading(false)
+      this.fetchCategories()
+    }, 500)
   }
 }
 </script>
