@@ -5,7 +5,7 @@
           <mdb-card-group deck
           v-for="i in prodRows"
           :key="i"
-          class="row d-flex mx-2 my-4 h-100">
+          class="row d-flex mx-2 my-4">
             <mdb-card
             class="col-4 d-flex"
             v-for="prod in perCol(i)"
@@ -17,7 +17,7 @@
                   <mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
                 </a>
               </mdb-view>
-              <mdb-card-body class="h-50 d-flex flex-column justify-content-between">
+              <mdb-card-body class="d-flex flex-column justify-content-between">
                 <span class="align-self-start">
                 <mdb-card-title class="text-left">{{ prod.name }}</mdb-card-title>
                 <mdb-card-text
