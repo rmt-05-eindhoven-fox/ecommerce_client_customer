@@ -191,7 +191,7 @@ export default new Vuex.Store({
     },
     sortTrans: (state) => {
       if (state.transHistory.length === 0) return []
-      return state.transHistory.sort((a, b) => a.Cart.updatedAt - b.Cart.updatedAt)
+      return state.transHistory.sort((a, b) => new Date(b.Cart.updatedAt) - new Date(a.Cart.updatedAt))
     },
     formatPrice: () => (price) => {
       const arr = []
