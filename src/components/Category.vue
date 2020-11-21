@@ -22,7 +22,7 @@
                 <mdb-card-title class="text-left">{{ prod.name }}</mdb-card-title>
                 <mdb-card-text
                 class="text-left">
-                  Rp. {{ prod.price }}
+                  Rp. {{ formatPrice(prod.price) }}
                 </mdb-card-text>
                 <mdb-card-text
                 v-if="prod.stock === 0"
@@ -108,6 +108,9 @@ export default {
             })
         }
       }
+    },
+    formatPrice (price) {
+      return this.$store.getters.formatPrice(price)
     }
   },
   beforeCreate () {

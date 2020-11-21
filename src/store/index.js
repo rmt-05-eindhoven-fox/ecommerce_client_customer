@@ -153,7 +153,7 @@ export default new Vuex.Store({
       })
     },
     checkoutCart (con) {
-      return axios.patch(`/carts/checkout`, null, {
+      return axios.patch('/carts/checkout', null, {
         headers: {
           access_token: localStorage.access_token
         }
@@ -192,6 +192,18 @@ export default new Vuex.Store({
     sortTrans: (state) => {
       if (state.transHistory.length === 0) return []
       return state.transHistory.sort((a, b) => a.Cart.updatedAt - b.Cart.updatedAt)
+    },
+    formatPrice: () => (price) => {
+      const arr = []
+      const arrStr = price.toString().split('').reverse()
+      arrStr.forEach((el, i) => {
+        if ((i - 2) % 3 === 0 && i !== arrStr.length - 1 && i) {
+          arr.push(el, '.')
+        } else {
+          arr.push(el)
+        }
+      })
+      return arr.reverse().join('')
     }
   }
 })

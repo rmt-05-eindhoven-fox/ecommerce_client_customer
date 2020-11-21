@@ -5,7 +5,7 @@
         <mdb-card>
           <mdb-card-body>
             <div>
-              <mdb-tbl 
+              <mdb-tbl
               v-if="trans.length > 0"
               responsive>
                 <mdb-tbl-head color="dark" textWhite>
@@ -19,7 +19,7 @@
                   <tr
                   v-for="product in trans"
                   :key="product.id">
-                  <th 
+                  <th
                   scope="row">
                     {{ new Date(product.Cart.updatedAt).toDateString() }}
                   </th>
@@ -28,7 +28,7 @@
                     {{ product.name }} x {{ product.Cart.amount }} pcs
                   </span>
                   </td>
-                  <td>Rp. {{ product.price * product.Cart.amount }}</td>
+                  <td>Rp. {{ formatPrice(product.price * product.Cart.amount) }}</td>
                   </tr>
                 </mdb-tbl-body>
               </mdb-tbl>
@@ -50,6 +50,11 @@ export default {
   computed: {
     trans () {
       return this.$store.getters.sortTrans
+    }
+  },
+  methods: {
+    formatPrice (price) {
+      return this.$store.getters.formatPrice(price)
     }
   },
   beforeCreate () {

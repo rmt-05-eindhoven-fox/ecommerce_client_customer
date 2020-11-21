@@ -5,7 +5,7 @@
         <mdb-card>
           <mdb-card-body>
             <div>
-              <mdb-tbl 
+              <mdb-tbl
               v-if="cart.length > 0"
               responsive>
                 <mdb-tbl-head color="dark" textWhite>
@@ -26,7 +26,7 @@
                   <img :src="product.image_url" :alt="product.name" class="img-thumbnail" style="width: 200px">
                   </th>
                   <td>{{ product.name }}</td>
-                  <td>Rp. {{ product.price }}</td>
+                  <td>Rp. {{ formatPrice(product.price) }}</td>
                   <td>
                   <div class="d-flex justify-content-around">
                     <span class="d-flex flex-column justify-content-center">
@@ -42,7 +42,7 @@
                     </span>
                   </div>
                   </td>
-                  <td>Rp. {{ product.price * product.Cart.amount }}</td>
+                  <td>Rp. {{ formatPrice(product.price * product.Cart.amount) }}</td>
                   <td>
                   <mdb-btn
                   @click.native="deleteProd(product.id)"
@@ -53,7 +53,7 @@
               </mdb-tbl>
             </div>
           <mdb-btn
-          v-if="cart.length > 0" 
+          v-if="cart.length > 0"
           @click.native="checkout"
           color="primary">Checkout</mdb-btn>
           <mdb-container
@@ -144,7 +144,7 @@ export default {
           if (val) {
             return this.$store.dispatch('checkoutCart')
           } else {
-            throw null
+            throw new Error('cancelled buy')
           }
         })
         .then(_ => {
@@ -154,8 +154,11 @@ export default {
           this.$store.dispatch('fetchAllProducts')
         })
         .catch(err => {
-          if (err) this.$vToastify.error(err.response.data.error)
+          if (err.message !== 'cancelled buy') this.$vToastify.error(err.response.data.error)
         })
+    },
+    formatPrice (price) {
+      return this.$store.getters.formatPrice(price)
     }
   },
   beforeCreate () {
